@@ -122,6 +122,22 @@ void isCompleteTest3() {
 	ASSERT_EQUAL(true, sudoku.isComplete());
 }
 
+void isCorrectTest() {
+	std::array<std::array<int,9>,9> inputs {};
+	Sudoku sudoku(inputs);
+	ASSERT_EQUAL(false, sudoku.isCorrect());
+}
+
+void isCorrectTest2() {
+	Sudoku sudoku = sampleSudoku();
+	ASSERT_EQUAL(false, sudoku.isCorrect());
+}
+
+void isCorrectTest3() {
+	Sudoku sudoku = completeSudoku();
+	ASSERT_EQUAL(true, sudoku.isCorrect());
+}
+
 void copyConstructorTest() {
 	std::array<std::array<int,9>,9> inputs {};
 	Sudoku sudoku(inputs);
@@ -155,6 +171,7 @@ void performanceTest() {
 	std::cout << "it took " << end - start << "ticks, or "
 			<< ((float)end - start)/CLOCKS_PER_SEC
 			<< "seconds." << std::endl;
+	ASSERT_EQUAL(true, solution.isCorrect());
 }
 
 void solverTest2() {
@@ -165,6 +182,7 @@ void solverTest2() {
 	Sudoku solution = solver.getSolution();
 	std::cout << "\nAfter:\n";
 	std::cout << solution.toString();
+	ASSERT_EQUAL(true, solution.isCorrect());
 }
 
 void performanceTest2() {
@@ -197,6 +215,9 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(performanceTest));
 	s.push_back(CUTE(solverTest2));
 	s.push_back(CUTE(performanceTest2));
+	s.push_back(CUTE(isCorrectTest));
+	s.push_back(CUTE(isCorrectTest2));
+	s.push_back(CUTE(isCorrectTest3));
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);
 	cute::makeRunner(lis,argc,argv)(s, "AllTests");

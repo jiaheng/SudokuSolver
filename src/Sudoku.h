@@ -30,6 +30,7 @@ public:
 	bool isSafe(int row, int col, int num);
 	bool isIncomplete();
 	bool isComplete();
+	bool isCorrect();
 	bool cellIsEmpty(int row, int col);
 
 	void setCell(int row, int col, int val) { cells[row][col] = val; }
@@ -47,6 +48,9 @@ private:
 	bool safeInRow(int row, int num);
 	bool safeInCol(int col, int num);
 	bool safeInSqr(int startRow, int startCol, int num);
+	bool correctInRow(int row);
+	bool correctInCol(int col);
+	bool correctInSqr(int startRow, int StartCol);
 };
 
 #endif /* SRC_SUDOKU_H_ */
