@@ -1,5 +1,5 @@
 <testsuites>
-	<testsuite name="AllTests" tests="19">
+	<testsuite name="AllTests" tests="24">
 		<testcase classname="AllTests" name="constructorTest"/>
 		<testcase classname="AllTests" name="setterTest"/>
 		<testcase classname="AllTests" name="getterTest"/>
@@ -19,5 +19,10 @@
 		<testcase classname="AllTests" name="isCorrectTest"/>
 		<testcase classname="AllTests" name="isCorrectTest2"/>
 		<testcase classname="AllTests" name="isCorrectTest3"/>
+		<testcase classname="AllTests" name="setterTest2"/>
+		<testcase classname="AllTests" name="getterTest3"/>
+		<testcase classname="AllTests" name="hexadokuTest"/>
+		<testcase classname="AllTests" name="hexadokuSolverTest"/>
+		<testcase classname="AllTests" name="hexadokuPerformanceTest"/>
 	</testsuite>
 </testsuites>

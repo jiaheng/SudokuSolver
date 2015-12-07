@@ -11,20 +11,16 @@
 #include <array>
 #include <string>
 
+template<size_t N>
 class Sudoku
 {
 private:
-	std::array<std::array<int, 9>, 9> cells {};
+	std::array<std::array<int, N>, N> cells {};
+	int size = static_cast<int>(N);
 
 public:
-	Sudoku() {};
-	template<typename T, size_t N>
-	Sudoku(std::array<T, N> const &arr) {
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++)
-				cells[i][j] = arr[i][j];
-		}
-	}
+	Sudoku() {}
+	Sudoku(std::array<std::array<int,N>,N> const &arr);
 
 	std::string toString();
 	bool isSafe(int row, int col, int num);
@@ -37,7 +33,7 @@ public:
 
 	int getCell(int row, int col){ return cells[row][col]; }
 
-	friend bool operator== (Sudoku &cSudoku1, Sudoku &cSudoku2) {
+	friend bool operator==(Sudoku &cSudoku1, Sudoku &cSudoku2) {
 		for (int i = 0; i < 9; i++)
 			for (int j = 0; j < 9; j++)
 				if (cSudoku1.cells[i][j] != cSudoku2.cells[i][j]) return false;
@@ -52,5 +48,7 @@ private:
 	bool correctInCol(int col);
 	bool correctInSqr(int startRow, int StartCol);
 };
+
+#include "Sudoku.cpp"
 
 #endif /* SRC_SUDOKU_H_ */

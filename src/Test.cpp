@@ -5,7 +5,7 @@
 #include "Sudoku.h"
 #include "SudokuSolver.h"
 
-Sudoku sampleSudoku() {
+Sudoku<9> sampleSudoku() {
 	std::array<std::array<int,9>,9> inputs {{
 		{{3, 0, 6, 5, 0, 8, 4, 0, 0}},
 		{{5, 2, 0, 0, 0, 0, 0, 0, 0}},
@@ -17,11 +17,11 @@ Sudoku sampleSudoku() {
 		{{0, 0, 0, 0, 0, 0, 0, 7, 4}},
 		{{0, 0, 5, 2, 0, 6, 3, 0, 0}}
 	}};
-	Sudoku sudoku(inputs);
+	Sudoku<9> sudoku(inputs);
 	return sudoku;
 }
 
-Sudoku sampleSudoku2() {
+Sudoku<9> sampleSudoku2() {
 	std::array<std::array<int,9>,9> inputs {{
 		{{9, 0, 0, 0, 4, 0, 0, 0, 0}},
 		{{7, 0, 0, 2, 0, 0, 0, 9, 0}},
@@ -33,11 +33,11 @@ Sudoku sampleSudoku2() {
 		{{0, 7, 0, 0, 0, 5, 0, 0, 1}},
 		{{0, 0, 0, 0, 2, 0, 0, 0, 6}}
 	}};
-	Sudoku sudoku(inputs);
+	Sudoku<9> sudoku(inputs);
 	return sudoku;
 }
 
-Sudoku completeSudoku() {
+Sudoku<9> completeSudoku() {
 	std::array<std::array<int,9>,9> inputs {{
 		{{3, 1, 6, 5, 7, 8, 4, 9, 2}},
 		{{5, 2, 9, 1, 3, 4, 7, 6, 8}},
@@ -49,124 +49,178 @@ Sudoku completeSudoku() {
 		{{6, 9, 2, 3, 5, 1, 8, 7, 4}},
 		{{7, 4, 5, 2, 8, 6, 3, 1, 9}}
 	}};
-	Sudoku sudoku(inputs);
+	Sudoku<9> sudoku(inputs);
+	return sudoku;
+}
+
+Sudoku<16> sampleHexadoku() {
+	std::array<std::array<int,16>,16> inputs {{
+		{{4, 3, 7, 11, 14, 0, 13, 2, 16, 10, 0, 8, 0, 9, 0, 15}},
+		{{6, 0, 0, 1, 5, 8, 9, 0, 13, 0, 2, 0, 10, 0, 4, 0}},
+		{{2, 0, 9, 10, 0, 6, 0, 0, 0, 5, 3, 0, 0, 0, 0, 0}},
+		{{14, 13, 0, 5, 0, 0, 10, 4, 7, 1, 9, 0, 0, 0, 8, 12}},
+		{{9, 0, 10, 4, 1, 11, 3, 5, 8, 2, 12, 6, 13, 15, 0, 0}},
+		{{0, 11, 2, 12, 0, 9, 16, 0, 10, 0, 14, 0, 0, 0, 0, 0}},
+		{{1, 5, 0, 0, 10, 2, 0, 8, 0, 11, 4, 13, 9, 0, 0, 0}},
+		{{0, 6, 8, 0, 13, 0, 0, 12, 0, 9, 0, 16, 11, 0, 0, 0}},
+		{{0, 0, 0, 6, 3, 0, 2, 0, 1, 0, 0, 12, 0, 14, 15, 0}},
+		{{0, 0, 0, 2, 8, 14, 12, 0, 11, 0, 15, 3, 0, 0, 10, 9}},
+		{{0, 0, 0, 0, 0, 13, 0, 7, 0, 6, 8, 0, 3, 12, 1, 0}},
+		{{0, 0, 13, 14, 11, 15, 1, 6, 9, 7, 5, 10, 4, 8, 0, 2}},
+		{{7, 1, 0, 0, 0, 10, 8, 13, 4, 12, 0, 0, 15, 0, 3, 6}},
+		{{0, 0, 0, 0, 0, 16, 5, 0, 0, 0, 10, 0, 8, 1, 0, 4}},
+		{{0, 4, 0, 15, 0, 7, 0, 3, 0, 8, 1, 9, 14, 0, 0, 10}},
+		{{11, 0, 3, 0, 4, 0, 15, 14, 6, 16, 0, 5, 12, 2, 9, 7}}
+	}};
+	Sudoku<16> sudoku(inputs);
 	return sudoku;
 }
 
 void constructorTest() {
 	std::array<std::array<int,9>,9> inputs {};
-	Sudoku sudoku(inputs);
+	Sudoku<9> sudoku(inputs);
 }
 
 void setterTest() {
+	int size { 9 };
 	std::array<std::array<int,9>,9> inputs {};
-	Sudoku sudoku(inputs);
+	Sudoku<9> sudoku(inputs);
 	sudoku.setCell(0,0,1);
 	int cond = sudoku.getCell(0,0);
 	ASSERT_EQUAL(1, cond);
-	for (int j = 1; j < 9; j++) {
+	for (int j = 1; j < size; j++) {
 		int cond = sudoku.getCell(0, j);
 		ASSERT_EQUAL(0, cond);
 	}
-	for (int i = 1; i < 9; i++)
-		for (int j = 0; j < 9; j++) {
+	for (int i = 1; i < size; i++)
+		for (int j = 0; j < size; j++) {
+			int cond = sudoku.getCell(i, j);
+			ASSERT_EQUAL(0, cond);
+		}
+}
+
+void setterTest2() {
+	int size { 16 };
+	std::array<std::array<int,16>,16> inputs {};
+	Sudoku<16> sudoku(inputs);
+	sudoku.setCell(0,0,1);
+	int cond = sudoku.getCell(0,0);
+	ASSERT_EQUAL(1, cond);
+	for (int j = 1; j < size; j++) {
+		int cond = sudoku.getCell(0, j);
+		ASSERT_EQUAL(0, cond);
+	}
+	for (int i = 1; i < size; i++)
+		for (int j = 0; j < size; j++) {
 			int cond = sudoku.getCell(i, j);
 			ASSERT_EQUAL(0, cond);
 		}
 }
 
 void getterTest() {
+	int size { 9 };
 	std::array<std::array<int,9>,9> inputs {};
-	Sudoku sudoku(inputs);
-	for (int i = 0; i < 9; i++)
-		for (int j = 0; j < 9; j++) {
+	Sudoku<9> sudoku(inputs);
+	for (int i = 0; i < size; i++)
+		for (int j = 0; j < size; j++) {
 			int cond = sudoku.getCell(i, j);
 			ASSERT_EQUAL(0, cond);
 		}
 }
 
 void getterTest2() {
-	Sudoku sudoku = sampleSudoku();
+	int size { 16 };
+	std::array<std::array<int,16>,16> inputs {};
+	Sudoku<16> sudoku(inputs);
+	for (int i = 0; i < size; i++)
+		for (int j = 0; j < size; j++) {
+			int cond = sudoku.getCell(i, j);
+			ASSERT_EQUAL(0, cond);
+		}
+}
+
+void getterTest3() {
+	Sudoku<9> sudoku = sampleSudoku();
 	ASSERT_EQUAL(3, sudoku.getCell(0,0));
 }
 
 void isIncompleteTest() {
 	std::array<std::array<int,9>,9> inputs {};
-	Sudoku sudoku(inputs);
+	Sudoku<9> sudoku(inputs);
 	ASSERT_EQUAL(true, sudoku.isIncomplete());
 }
 
 void isIncompleteTest2() {
-	Sudoku sudoku = sampleSudoku();
+	Sudoku<9> sudoku = sampleSudoku();
 	ASSERT_EQUAL(true, sudoku.isIncomplete());
 }
 
 void isIncompleteTest3() {
-	Sudoku sudoku = completeSudoku();
+	Sudoku<9> sudoku = completeSudoku();
 	ASSERT_EQUAL(false, sudoku.isIncomplete());
 }
 
 void isCompleteTest() {
 	std::array<std::array<int,9>,9> inputs {};
-	Sudoku sudoku(inputs);
+	Sudoku<9> sudoku(inputs);
 	ASSERT_EQUAL(false, sudoku.isComplete());
 }
 
 void isCompleteTest2() {
-	Sudoku sudoku = sampleSudoku();
+	Sudoku<9> sudoku = sampleSudoku();
 	ASSERT_EQUAL(false, sudoku.isComplete());
 }
 
 void isCompleteTest3() {
-	Sudoku sudoku = completeSudoku();
+	Sudoku<9> sudoku = completeSudoku();
 	ASSERT_EQUAL(true, sudoku.isComplete());
 }
 
 void isCorrectTest() {
 	std::array<std::array<int,9>,9> inputs {};
-	Sudoku sudoku(inputs);
+	Sudoku<9> sudoku(inputs);
 	ASSERT_EQUAL(false, sudoku.isCorrect());
 }
 
 void isCorrectTest2() {
-	Sudoku sudoku = sampleSudoku();
+	Sudoku<9> sudoku = sampleSudoku();
 	ASSERT_EQUAL(false, sudoku.isCorrect());
 }
 
 void isCorrectTest3() {
-	Sudoku sudoku = completeSudoku();
+	Sudoku<9> sudoku = completeSudoku();
 	ASSERT_EQUAL(true, sudoku.isCorrect());
 }
 
 void copyConstructorTest() {
 	std::array<std::array<int,9>,9> inputs {};
-	Sudoku sudoku(inputs);
-	Sudoku copy(sudoku);
+	Sudoku<9> sudoku(inputs);
+	Sudoku<9> copy(sudoku);
 	copy.setCell(0,0,1);
 	ASSERT_EQUAL(0, sudoku.getCell(0,0));
 	ASSERT_EQUAL(1, copy.getCell(0,0));
 }
 
 void toStringTest() {
-	Sudoku sudoku = sampleSudoku();
+	Sudoku<9> sudoku = sampleSudoku();
 	std::cout << sudoku.toString();
 }
 
 void solverTest() {
-	Sudoku sudoku = sampleSudoku();
+	Sudoku<9> sudoku = sampleSudoku();
 	std::cout << "Before:\n";
 	std::cout << sudoku.toString();
-	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.getSolution();
+	SudokuSolver<9> solver(sudoku);
+	Sudoku<9> solution = solver.getSolution();
 	std::cout << "\nAfter:\n";
 	std::cout << solution.toString();
 }
 
 void performanceTest() {
-	Sudoku sudoku = sampleSudoku();
-	SudokuSolver solver(sudoku);
+	Sudoku<9> sudoku = sampleSudoku();
+	SudokuSolver<9> solver(sudoku);
 	int start = clock();
-	Sudoku solution = solver.getSolution();
+	Sudoku<9> solution = solver.getSolution();
 	int end = clock();
 	std::cout << "it took " << end - start << "ticks, or "
 			<< ((float)end - start)/CLOCKS_PER_SEC
@@ -175,25 +229,57 @@ void performanceTest() {
 }
 
 void solverTest2() {
-	Sudoku sudoku = sampleSudoku2();
+	Sudoku<9> sudoku = sampleSudoku2();
 	std::cout << "Before:\n";
 	std::cout << sudoku.toString();
-	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.getSolution();
+	SudokuSolver<9> solver(sudoku);
+	Sudoku<9> solution = solver.getSolution();
 	std::cout << "\nAfter:\n";
 	std::cout << solution.toString();
 	ASSERT_EQUAL(true, solution.isCorrect());
 }
 
 void performanceTest2() {
-	Sudoku sudoku = sampleSudoku2();
-	SudokuSolver solver(sudoku);
+	Sudoku<9> sudoku = sampleSudoku2();
+	SudokuSolver<9> solver(sudoku);
 	int start = clock();
-	Sudoku solution = solver.getSolution();
+	Sudoku<9> solution = solver.getSolution();
 	int end = clock();
 	std::cout << "it took " << end - start << "ticks, or "
 			<< ((float)end - start)/CLOCKS_PER_SEC
 			<< "seconds." << std::endl;
+	ASSERT_EQUAL(true, solution.isCorrect());
+}
+
+void hexadokuTest() {
+	Sudoku<16> hexadoku = sampleHexadoku();
+	std::cout << hexadoku.toString();
+	ASSERT_EQUAL(true, hexadoku.isIncomplete());
+	ASSERT_EQUAL(false, hexadoku.isComplete());
+	ASSERT_EQUAL(false, hexadoku.isCorrect());
+}
+
+void hexadokuSolverTest() {
+	Sudoku<16> sudoku = sampleHexadoku();
+	std::cout << "Before:\n";
+	std::cout << sudoku.toString();
+	SudokuSolver<16> solver(sudoku);
+	Sudoku<16> solution = solver.getSolution();
+	std::cout << "\nAfter:\n";
+	std::cout << solution.toString();
+	ASSERT_EQUAL(true, solution.isCorrect());
+}
+
+void hexadokuPerformanceTest() {
+	Sudoku<16> sudoku = sampleHexadoku();
+	SudokuSolver<16> solver(sudoku);
+	int start = clock();
+	Sudoku<16> solution = solver.getSolution();
+	int end = clock();
+	std::cout << "it took " << end - start << "ticks, or "
+			<< ((float)end - start)/CLOCKS_PER_SEC
+			<< "seconds." << std::endl;
+	ASSERT_EQUAL(true, solution.isCorrect());
 }
 
 void runAllTests(int argc, char const *argv[]){
@@ -218,6 +304,11 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(isCorrectTest));
 	s.push_back(CUTE(isCorrectTest2));
 	s.push_back(CUTE(isCorrectTest3));
+	s.push_back(CUTE(setterTest2));
+	s.push_back(CUTE(getterTest3));
+	s.push_back(CUTE(hexadokuTest));
+	s.push_back(CUTE(hexadokuSolverTest));
+	s.push_back(CUTE(hexadokuPerformanceTest));
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);
 	cute::makeRunner(lis,argc,argv)(s, "AllTests");
@@ -227,6 +318,3 @@ int main(int argc, char const *argv[]){
     runAllTests(argc,argv);
     return 0;
 }
-
-
-
