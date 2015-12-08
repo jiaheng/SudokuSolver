@@ -21,6 +21,7 @@ private:
 public:
 	Sudoku() {}
 	Sudoku(std::array<std::array<int,N>,N> const &arr);
+	Sudoku(std::string input);
 
 	std::string toString();
 	bool isSafe(int row, int col, int num);
