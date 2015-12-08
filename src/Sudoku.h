@@ -34,8 +34,9 @@ public:
 	int getCell(int row, int col){ return cells[row][col]; }
 
 	friend bool operator==(Sudoku &cSudoku1, Sudoku &cSudoku2) {
-		for (int i = 0; i < 9; i++)
-			for (int j = 0; j < 9; j++)
+		if (cSudoku1.size != cSudoku2.size) return false;
+		for (int i = 0; i < cSudoku1.size; i++)
+			for (int j = 0; j < cSudoku1.size; j++)
 				if (cSudoku1.cells[i][j] != cSudoku2.cells[i][j]) return false;
 		return true;
 	}

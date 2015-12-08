@@ -127,6 +127,42 @@ bool Sudoku<N>::cellIsEmpty(int row, int col) {
 }
 
 template<>
+inline bool Sudoku<9>::correctInSqr(int startRow, int startCol) {
+	int endRow { startRow + 3 },
+		endCol { startCol + 3 };
+	for (int val = 1; val <= size; val++) {
+		bool num_exist { false };
+		for (int i = startRow; i < endRow; i++)
+			for (int j = startCol; j < endCol; j++){
+				int check_val = cells[i][j];
+				if (check_val <= 0 || check_val > size) return false;
+				if (check_val == val) num_exist = true;
+				if (num_exist) break;
+			}
+		if (num_exist) break;
+	}
+	return true;
+}
+
+template<>
+inline bool Sudoku<16>::correctInSqr(int startRow, int startCol) {
+	int endRow { startRow + 4 },
+		endCol { startCol + 4 };
+	for (int val = 1; val <= size; val++) {
+		bool num_exist { false };
+		for (int i = startRow; i < endRow; i++)
+			for (int j = startCol; j < endCol; j++){
+				int check_val = cells[i][j];
+				if (check_val <= 0 || check_val > size) return false;
+				if (check_val == val) num_exist = true;
+				if (num_exist) break;
+			}
+		if (num_exist) break;
+	}
+	return true;
+}
+
+template<>
 inline bool Sudoku<9>::isCorrect() {
 	for (int i = 0; i < 9; i++) {
 		if (!correctInRow(i) || !correctInCol(i)) return false;
@@ -170,17 +206,6 @@ bool Sudoku<N>::correctInCol(int col) {
 			int check_val = cells[i][col];
 			if (check_val <= 0 || check_val > size) return false;
 			if (check_val == val) break;
-		}
-	return true;
-}
-
-template<size_t N>
-bool Sudoku<N>::correctInSqr(int startRow, int startCol) {
-	int endRow { startRow + 3 },
-		endCol { startCol + 3 };
-	for (int i = startRow; i < endRow; i++)
-		for (int j = startCol; j < endCol; j++){
-			//TODO: incomplete check
 		}
 	return true;
 }
