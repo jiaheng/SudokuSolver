@@ -214,6 +214,7 @@ void solverTest() {
 	Sudoku<9> solution = solver.getSolution();
 	std::cout << "\nAfter:\n";
 	std::cout << solution.toString();
+	ASSERT_EQUAL(true, solution.isCorrect());
 }
 
 void performanceTest() {
@@ -282,6 +283,77 @@ void hexadokuPerformanceTest() {
 	ASSERT_EQUAL(true, solution.isCorrect());
 }
 
+void hexadokuFromStringTest() {
+	std::string input { ".63B.EC..A..8....847..A6..B....9.....81.D.G...7E.......7..98...CF.D.....AC..2.......D.....E1..5.CE......6...GF.31A.9...B8G7.4..D2.E...45....69.F.7......E..A...5..94..6......D.....63..F79.5...A....E6.D.1...2.8...3G.FA56.......D.C...9...B1.6..2..B.5C9.....34" };
+	Sudoku<16> hexadoku(input);
+	std::cout << hexadoku.toString();
+	ASSERT_EQUAL(true, hexadoku.isIncomplete());
+	ASSERT_EQUAL(false, hexadoku.isComplete());
+	ASSERT_EQUAL(false, hexadoku.isCorrect());
+	ASSERT_EQUAL(0, hexadoku.getCell(0,0));
+	ASSERT_EQUAL(6, hexadoku.getCell(0,1));
+	ASSERT_EQUAL(11, hexadoku.getCell(0,3));
+	ASSERT_EQUAL(4, hexadoku.getCell(15,15));
+}
+
+void SudokuBatchSolveTest() {
+	std::ifstream infile("puzzle9");
+	ASSERT_EQUALM("FILE NOT EXIST", true, infile.good());
+	std::string line { };
+	std::vector<Sudoku<9>> puzzles { };
+	while (std::getline(infile, line)) {
+		// read file line by line
+	    std::istringstream iss(line);
+	    puzzles.push_back(Sudoku<9>(line));
+	}
+	int index {1};
+	int time {0};
+	for (auto &hexadoku: puzzles) {
+		std::cout << "Solving puzzle #" << index << "..." << std::endl;
+		SudokuSolver<9> solver(hexadoku);
+		int start = clock();
+		Sudoku<9> solution = solver.getSolution();
+		int end = clock();
+		time += end - start;
+		std::string msg {"Solution for puzzle #"};
+		msg += index;
+		msg += " is not correct.";
+		ASSERT_EQUALM(msg, true, solution.isCorrect());
+		index++;
+	}
+	std::cout << "it took " << time << "ticks, or "
+				<< ((float)time)/CLOCKS_PER_SEC
+				<< "seconds to solve all 1465 9x9 sudoku." << std::endl;
+}
+
+void hexadokuBatchSolveTest() {
+	std::ifstream infile("puzzle16");
+	ASSERT_EQUALM("FILE NOT EXIST", true, infile.good());
+	std::string line { };
+	std::vector<Sudoku<16>> puzzles { };
+	while (std::getline(infile, line)) {
+		// read file line by line
+	    std::istringstream iss(line);
+	    puzzles.push_back(Sudoku<16>(line));
+	}
+	int index {1};
+	for (auto &hexadoku: puzzles) {
+		std::cout << "Solving puzzle #" << index << "..." << std::endl;
+		std::cout << hexadoku.toString() << std::endl;
+		SudokuSolver<16> solver(hexadoku);
+		Sudoku<16> solution = solver.getSolution();
+		std::string msg {"Solution for puzzle #"};
+		msg += index;
+		msg += " is not correct.";
+		ASSERT_EQUALM(msg, true, solution.isCorrect());
+		index++;
+	}
+}
+
+void hexadokuPerformanceBatchTest() {
+
+}
+
 void runAllTests(int argc, char const *argv[]){
 	cute::suite s;
 	//TODO add your test here
@@ -309,6 +381,9 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(hexadokuTest));
 	s.push_back(CUTE(hexadokuSolverTest));
 	s.push_back(CUTE(hexadokuPerformanceTest));
+	s.push_back(CUTE(hexadokuFromStringTest));
+	//s.push_back(CUTE(hexadokuBatchSolveTest));
+	s.push_back(CUTE(SudokuBatchSolveTest));
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);
 	cute::makeRunner(lis,argc,argv)(s, "AllTests");
