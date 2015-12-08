@@ -8,6 +8,7 @@
 #ifndef SRC_SUDOKUSOLVER_H_
 #define SRC_SUDOKUSOLVER_H_
 
+#include <atomic>
 #include "Sudoku.h"
 
 template<size_t N>
@@ -16,6 +17,8 @@ class SudokuSolver
 private:
 	Sudoku<N> m_puzzle;
 	int size = static_cast<int>(N);
+	std::atomic<bool> isSolve { false };
+	std::atomic<int> numThread { 0 };
 
 	SudokuSolver() {} // private default constructor
 
@@ -26,7 +29,8 @@ public:
 	Sudoku<N> getSolution();
 
 private:
-	void solve(int row, int col);
+	void solve(int row, int col, Sudoku<N>& puzzle);
+	void newThreadSolve(int row, int col, Sudoku<N> puzzle);
 };
 
 #include "SudokuSolver.cpp"

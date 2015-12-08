@@ -9,35 +9,71 @@
 #define SRC_SIMPLESUDOKUSOLVER_CPP_
 
 #include "SudokuSolver.h"
+#include <thread>
+#include <iostream>
+#include <vector>
 
 template<size_t N>
 Sudoku<N> SudokuSolver<N>::getSolution() {
-	solve(0,0);
+	std::thread t1(&SudokuSolver::newThreadSolve, this, 0, 0, m_puzzle);
+	t1.join();
 	return m_puzzle;
 }
 
 template<size_t N>
-void SudokuSolver<N>::solve(int row, int col) {
+void SudokuSolver<N>::solve(int row, int col, Sudoku<N>& puzzle) {
 	// base case
-	if (m_puzzle.isComplete() || row >= size) return;
+	if (row >= size) {
+		isSolve = puzzle.isCorrect();
+		m_puzzle = Sudoku<N>(puzzle);
+		return;
+	}
 
-	if (m_puzzle.cellIsEmpty(row, col)) {
+	// exit when solved
+	if (isSolve) return;
+
+	int nextRow { row }, nextCol { col };
+	if (col >= size-1) {
+		nextRow++;
+		nextCol = 0;
+	} else
+		nextCol++;
+
+	if (puzzle.cellIsEmpty(row, col)) {
+		std::vector<std::thread> threads { };
 		for (int i = 1; i <= size; i++) {
-			if (m_puzzle.isSafe(row, col, i)) {
-				m_puzzle.setCell(row,col, i);
-				// solve next cell
-				if (col >= size-1) solve(row+1, 0);
-				else solve(row, col+1);
-				//return if solve(ie complete)
-				if (m_puzzle.isComplete()) return;
-				else m_puzzle.setCell(row, col, 0);
+			if (puzzle.isSafe(row, col, i)) {
+				puzzle.setCell(row,col, i);
+				if (numThread < 8) {
+					// create new thread to solve
+					threads.push_back(std::thread(&SudokuSolver::newThreadSolve, this, nextRow, nextCol, puzzle));
+				} else {
+					solve(nextRow, nextCol, puzzle);
+					if (isSolve) {
+						// wait all thread to finish
+						for(auto& thread : threads){
+							thread.join();
+						}
+						return;
+					}
+				}
+				puzzle.setCell(row, col, 0);
 			}
 		}
+		// wait all thread to finish
+		for(auto& thread : threads){
+			thread.join();
+		}
 	} else {
-		// solver next cell
-		if (col >= size-1) solve(row+1, 0);
-		else solve(row, col+1);
+		solve(nextRow, nextCol, puzzle);
 	}
+}
+
+template<size_t N>
+void SudokuSolver<N>::newThreadSolve(int row, int col, Sudoku<N> puzzle) {
+	numThread++;
+	solve(row, col, puzzle);
+	numThread--;
 }
 
 #endif /* SRC_SIMPLESUDOKUSOLVER_CPP_ */
