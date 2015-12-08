@@ -307,14 +307,14 @@ void SudokuBatchSolveTest() {
 	    puzzles.push_back(Sudoku<9>(line));
 	}
 	int index {1};
-	int time {0};
+	unsigned int time {0};
 	for (auto &hexadoku: puzzles) {
-		std::cout << "Solving puzzle #" << index << "..." << std::endl;
+		std::cout << "Solving 9x9 puzzle #" << index << "..." << std::endl;
 		SudokuSolver<9> solver(hexadoku);
-		int start = clock();
+		clock_t start = clock();
 		Sudoku<9> solution = solver.getSolution();
-		int end = clock();
-		time += end - start;
+		clock_t end = clock();
+		time += static_cast<unsigned int>(end - start);
 		std::string msg {"Solution for puzzle #"};
 		msg += index;
 		msg += " is not correct.";
@@ -333,21 +333,27 @@ void hexadokuBatchSolveTest() {
 	std::vector<Sudoku<16>> puzzles { };
 	while (std::getline(infile, line)) {
 		// read file line by line
-	    std::istringstream iss(line);
-	    puzzles.push_back(Sudoku<16>(line));
+		std::istringstream iss(line);
+		puzzles.push_back(Sudoku<16>(line));
 	}
 	int index {1};
+	unsigned int time {0};
 	for (auto &hexadoku: puzzles) {
-		std::cout << "Solving puzzle #" << index << "..." << std::endl;
-		std::cout << hexadoku.toString() << std::endl;
+		std::cout << "Solving 16x16 puzzle #" << index << "..." << std::endl;
 		SudokuSolver<16> solver(hexadoku);
+		clock_t start = clock();
 		Sudoku<16> solution = solver.getSolution();
+		clock_t end = clock();
+		time += static_cast<unsigned int>(end - start);
 		std::string msg {"Solution for puzzle #"};
 		msg += index;
 		msg += " is not correct.";
 		ASSERT_EQUALM(msg, true, solution.isCorrect());
 		index++;
 	}
+	std::cout << "it took " << time << "ticks, or "
+				<< ((float)time)/CLOCKS_PER_SEC
+				<< "seconds to solve all 44 16x16 sudoku." << std::endl;
 }
 
 void hexadokuPerformanceBatchTest() {
@@ -382,8 +388,8 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(hexadokuSolverTest));
 	s.push_back(CUTE(hexadokuPerformanceTest));
 	s.push_back(CUTE(hexadokuFromStringTest));
-	//s.push_back(CUTE(hexadokuBatchSolveTest));
 	s.push_back(CUTE(SudokuBatchSolveTest));
+	s.push_back(CUTE(hexadokuBatchSolveTest));
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);
 	cute::makeRunner(lis,argc,argv)(s, "AllTests");
