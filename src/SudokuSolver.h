@@ -29,6 +29,6 @@ private:
 	void solve(int row, int col);
 };
 
-#include "SimpleSudokuSolver.cpp"
+#include "SudokuSolver.cpp"
 
 #endif /* SRC_SUDOKUSOLVER_H_ */
