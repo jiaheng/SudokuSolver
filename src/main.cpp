@@ -52,6 +52,7 @@ int main(int argc, char* argv[]) {
 			output = args[++i];
 		}
 	}
+	verbose = verbose || !write;
 
 	std::ifstream infile(input);
 	if (!infile.good()) {
