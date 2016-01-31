@@ -117,6 +117,18 @@ inline std::string Sudoku<16>::toString()
 }
 
 template<size_t N>
+std::string Sudoku<N>::toSimpleString() {
+	std::string string { "" };
+	for (int row = 0; row < size; row++) {
+		for (int col = 0; col < size; col++) {
+			if (cells[row][col] == 0) string += ".";
+			else string += std::to_string(cells[row][col]);
+		}
+	}
+	return string;
+}
+
+template<size_t N>
 bool Sudoku<N>::isIncomplete() {
 	for (const auto &row : cells) {
 		for (const auto &val : row)

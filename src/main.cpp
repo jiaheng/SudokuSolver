@@ -32,11 +32,28 @@
 #include "SudokuSolver.hpp"
 
 int main(int argc, char* argv[]) {
-	std::cout << "argc = " << argc << std::endl;
-	for(int i = 0; i < argc; i++)
-		std::cout << "argv[" << i << "] = " << argv[i] << std::endl;
+	bool verbose { false };
+	bool write { false };
+	std::string input { };
+	std::string output { };
 
-	std::ifstream infile("sample");
+	// handle arguments
+	std::vector<std::string> args(argv, argv+argc);
+	input = args[1];
+	for (size_t i = 2; i < args.size(); ++i) {
+		if (args[i] == "-v") verbose = true;
+		else if (args[i] == "-o") {
+			write = true;
+			// if there is no other argument after -o
+			if (i+1 == args.size()) {
+				std::cout << "Please specify the output file name." << std::endl;
+				return 0;
+			}
+			output = args[++i];
+		}
+	}
+
+	std::ifstream infile(input);
 	if (!infile.good()) {
 		std::cout << "File does not exists! Exiting program" << std::endl;
 		return 0;
@@ -54,16 +71,27 @@ int main(int argc, char* argv[]) {
 	unsigned int time {0};
 	for (auto &sudoku: puzzles) {
 		std::cout << "Solving 9x9 puzzle #" << ++index << "..." << std::endl;
-		std::cout << sudoku.toString() << std::endl << std::endl;
+		if (verbose)
+			std::cout << sudoku.toString() << std::endl;
 		SudokuSolver<9> solver(sudoku);
 		clock_t start = clock();
 		Sudoku<9> solution = solver.getSolution();
-		std::cout << "Solution: " << std::endl << solution.toString() << std::endl;
+		std::cout << "Done!!!" << std::endl;
+		if (verbose)
+			std::cout << "Solution: for puzzle #" << index << std::endl << solution.toString() << std::endl;
 		clock_t end = clock();
 		time += static_cast<unsigned int>(end - start);
-		std::string msg {"Solution for puzzle #"};
-		msg += index;
-		msg += " is not correct.";
+		if (write) {
+			std::ofstream ofile (output);
+			if (ofile.is_open()) {
+				ofile << solution.toSimpleString();
+				ofile.close();
+			}
+			else {
+				std::cout << "Unable to open file";
+				write = false;
+			}
+		}
 	}
 	std::cout << "it took " << time << "ticks, or "
 				<< ((float)time)/CLOCKS_PER_SEC

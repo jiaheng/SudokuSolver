@@ -24,6 +24,7 @@ public:
 	Sudoku(std::string input);
 
 	std::string toString();
+	std::string toSimpleString();
 	bool isSafe(int row, int col, int num);
 	bool isIncomplete();
 	bool isComplete();
