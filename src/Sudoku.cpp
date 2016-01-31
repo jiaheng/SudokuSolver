@@ -32,9 +32,10 @@
 #ifndef SRC_SUDOKU_CPP_
 #define SRC_SUDOKU_CPP_
 
+#include "Sudoku.hpp"
+
 #include <array>
 #include <string>
-#include "Sudoku.h"
 
 template<size_t N>
 Sudoku<N>::Sudoku(std::array<std::array<int,N>,N> const &arr) {

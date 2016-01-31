@@ -32,7 +32,7 @@
 #ifndef SRC_SIMPLESUDOKUSOLVER_CPP_
 #define SRC_SIMPLESUDOKUSOLVER_CPP_
 
-#include "SudokuSolver.h"
+#include "SudokuSolver.hpp"
 
 template<size_t N>
 Sudoku<N> SudokuSolver<N>::getSolution() {

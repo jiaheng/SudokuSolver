@@ -26,8 +26,9 @@
 #include "ide_listener.h"
 #include "xml_listener.h"
 #include "cute_runner.h"
-#include "Sudoku.h"
-#include "SudokuSolver.h"
+
+#include "Sudoku.hpp"
+#include "SudokuSolver.hpp"
 
 Sudoku<9> sampleSudoku() {
 	std::array<std::array<int,9>,9> inputs {{
@@ -412,8 +413,8 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(hexadokuSolverTest));
 	s.push_back(CUTE(hexadokuPerformanceTest));
 	s.push_back(CUTE(hexadokuFromStringTest));
-	s.push_back(CUTE(SudokuBatchSolveTest));
-	s.push_back(CUTE(hexadokuBatchSolveTest));
+//	s.push_back(CUTE(SudokuBatchSolveTest));
+//	s.push_back(CUTE(hexadokuBatchSolveTest));
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);
 	cute::makeRunner(lis,argc,argv)(s, "AllTests");
