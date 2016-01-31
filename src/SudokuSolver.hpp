@@ -5,10 +5,10 @@
  *      Author: jiaheng
  */
 
-#ifndef SRC_SUDOKUSOLVER_H_
-#define SRC_SUDOKUSOLVER_H_
+#ifndef SRC_SUDOKUSOLVER_HPP_
+#define SRC_SUDOKUSOLVER_HPP_
 
-#include "Sudoku.h"
+#include "Sudoku.hpp"
 
 template<size_t N>
 class SudokuSolver
@@ -31,4 +31,4 @@ private:
 
 #include "SudokuSolver.cpp"
 
-#endif /* SRC_SUDOKUSOLVER_H_ */
+#endif /* SRC_SUDOKUSOLVER_HPP_ */

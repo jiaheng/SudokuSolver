@@ -5,8 +5,8 @@
  *      Author: jiaheng
  */
 
-#ifndef SRC_SUDOKU_H_
-#define SRC_SUDOKU_H_
+#ifndef SRC_SUDOKU_HPP_
+#define SRC_SUDOKU_HPP_
 
 #include <array>
 #include <string>
@@ -53,4 +53,4 @@ private:
 
 #include "Sudoku.cpp"
 
-#endif /* SRC_SUDOKU_H_ */
+#endif /* SRC_SUDOKU_HPP_ */
