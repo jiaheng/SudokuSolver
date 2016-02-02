@@ -97,6 +97,14 @@ Sudoku& Sudoku::operator=(const Sudoku &rhs) {
 	return *this;
 }
 
+bool Sudoku::operator==(Sudoku &rhs) {
+	if (size != rhs.size) return false;
+	for (int i = 0; i < size; i++)
+		for (int j = 0; j < size; j++)
+			if (cells[i][j] != rhs.cells[i][j]) return false;
+	return true;
+}
+
 void Sudoku::initCells() {
 	cells = new int*[size] { };
 	for (int i = 0; i < size; i++)

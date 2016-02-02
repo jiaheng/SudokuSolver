@@ -40,13 +40,7 @@ public:
 
 	Sudoku& operator=(const Sudoku &rhs);
 
-	friend bool operator==(Sudoku &cSudoku1, Sudoku &cSudoku2) {
-		if (cSudoku1.size != cSudoku2.size) return false;
-		for (int i = 0; i < cSudoku1.size; i++)
-			for (int j = 0; j < cSudoku1.size; j++)
-				if (cSudoku1.cells[i][j] != cSudoku2.cells[i][j]) return false;
-		return true;
-	}
+	bool operator==(Sudoku &rhs);
 
 private:
 	bool safeInRow(int row, int num);
