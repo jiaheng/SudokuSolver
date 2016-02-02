@@ -10,25 +10,22 @@
 
 #include "Sudoku.hpp"
 
-template<size_t N>
 class SudokuSolver
 {
 private:
-	Sudoku<N> m_puzzle;
-	int size = static_cast<int>(N);
+	Sudoku m_puzzle;
+	int m_size { };
 
 	SudokuSolver() {} // private default constructor
 
 public:
-	SudokuSolver(Sudoku<N> puzzle) { m_puzzle = Sudoku<N>(puzzle); }
-	SudokuSolver(std::array<int, N> const &arr) { m_puzzle = Sudoku<N>(arr); }
+	SudokuSolver(Sudoku puzzle);
+	SudokuSolver(int **const arr, int size);
 
-	Sudoku<N> getSolution();
+	Sudoku getSolution();
 
 private:
 	void solve(int row, int col);
 };
-
-#include "SudokuSolver.cpp"
 
 #endif /* SRC_SUDOKUSOLVER_HPP_ */

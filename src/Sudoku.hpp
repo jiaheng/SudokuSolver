@@ -11,17 +11,18 @@
 #include <array>
 #include <string>
 
-template<size_t N>
-class Sudoku
-{
+class Sudoku {
 private:
-	std::array<std::array<int, N>, N> cells {};
-	int size = static_cast<int>(N);
+	int** cells { NULL };
+	int size { };
+	int sqr_size { };
 
 public:
 	Sudoku() {}
-	Sudoku(std::array<std::array<int,N>,N> const &arr);
+	Sudoku(int **const arr, int size);
 	Sudoku(std::string input);
+	Sudoku(const Sudoku &other);
+	~Sudoku();
 
 	std::string toString();
 	std::string toSimpleString();
@@ -31,9 +32,13 @@ public:
 	bool isCorrect();
 	bool cellIsEmpty(int row, int col);
 
+	int getSize() { return size; }
+
 	void setCell(int row, int col, int val) { cells[row][col] = val; }
 
 	int getCell(int row, int col){ return cells[row][col]; }
+
+	Sudoku& operator=(const Sudoku &rhs);
 
 	friend bool operator==(Sudoku &cSudoku1, Sudoku &cSudoku2) {
 		if (cSudoku1.size != cSudoku2.size) return false;
@@ -50,8 +55,13 @@ private:
 	bool correctInRow(int row);
 	bool correctInCol(int col);
 	bool correctInSqr(int startRow, int StartCol);
-};
 
-#include "Sudoku.cpp"
+	void initCells();
+	void fillSudokuCell(std::string &input);
+	void fillHexadokuCell(std::string &input);
+	std::string sudokuToString();
+	std::string hexadokuToString();
+	void rtrim(std::string &s, char c);
+};
 
 #endif /* SRC_SUDOKU_HPP_ */

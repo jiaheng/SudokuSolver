@@ -29,28 +29,34 @@
  *      Author: jiaheng
  */
 
-#ifndef SRC_SIMPLESUDOKUSOLVER_CPP_
-#define SRC_SIMPLESUDOKUSOLVER_CPP_
-
 #include "SudokuSolver.hpp"
 
-template<size_t N>
-Sudoku<N> SudokuSolver<N>::getSolution() {
+SudokuSolver::SudokuSolver(Sudoku puzzle) {
+	m_puzzle = Sudoku(puzzle);
+	m_size = m_puzzle.getSize();
+}
+
+SudokuSolver::SudokuSolver(int **const arr, int size) {
+	m_puzzle = Sudoku(arr, size);
+	m_size = m_puzzle.getSize();
+}
+
+Sudoku SudokuSolver::getSolution() {
 	solve(0,0);
 	return m_puzzle;
 }
 
-template<size_t N>
-void SudokuSolver<N>::solve(int row, int col) {
+void SudokuSolver::solve(int row, int col) {
 	// base case
-	if (m_puzzle.isComplete() || row >= size) return;
+	if (m_puzzle.isComplete() || row >= m_size)
+		return;
 
 	if (m_puzzle.cellIsEmpty(row, col)) {
-		for (int i = 1; i <= size; i++) {
+		for (int i = 1; i <= m_size; i++) {
 			if (m_puzzle.isSafe(row, col, i)) {
 				m_puzzle.setCell(row,col, i);
 				// solve next cell
-				if (col >= size-1) solve(row+1, 0);
+				if (col >= m_size-1) solve(row+1, 0);
 				else solve(row, col+1);
 				//return if solve(ie complete)
 				if (m_puzzle.isComplete()) return;
@@ -59,9 +65,7 @@ void SudokuSolver<N>::solve(int row, int col) {
 		}
 	} else {
 		// solver next cell
-		if (col >= size-1) solve(row+1, 0);
+		if (col >= m_size-1) solve(row+1, 0);
 		else solve(row, col+1);
 	}
 }
-
-#endif /* SRC_SIMPLESUDOKUSOLVER_CPP_ */

@@ -62,11 +62,11 @@ int main(int argc, char* argv[]) {
 
 	// reading 9x9 sudoku
 	std::string line { };
-	std::vector<Sudoku<9>> puzzles { };
+	std::vector<Sudoku> puzzles { };
 	while (std::getline(infile, line)) {
 		// read file line by line
 		std::istringstream iss(line);
-		puzzles.push_back(Sudoku<9>(line));
+		puzzles.push_back(Sudoku(line));
 	}
 	int index {0};
 	unsigned int time {0};
@@ -74,9 +74,9 @@ int main(int argc, char* argv[]) {
 		std::cout << "Solving 9x9 puzzle #" << ++index << "..." << std::endl;
 		if (verbose)
 			std::cout << sudoku.toString() << std::endl;
-		SudokuSolver<9> solver(sudoku);
+		SudokuSolver solver(sudoku);
 		clock_t start = clock();
-		Sudoku<9> solution = solver.getSolution();
+		Sudoku solution = solver.getSolution();
 		std::cout << "Done!!!" << std::endl;
 		if (verbose)
 			std::cout << "Solution: for puzzle #" << index << std::endl << solution.toString() << std::endl;
