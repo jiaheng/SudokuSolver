@@ -5,42 +5,42 @@
  *      Author: jiaheng
  */
 
-#ifndef SRC_SUDOKU_H_
-#define SRC_SUDOKU_H_
+#ifndef SRC_SUDOKU_HPP_
+#define SRC_SUDOKU_HPP_
 
 #include <array>
 #include <string>
 
-template<size_t N>
-class Sudoku
-{
+class Sudoku {
 private:
-	std::array<std::array<int, N>, N> cells {};
-	int size = static_cast<int>(N);
+	int** cells { NULL };
+	int size { };
+	int sqr_size { };
 
 public:
 	Sudoku() {}
-	Sudoku(std::array<std::array<int,N>,N> const &arr);
+	Sudoku(int **const arr, int size);
 	Sudoku(std::string input);
+	Sudoku(const Sudoku &other);
+	~Sudoku();
 
 	std::string toString();
+	std::string toSimpleString();
 	bool isSafe(int row, int col, int num);
 	bool isIncomplete();
 	bool isComplete();
 	bool isCorrect();
 	bool cellIsEmpty(int row, int col);
 
+	int getSize() { return size; }
+
 	void setCell(int row, int col, int val) { cells[row][col] = val; }
 
 	int getCell(int row, int col){ return cells[row][col]; }
 
-	friend bool operator==(Sudoku &cSudoku1, Sudoku &cSudoku2) {
-		if (cSudoku1.size != cSudoku2.size) return false;
-		for (int i = 0; i < cSudoku1.size; i++)
-			for (int j = 0; j < cSudoku1.size; j++)
-				if (cSudoku1.cells[i][j] != cSudoku2.cells[i][j]) return false;
-		return true;
-	}
+	Sudoku& operator=(const Sudoku &rhs);
+
+	bool operator==(Sudoku &rhs);
 
 private:
 	bool safeInRow(int row, int num);
@@ -49,8 +49,13 @@ private:
 	bool correctInRow(int row);
 	bool correctInCol(int col);
 	bool correctInSqr(int startRow, int StartCol);
+
+	void initCells();
+	void fillSudokuCell(std::string &input);
+	void fillHexadokuCell(std::string &input);
+	std::string sudokuToString();
+	std::string hexadokuToString();
+	void rtrim(std::string &s, char c);
 };
 
-#include "Sudoku.cpp"
-
-#endif /* SRC_SUDOKU_H_ */
+#endif /* SRC_SUDOKU_HPP_ */

@@ -29,16 +29,22 @@
  *      Author: jiaheng
  */
 
-#ifndef SRC_SIMPLESUDOKUSOLVER_CPP_
-#define SRC_SIMPLESUDOKUSOLVER_CPP_
+#include "SudokuSolver.hpp"
 
-#include "SudokuSolver.h"
+SudokuSolver::SudokuSolver(Sudoku puzzle) {
+	m_puzzle = Sudoku(puzzle);
+	m_size = m_puzzle.getSize();
+}
+
+SudokuSolver::SudokuSolver(int **const arr, int size) {
+	m_puzzle = Sudoku(arr, size);
+	m_size = m_puzzle.getSize();
+}
 #include <thread>
 #include <iostream>
 #include <vector>
 
-template<size_t N>
-Sudoku<N> SudokuSolver<N>::getSolution() {
+Sudoku SudokuSolver::getSolution() {
 	std::thread t1(&SudokuSolver::newThreadSolve, this, 0, 0, m_puzzle);
 	t1.join();
 	return m_puzzle;
@@ -65,7 +71,7 @@ void SudokuSolver<N>::solve(int row, int col, Sudoku<N>& puzzle) {
 
 	if (puzzle.cellIsEmpty(row, col)) {
 		std::vector<std::thread> threads { };
-		for (int i = 1; i <= size; i++) {
+		for (int i = 1; i <= m_size; i++) {
 			if (puzzle.isSafe(row, col, i)) {
 				puzzle.setCell(row,col, i);
 				if (numThread < 8) {
