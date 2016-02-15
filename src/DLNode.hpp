@@ -10,11 +10,10 @@
 
 class DLNode {
 public:
-	DLNode(); // header
-	DLNode(DLNode *leftHeader);
+	DLNode();
 	~DLNode();
 	DLNode *left, *right, *up, *down, *column_node;
-	int row, col;
+	int row{}, col{};
 };
 
 #endif /* SRC_DLNODE_HPP_ */

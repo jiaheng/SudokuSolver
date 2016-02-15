@@ -32,9 +32,7 @@
 #include "DLNode.hpp"
 
 DLNode::DLNode() {
-	up = nullptr;
-	down = nullptr;
-
+	left = right = up = down = column_node = nullptr;
 }
 
 DLNode::~DLNode() {

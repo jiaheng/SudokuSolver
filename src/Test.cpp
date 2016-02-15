@@ -29,6 +29,7 @@
 
 #include "SudokuSolver_test.hpp"
 #include "Sudoku_test.hpp"
+#include "DLX_test.hpp"
 
 void runAllTests(int argc, char const *argv[]){
 	cute::suite s;
@@ -38,6 +39,7 @@ void runAllTests(int argc, char const *argv[]){
 	//cute::makeRunner(lis,argc,argv)(s, "AllTests");
 	cute::makeRunner(lis,argc,argv)(Sudoku_test::make_suite(), "Sudoku Test");
 	cute::makeRunner(lis,argc,argv)(SudokuSolver_test::make_suite(), "Sudoku Solver Test");
+	cute::makeRunner(lis,argc,argv)(make_suite_DLX_test(), "DLX Test");
 }
 
 int main(int argc, char const *argv[]){
