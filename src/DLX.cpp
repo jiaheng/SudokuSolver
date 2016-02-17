@@ -29,6 +29,8 @@
  *      Author: jiaheng
  */
 
+#include <iostream>
+
 #include "DLX.hpp"
 
 DLX::DLX(std::vector<std::vector <int>> matrix) {
@@ -37,56 +39,57 @@ DLX::DLX(std::vector<std::vector <int>> matrix) {
 	std::vector<DLNode*> temp_col_ptr { };
 	std::vector<DLNode*> head_col_ptr { };
 	DLNode *node_ptr = head;
+	// create column node
 	for (int i = 0; i < col_size; ++i) {
-		DLNode *node = new DLNode{ };
-		node_ptr->right = node;
-		node->left = node_ptr;
+		auto *node = new DLNode{ };
+		node_ptr->setRight(node);
+		node->setLeft(node_ptr);
+		node->setColumnNode(node);
 		node_ptr = node;
 		temp_col_ptr.push_back(node);
 		head_col_ptr.push_back(node);
 	}
-	node_ptr->right = head;
-	head->left = node_ptr;
+	node_ptr->setRight(head);
+	head->setLeft(node_ptr);
+
+	// create nodes for matrix
 	const int row_size = matrix.size();
 	for (int i = 0; i < row_size; ++i) {
-		DLNode *temp_row_ptr{nullptr}, *head_row_ptr{nullptr};
+		DLNode *temp_row_ptr{nullptr},
+				*head_row_ptr{nullptr};
 		for (int j = 0; j < col_size; ++j) {
 			if (matrix[i][j] == 1) {
-				DLNode *node = new DLNode{ };
-				node->row = i;
-				node->col = j;
-				node->column_node = head_col_ptr[j];
-				temp_col_ptr[j]->down = node;
-				node->up = temp_col_ptr[j];
+				auto *node = new DLNode { i, j };
+				node->setColumnNode(head_col_ptr[j]);
+				temp_col_ptr[j]->setDown(node);
+				node->setUp(temp_col_ptr[j]);
 				temp_col_ptr[j] = node;
 				if (temp_row_ptr) {
-					temp_row_ptr->right = node;
-					node->left = temp_row_ptr;
+					temp_row_ptr->setRight(node);
+					node->setLeft(temp_row_ptr);
 					temp_row_ptr = node;
 				} else
 					temp_row_ptr = head_row_ptr = node;
 			}
 		}
-		temp_row_ptr->right = head_row_ptr;
-		head_row_ptr->left = temp_row_ptr;
+		temp_row_ptr->setRight(head_row_ptr);
+		head_row_ptr->setLeft(temp_row_ptr);
 	}
 	for (int i = 0; i < col_size; ++i) {
-		temp_col_ptr[i]->down = head_col_ptr[i];
-		head_col_ptr[i]->up = temp_col_ptr[i];
+		temp_col_ptr[i]->setDown(head_col_ptr[i]);
+		head_col_ptr[i]->setUp(temp_col_ptr[i]);
 	}
 }
 
 DLX::~DLX() {
-	while (head->right != head) {
-		DLNode *col_node = head->right;
-		while (col_node->down != col_node) {
-			DLNode *node = col_node->down;
-			node->up->down = node->down;
-			node->down->up = node->up;
+	while (head->getRight() != head) {
+		DLNode *col_node = head->getRight();
+		while (col_node->getDown() != col_node) {
+			DLNode *node = col_node->getDown();
+			node->vRemove();
 			delete node;
 		}
-		col_node->left->right = col_node->right;
-		col_node->right->left = col_node->left;
+		col_node->hRemove();
 		delete col_node;
 	}
 	delete head;
@@ -94,14 +97,64 @@ DLX::~DLX() {
 
 std::string DLX::toString() {
 	std::string str { };
-	DLNode *col_ptr = head->right;
+	std::vector<std::vector<int>> matrix { };
+	int max_row { 0 }, max_col { 0 };
+	DLNode *col_ptr = head->getRight();
 	while (col_ptr != head) {
-		DLNode *node = col_ptr->down;
+		DLNode *node = col_ptr->getDown();
 		while (node != col_ptr) {
-			str += "(" + std::to_string(node->row) + ", " + std::to_string(node->col) + ")\n";
-			node = node->down;
+			int row = node->getRow();
+			int col = node->getCol();
+			if (max_row <= row) {
+				max_row = row + 1;
+				matrix.resize(max_row);
+			}
+			if (max_col <= col) max_col = col + 1;
+			matrix[row].resize(max_col);
+			matrix[row][col] = 1;
+			node = node->getDown();
 		}
-		col_ptr = col_ptr->right;
+		col_ptr = col_ptr->getRight();
+	}
+	for (auto row : matrix) {
+		row.resize(max_col);
+		for (auto cell : row) {
+			str += std::to_string(cell) + " ";
+		}
+		str += "\n";
 	}
 	return str;
+}
+
+void DLX::cover(DLNode *node) {
+	DLNode *column = node->getColumnNode();
+	column->hRemove();
+	for (auto *row = column->getDown(); row != column; row = row->getDown()) {
+		for (auto rightNode = row->getRight(); rightNode != row; rightNode = rightNode->getRight()) {
+			rightNode->vRemove();
+		}
+	}
+}
+
+void DLX::uncover(DLNode* node) {
+	DLNode *column = node->getColumnNode();
+	for (auto *row = column->getUp(); row != column; row = row->getUp()) {
+		for (auto leftNode = row->getLeft(); leftNode != row; leftNode = leftNode->getLeft()) {
+			leftNode->vRestore();
+		}
+	}
+	column->hRestore();
+}
+
+DLNode *DLX::chooseNextColumn() {
+	return head->getRight();
+}
+
+void DLX::testCover() {
+	testnode = head->getRight()->getRight();
+	cover(testnode);
+}
+
+void DLX::testUncover() {
+	if (testnode) uncover(testnode);
 }

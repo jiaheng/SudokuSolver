@@ -35,7 +35,80 @@ DLNode::DLNode() {
 	left = right = up = down = column_node = nullptr;
 }
 
+DLNode::DLNode(int i, int j) {
+	left = right = up = down = column_node = nullptr;
+	row = i;
+	col = j;
+}
+
 DLNode::~DLNode() {
 	// TODO Auto-generated destructor stub
 }
 
+int DLNode::getCol()  {
+	return col;
+}
+
+DLNode*& DLNode::getColumnNode() {
+	return column_node;
+}
+
+void DLNode::setColumnNode(DLNode*& columnNode) {
+	column_node = columnNode;
+}
+
+ DLNode*& DLNode::getDown()  {
+	return down;
+}
+
+void DLNode::setDown( DLNode*& down) {
+	this->down = down;
+}
+
+ DLNode*& DLNode::getLeft()  {
+	return left;
+}
+
+void DLNode::setLeft( DLNode*& left) {
+	this->left = left;
+}
+
+ DLNode*& DLNode::getRight()  {
+	return right;
+}
+
+void DLNode::setRight( DLNode*& right) {
+	this->right = right;
+}
+
+int DLNode::getRow()  {
+	return row;
+}
+
+ DLNode*& DLNode::getUp()  {
+	return up;
+}
+
+void DLNode::setUp(DLNode*& up) {
+	this->up = up;
+}
+
+void DLNode::hRemove() {
+	this->left->right = this->right;
+	this->right->left = this->left;
+}
+
+void DLNode::vRemove() {
+	this->down->up = this->up;
+	this->up->down = this->down;
+}
+
+void DLNode::hRestore() {
+	this->right->left = this;
+	this->left->right = this;
+}
+
+void DLNode::vRestore() {
+	this->up->down = this;
+	this->down->up = this;
+}
