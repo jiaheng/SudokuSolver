@@ -6,16 +6,22 @@
 CPP_SRCS += \
 ../src/Sudoku.cpp \
 ../src/SudokuSolver.cpp \
+../src/SudokuSolver_test.cpp \
+../src/Sudoku_test.cpp \
 ../src/Test.cpp 
 
 OBJS += \
 ./src/Sudoku.o \
 ./src/SudokuSolver.o \
+./src/SudokuSolver_test.o \
+./src/Sudoku_test.o \
 ./src/Test.o 
 
 CPP_DEPS += \
 ./src/Sudoku.d \
 ./src/SudokuSolver.d \
+./src/SudokuSolver_test.d \
+./src/Sudoku_test.d \
 ./src/Test.d 
 
 

@@ -29,6 +29,10 @@
  *      Author: jiaheng
  */
 
+#include <thread>
+#include <iostream>
+#include <vector>
+
 #include "SudokuSolver.hpp"
 
 SudokuSolver::SudokuSolver(Sudoku puzzle) {
@@ -36,13 +40,10 @@ SudokuSolver::SudokuSolver(Sudoku puzzle) {
 	m_size = m_puzzle.getSize();
 }
 
-SudokuSolver::SudokuSolver(int **const arr, int size) {
-	m_puzzle = Sudoku(arr, size);
+SudokuSolver::SudokuSolver(int **const arr, int m_size) {
+	m_puzzle = Sudoku(arr, m_size);
 	m_size = m_puzzle.getSize();
 }
-#include <thread>
-#include <iostream>
-#include <vector>
 
 Sudoku SudokuSolver::getSolution() {
 	std::thread t1(&SudokuSolver::newThreadSolve, this, 0, 0, m_puzzle);
@@ -50,12 +51,11 @@ Sudoku SudokuSolver::getSolution() {
 	return m_puzzle;
 }
 
-template<size_t N>
-void SudokuSolver<N>::solve(int row, int col, Sudoku<N>& puzzle) {
+void SudokuSolver::solve(int row, int col, Sudoku &puzzle) {
 	// base case
-	if (row >= size) {
+	if (row >= m_size) {
 		isSolve = puzzle.isCorrect();
-		m_puzzle = Sudoku<N>(puzzle);
+		m_puzzle = Sudoku(puzzle);
 		return;
 	}
 
@@ -63,7 +63,7 @@ void SudokuSolver<N>::solve(int row, int col, Sudoku<N>& puzzle) {
 	if (isSolve) return;
 
 	int nextRow { row }, nextCol { col };
-	if (col >= size-1) {
+	if (col >= m_size-1) {
 		nextRow++;
 		nextCol = 0;
 	} else
@@ -99,11 +99,8 @@ void SudokuSolver<N>::solve(int row, int col, Sudoku<N>& puzzle) {
 	}
 }
 
-template<size_t N>
-void SudokuSolver<N>::newThreadSolve(int row, int col, Sudoku<N> puzzle) {
+void SudokuSolver::newThreadSolve(int row, int col, Sudoku puzzle) {
 	numThread++;
 	solve(row, col, puzzle);
 	numThread--;
 }
-
-#endif /* SRC_SIMPLESUDOKUSOLVER_CPP_ */

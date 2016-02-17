@@ -28,7 +28,7 @@ public:
 	Sudoku getSolution();
 
 private:
-	void solve(int row, int col);
+	void solve(int row, int col, Sudoku &puzzle);
 	void newThreadSolve(int row, int col, Sudoku puzzle);
 };
 
