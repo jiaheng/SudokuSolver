@@ -3,7 +3,7 @@
 #include "cute.h"
 #include "Sudoku_test.h"
 
-void constructorTest() {
+void sudokuConstructorTest() {
 	int **inputs = new int*[9] { };
 	for (int i = 0; i < 9; ++i)
 		inputs[i] = new int[9] { };
@@ -327,7 +327,7 @@ Sudoku sampleHexadoku() {
 
 cute::suite make_suite_Sudoku_test(){
 	cute::suite s;
-	s.push_back(CUTE(constructorTest));
+	s.push_back(CUTE(sudokuConstructorTest));
 	s.push_back(CUTE(setterTest));
 	s.push_back(CUTE(setterTest2));
 	s.push_back(CUTE(getterTest));
