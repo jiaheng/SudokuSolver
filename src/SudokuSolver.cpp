@@ -35,9 +35,16 @@
 
 #include "SudokuSolver.hpp"
 
-SudokuSolver::SudokuSolver(Sudoku puzzle) {
+SudokuSolver::SudokuSolver(Sudoku puzzle) : SudokuSolver::SudokuSolver(puzzle, true) { }
+
+SudokuSolver::SudokuSolver(Sudoku puzzle, bool multi_thread) {
 	m_puzzle = Sudoku(puzzle);
 	m_size = m_puzzle.getSize();
+	multithread = multi_thread;
+	if (multithread) {
+		concurentThreadsSupported = std::thread::hardware_concurrency();
+		if (concurentThreadsSupported == 0) multithread = false;
+	}
 }
 
 SudokuSolver::SudokuSolver(int **const arr, int m_size) {
@@ -46,16 +53,23 @@ SudokuSolver::SudokuSolver(int **const arr, int m_size) {
 }
 
 Sudoku SudokuSolver::getSolution() {
-	std::thread t1(&SudokuSolver::newThreadSolve, this, 0, 0, m_puzzle);
-	t1.join();
+	if (multithread) {
+		std::thread t1(&SudokuSolver::newThreadSolve, this, 0, 0, m_puzzle);
+		t1.join();
+	} else {
+		solve(0, 0, m_puzzle);
+	}
 	return m_puzzle;
 }
 
 void SudokuSolver::solve(int row, int col, Sudoku &puzzle) {
 	// base case
 	if (row >= m_size) {
-		isSolve = puzzle.isCorrect();
-		m_puzzle = Sudoku(puzzle);
+		// check if solved
+		if (puzzle.isCorrect()) {
+			isSolve = true;
+			m_puzzle = Sudoku(puzzle);
+		}
 		return;
 	}
 
@@ -74,7 +88,7 @@ void SudokuSolver::solve(int row, int col, Sudoku &puzzle) {
 		for (int i = 1; i <= m_size; i++) {
 			if (puzzle.isSafe(row, col, i)) {
 				puzzle.setCell(row,col, i);
-				if (numThread < 8) {
+				if (multithread && (numThread < concurentThreadsSupported)) {
 					// create new thread to solve
 					threads.push_back(std::thread(&SudokuSolver::newThreadSolve, this, nextRow, nextCol, puzzle));
 				} else {

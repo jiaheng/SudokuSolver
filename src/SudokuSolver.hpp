@@ -17,12 +17,15 @@ private:
 	Sudoku m_puzzle;
 	int m_size { };
 	std::atomic<bool> isSolve { false };
-	std::atomic<int> numThread { 0 };
+	std::atomic<unsigned> numThread { 0 };
+	bool multithread { true };
+	unsigned concurentThreadsSupported { 0 };
 
 	SudokuSolver() {} // private default constructor
 
 public:
 	SudokuSolver(Sudoku puzzle);
+	SudokuSolver(Sudoku puzzle, bool multi_thread);
 	SudokuSolver(int **const arr, int size);
 
 	Sudoku getSolution();
