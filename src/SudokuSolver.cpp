@@ -32,8 +32,12 @@
 #include <thread>
 #include <iostream>
 #include <vector>
+#include <cassert>
+#include <cmath>
 
 #include "SudokuSolver.hpp"
+#include "Sudoku.hpp"
+#include "DLX.hpp"
 
 SudokuSolver::SudokuSolver(Sudoku puzzle) : SudokuSolver::SudokuSolver(puzzle, true) { }
 
@@ -113,8 +117,61 @@ void SudokuSolver::solve(int row, int col, Sudoku &puzzle) {
 	}
 }
 
+void SudokuSolver::solve() {
+	std::vector<std::vector <int>> matrix = toExactCover();
+	DLX dlx { matrix };
+
+	assert(dlx.solve());
+	std::vector<int> solution = dlx.getSolution();
+	fillSudoku(matrix, solution);
+}
+
+std::vector<std::vector<int> > SudokuSolver::toExactCover() {
+	std::vector<std::vector <int>> matrix { };
+	for (int i = 0; i < m_size; ++i) {
+		for (int j = 0; j < m_size; ++j) {
+			std::vector<int> row = toExactCoverRow(i, j, m_puzzle.getCell(i, j));
+			matrix.push_back(row);
+		}
+	}
+	std::cout << "matrix for exact cover:" << std::endl;
+	for (auto row : matrix) {
+		for (auto num : row) {
+			std::cout << num << " ";
+		}
+		std::cout << std::endl;
+	}
+	return matrix;
+}
+
+std::vector<int> SudokuSolver::toExactCoverRow(int row, int col, int num) {
+	std::vector<int> ec_row { };
+	ec_row.resize(static_cast<int>(pow(m_size, 2))*4);
+	int sqrt_size { static_cast<int>(std::sqrt(m_size)) };
+	int pos { row * m_size + col };
+	int cond_row { row * m_size + (num - 1) + m_size };
+	int cond_col { col * m_size + (num - 1) + 2 * m_size };
+	int cond_region { ((row % sqrt_size) * sqrt_size) + (col % sqrt_size)
+			+ (num - 1) + 3 * m_size };
+	ec_row[pos] = 1;
+	ec_row[cond_row] = 1;
+	ec_row[cond_col] = 1;
+	ec_row[cond_region] = 1;
+	return ec_row;
+}
+
+void SudokuSolver::fillSudoku(std::vector<std::vector<int> > matrix,
+		std::vector<int> solution) {
+	std::cout << "number of solution: " << solution.size() << std::endl;
+}
+
 void SudokuSolver::newThreadSolve(int row, int col, Sudoku puzzle) {
 	numThread++;
 	solve(row, col, puzzle);
 	numThread--;
+}
+
+Sudoku SudokuSolver::dlxGetSolution() {
+	solve();
+	return m_puzzle;
 }

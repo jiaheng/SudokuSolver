@@ -4,6 +4,9 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/DLNode.cpp \
+../src/DLX.cpp \
+../src/DLX_test.cpp \
 ../src/Sudoku.cpp \
 ../src/SudokuSolver.cpp \
 ../src/SudokuSolver_test.cpp \
@@ -11,6 +14,9 @@ CPP_SRCS += \
 ../src/Test.cpp 
 
 OBJS += \
+./src/DLNode.o \
+./src/DLX.o \
+./src/DLX_test.o \
 ./src/Sudoku.o \
 ./src/SudokuSolver.o \
 ./src/SudokuSolver_test.o \
@@ -18,6 +24,9 @@ OBJS += \
 ./src/Test.o 
 
 CPP_DEPS += \
+./src/DLNode.d \
+./src/DLX.d \
+./src/DLX_test.d \
 ./src/Sudoku.d \
 ./src/SudokuSolver.d \
 ./src/SudokuSolver_test.d \

@@ -29,8 +29,13 @@ public:
 	SudokuSolver(int **const arr, int size);
 
 	Sudoku getSolution();
+	Sudoku dlxGetSolution();
 
 private:
+	void solve();
+	std::vector<std::vector <int>> toExactCover();
+	std::vector<int> toExactCoverRow(int row, int col, int num);
+	void fillSudoku(std::vector<std::vector <int>> matrix, std::vector<int> solution);
 	void solve(int row, int col, Sudoku &puzzle);
 	void newThreadSolve(int row, int col, Sudoku puzzle);
 };

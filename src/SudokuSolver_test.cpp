@@ -136,6 +136,32 @@ void hexadokuBatchSolveTest() {
 			<< "seconds to solve all 44 16x16 sudoku." << std::endl;
 }
 
+Sudoku simpleSudoku() {
+	int **inputs = new int*[4] { };
+	inputs[0] = new int[4]{0, 2, 4, 0};
+	inputs[1] = new int[4]{0, 0, 0, 2};
+	inputs[2] = new int[4]{3, 0, 0, 0};
+	inputs[3] = new int[4]{0, 1, 3, 0};
+
+	Sudoku sudoku(inputs, 4);
+	for (int i = 0; i < 4; ++i)
+		delete[] inputs[i];
+	delete[] inputs;
+	return sudoku;
+}
+
+void dlxTest() {
+	Sudoku sudoku = simpleSudoku();
+	std::cout << "Before:\n";
+	std::cout << sudoku.toString();
+	SudokuSolver solver(sudoku);
+	Sudoku solution = solver.dlxGetSolution();
+	std::cout << "\nAfter:\n";
+	std::cout << solution.toString() << std::endl;
+	std::cout << "Original:\n" << sudoku.toString() << std::endl;
+	ASSERT_EQUAL(true, solution.isCorrect());
+}
+
 cute::suite make_suite_SudokuSolver_test() {
 	cute::suite s;
 	s.push_back(CUTE(hexadokuPerformanceTest));
@@ -144,6 +170,7 @@ cute::suite make_suite_SudokuSolver_test() {
 	s.push_back(CUTE(solverTest2));
 	s.push_back(CUTE(performanceTest2));
 	s.push_back(CUTE(hexadokuSolverTest));
+	s.push_back(CUTE(dlxTest));
 	return s;
 }
 
