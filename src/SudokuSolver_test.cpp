@@ -136,6 +136,18 @@ void hexadokuBatchSolveTest() {
 			<< "seconds to solve all 44 16x16 sudoku." << std::endl;
 }
 
+void simpleSudokuSolverTest() {
+	Sudoku sudoku = simpleSudoku();
+	std::cout << "Before:\n";
+	std::cout << sudoku.toString();
+	SudokuSolver solver(sudoku, false);
+	Sudoku solution = solver.getSolution();
+	std::cout << "\nAfter:\n";
+	std::cout << solution.toString() << std::endl;
+	std::cout << "Original:\n" << sudoku.toString() << std::endl;
+	ASSERT_EQUAL(true, solution.isCorrect());
+}
+
 cute::suite make_suite_SudokuSolver_test() {
 	cute::suite s;
 	s.push_back(CUTE(hexadokuPerformanceTest));
@@ -144,6 +156,7 @@ cute::suite make_suite_SudokuSolver_test() {
 	s.push_back(CUTE(solverTest2));
 	s.push_back(CUTE(performanceTest2));
 	s.push_back(CUTE(hexadokuSolverTest));
+	s.push_back(CUTE(simpleSudokuSolverTest));
 	return s;
 }
 
