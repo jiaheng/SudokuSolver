@@ -1,23 +1,9 @@
-/*
- * Sudoku_test.cpp
- *
- *  Created on: 15 Feb 2016
- *      Author: jiaheng
- */
-
 #include <iostream>
 
-#include "Sudoku_test.hpp"
+#include "cute.h"
+#include "Sudoku_test.h"
 
-Sudoku_test::Sudoku_test() {
-	std::cout << "Call from Sudoku Solver test constructor" << std::endl;
-}
-
-void Sudoku_test::operator ()() {
-	std::cout<< "Call from Sudoku Solver test operator" << std::endl;
-}
-
-void Sudoku_test::constructorTest() {
+void constructorTest() {
 	int **inputs = new int*[9] { };
 	for (int i = 0; i < 9; ++i)
 		inputs[i] = new int[9] { };
@@ -25,9 +11,10 @@ void Sudoku_test::constructorTest() {
 	for (int i = 0; i < 9; ++i)
 		delete[] inputs[i];
 	delete[] inputs;
+	ASSERT(true);
 }
 
-void Sudoku_test::setterTest() {
+void setterTest() {
 	int size { 9 };
 	int **inputs = new int*[size] { };
 	for (int i = 0; i < size; ++i)
@@ -50,7 +37,7 @@ void Sudoku_test::setterTest() {
 		}
 }
 
-void Sudoku_test::setterTest2() {
+void setterTest2() {
 	int size { 16 };
 	int **inputs = new int*[size] { };
 	for (int i = 0; i < size; ++i)
@@ -73,7 +60,7 @@ void Sudoku_test::setterTest2() {
 		}
 }
 
-void Sudoku_test::getterTest() {
+void getterTest() {
 	int size { 9 };
 	int **inputs = new int*[size] { };
 	for (int i = 0; i < size; ++i)
@@ -89,7 +76,7 @@ void Sudoku_test::getterTest() {
 		}
 }
 
-void Sudoku_test::getterTest2() {
+void getterTest2() {
 	int size { 16 };
 	int **inputs = new int*[size] { };
 	for (int i = 0; i < size; ++i)
@@ -105,12 +92,12 @@ void Sudoku_test::getterTest2() {
 		}
 }
 
-void Sudoku_test::getterTest3() {
+void getterTest3() {
 	Sudoku sudoku = sampleSudoku();
 	ASSERT_EQUAL(3, sudoku.getCell(0,0));
 }
 
-void Sudoku_test::isIncompleteTest() {
+void isIncompleteTest() {
 	int size { 9 };
 	int **inputs = new int*[size] { };
 	for (int i = 0; i < size; ++i)
@@ -122,17 +109,17 @@ void Sudoku_test::isIncompleteTest() {
 	ASSERT_EQUAL(true, sudoku.isIncomplete());
 }
 
-void Sudoku_test::isIncompleteTest2() {
+void isIncompleteTest2() {
 	Sudoku sudoku = sampleSudoku();
 	ASSERT_EQUAL(true, sudoku.isIncomplete());
 }
 
-void Sudoku_test::isIncompleteTest3() {
+void isIncompleteTest3() {
 	Sudoku sudoku = completeSudoku();
 	ASSERT_EQUAL(false, sudoku.isIncomplete());
 }
 
-void Sudoku_test::isCompleteTest() {
+void isCompleteTest() {
 	int size { 9 };
 	int **inputs = new int*[size] { };
 	for (int i = 0; i < size; ++i)
@@ -144,17 +131,17 @@ void Sudoku_test::isCompleteTest() {
 	ASSERT_EQUAL(false, sudoku.isComplete());
 }
 
-void Sudoku_test::isCompleteTest2() {
+void isCompleteTest2() {
 	Sudoku sudoku = sampleSudoku();
 	ASSERT_EQUAL(false, sudoku.isComplete());
 }
 
-void Sudoku_test::isCompleteTest3() {
+void isCompleteTest3() {
 	Sudoku sudoku = completeSudoku();
 	ASSERT_EQUAL(true, sudoku.isComplete());
 }
 
-void Sudoku_test::isCorrectTest() {
+void isCorrectTest() {
 	int size { 9 };
 	int **inputs = new int*[size] { };
 	for (int i = 0; i < size; ++i)
@@ -166,17 +153,17 @@ void Sudoku_test::isCorrectTest() {
 	ASSERT_EQUAL(false, sudoku.isCorrect());
 }
 
-void Sudoku_test::isCorrectTest2() {
+void isCorrectTest2() {
 	Sudoku sudoku = sampleSudoku();
 	ASSERT_EQUAL(false, sudoku.isCorrect());
 }
 
-void Sudoku_test::isCorrectTest3() {
+void isCorrectTest3() {
 	Sudoku sudoku = completeSudoku();
 	ASSERT_EQUAL(true, sudoku.isCorrect());
 }
 
-void Sudoku_test::copyConstructorTest() {
+void copyConstructorTest() {
 	int size { 9 };
 	int **inputs = new int*[size] { };
 	for (int i = 0; i < size; ++i)
@@ -195,12 +182,12 @@ void Sudoku_test::copyConstructorTest() {
 	ASSERT_EQUALM(msg, false, copy.isComplete());
 }
 
-void Sudoku_test::toStringTest() {
+void toStringTest() {
 	Sudoku sudoku = sampleSudoku();
 	std::cout << sudoku.toString();
 }
 
-void Sudoku_test::hexadokuTest() {
+void hexadokuTest() {
 	Sudoku hexadoku = sampleHexadoku();
 	std::cout << hexadoku.toString();
 	ASSERT_EQUAL(true, hexadoku.isIncomplete());
@@ -208,7 +195,7 @@ void Sudoku_test::hexadokuTest() {
 	ASSERT_EQUAL(false, hexadoku.isCorrect());
 }
 
-void Sudoku_test::hexadokuFromStringTest() {
+void hexadokuFromStringTest() {
 	std::string input { ".63B.EC..A..8....847..A6..B....9.....81.D.G...7E.......7..98...CF.D.....AC..2.......D.....E1..5.CE......6...GF.31A.9...B8G7.4..D2.E...45....69.F.7......E..A...5..94..6......D.....63..F79.5...A....E6.D.1...2.8...3G.FA56.......D.C...9...B1.6..2..B.5C9.....34" };
 	Sudoku hexadoku(input);
 	std::cout << hexadoku.toString();
@@ -221,20 +208,20 @@ void Sudoku_test::hexadokuFromStringTest() {
 	ASSERT_EQUAL(4, hexadoku.getCell(15,15));
 }
 
-void Sudoku_test::isEmptyTest() {
+void isEmptyTest() {
 	Sudoku sudoku = sampleSudoku();
 	ASSERT_EQUAL(false, sudoku.cellIsEmpty(0,0));
 	ASSERT_EQUAL(true, sudoku.cellIsEmpty(0,1));
 }
 
-void Sudoku_test::isSafeTest() {
+void isSafeTest() {
 	Sudoku sudoku = sampleSudoku();
 	// acceptable number 1, 9 at cell (0,1)
 	ASSERT_EQUAL(true, sudoku.isSafe(0,1,1));
 	ASSERT_EQUAL(true, sudoku.isSafe(0,1,9));
 }
 
-void Sudoku_test::isSafeTest2() {
+void isSafeTest2() {
 	Sudoku sudoku = sampleSudoku();
 	// unacceptable number 2, 3, 4, 5, 6, 7, 8 at cell (0,1)
 	ASSERT_EQUAL(false, sudoku.isSafe(0,1,2));
@@ -256,7 +243,7 @@ void Sudoku_test::isSafeTest2() {
 	ASSERT_EQUAL(false, sudoku.isSafe(0,0,9));
 }
 
-Sudoku Sudoku_test::sampleSudoku() {
+Sudoku sampleSudoku() {
 	int **inputs = new int*[9] { };
 	inputs[0] = new int[9]{3, 0, 6, 5, 0, 8, 4, 0, 0};
 	inputs[1] = new int[9]{5, 2, 0, 0, 0, 0, 0, 0, 0};
@@ -274,7 +261,7 @@ Sudoku Sudoku_test::sampleSudoku() {
 	return sudoku;
 }
 
-Sudoku Sudoku_test::sampleSudoku2() {
+Sudoku sampleSudoku2() {
 	int **inputs = new int*[9] { };
 	inputs[0] = new int[9]{9, 0, 0, 0, 4, 0, 0, 0, 0};
 	inputs[1] = new int[9]{7, 0, 0, 2, 0, 0, 0, 9, 0};
@@ -293,7 +280,7 @@ Sudoku Sudoku_test::sampleSudoku2() {
 	return sudoku;
 }
 
-Sudoku Sudoku_test::completeSudoku() {
+Sudoku completeSudoku() {
 	int **inputs = new int*[9] { };
 	inputs[0] = new int[9]{3, 1, 6, 5, 7, 8, 4, 9, 2};
 	inputs[1] = new int[9]{5, 2, 9, 1, 3, 4, 7, 6, 8};
@@ -312,7 +299,7 @@ Sudoku Sudoku_test::completeSudoku() {
 	return sudoku;
 }
 
-Sudoku Sudoku_test::sampleHexadoku() {
+Sudoku sampleHexadoku() {
 	int **inputs = new int*[16] { };
 	inputs[0] = new int[16]{4, 3, 7, 11, 14, 0, 13, 2, 16, 10, 0, 8, 0, 9, 0, 15};
 	inputs[1] = new int[16]{6, 0, 0, 1, 5, 8, 9, 0, 13, 0, 2, 0, 10, 0, 4, 0};
@@ -338,29 +325,31 @@ Sudoku Sudoku_test::sampleHexadoku() {
 	return sudoku;
 }
 
-cute::suite Sudoku_test::make_suite(){
+cute::suite make_suite_Sudoku_test(){
 	cute::suite s;
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, constructorTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, setterTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, getterTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isIncompleteTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, toStringTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isIncompleteTest2));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, getterTest2));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isCompleteTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isCompleteTest2));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isCompleteTest3));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isIncompleteTest3));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isCorrectTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isCorrectTest2));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isCorrectTest3));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isEmptyTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isSafeTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, isSafeTest2));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, setterTest2));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, getterTest3));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, copyConstructorTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, hexadokuTest));
-	s.push_back(CUTE_SMEMFUN(Sudoku_test, hexadokuFromStringTest));
+	s.push_back(CUTE(constructorTest));
+	s.push_back(CUTE(setterTest));
+	s.push_back(CUTE(setterTest2));
+	s.push_back(CUTE(getterTest));
+	s.push_back(CUTE(getterTest2));
+	s.push_back(CUTE(getterTest3));
+	s.push_back(CUTE(isIncompleteTest2));
+	s.push_back(CUTE(isIncompleteTest));
+	s.push_back(CUTE(isIncompleteTest3));
+	s.push_back(CUTE(isCompleteTest));
+	s.push_back(CUTE(isCompleteTest2));
+	s.push_back(CUTE(isCompleteTest3));
+	s.push_back(CUTE(isCorrectTest));
+	s.push_back(CUTE(isCorrectTest2));
+	s.push_back(CUTE(isCorrectTest3));
+	s.push_back(CUTE(copyConstructorTest));
+	s.push_back(CUTE(hexadokuTest));
+	s.push_back(CUTE(hexadokuFromStringTest));
+	s.push_back(CUTE(isSafeTest2));
+	s.push_back(CUTE(isSafeTest));
+	s.push_back(CUTE(isEmptyTest));
 	return s;
 }
+
+
+
