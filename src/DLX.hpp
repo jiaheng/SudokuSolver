@@ -18,17 +18,19 @@ public:
 	~DLX();
 
 	std::string toString();
-	void testCover();
-	void testUncover();
-	DLNode *testnode {nullptr};
+	bool solve();
+	std::vector<int> getSolution();
 
 private:
-	DLX() {}
+	std::vector<int> solution { };
 	DLNode *head {nullptr};
+
+	DLX() {}
 
 	void cover(DLNode *node);
 	void uncover(DLNode *node);
 	DLNode *chooseNextColumn();
+	int totalNode(DLNode *column);
 };
 
 #endif /* SRC_DLX_HPP_ */

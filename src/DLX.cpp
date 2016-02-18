@@ -41,7 +41,7 @@ DLX::DLX(std::vector<std::vector <int>> matrix) {
 	DLNode *node_ptr = head;
 	// create column node
 	for (int i = 0; i < col_size; ++i) {
-		auto *node = new DLNode{ };
+		auto *node = new DLNode{ 0, i };
 		node_ptr->setRight(node);
 		node->setLeft(node_ptr);
 		node->setColumnNode(node);
@@ -147,14 +147,48 @@ void DLX::uncover(DLNode* node) {
 }
 
 DLNode *DLX::chooseNextColumn() {
-	return head->getRight();
+	int min_num { 0 }; // minimum number of node in a column
+	DLNode *column = head->getRight(),
+			*next_col = column;
+	while (column != head) {
+		int node_num = totalNode(column);
+		if (node_num <= 1) return column;
+		else if (min_num == 0 || node_num < min_num) {
+			min_num = node_num;
+			next_col = column;
+		}
+		column = column->getRight();
+	}
+	return next_col;
 }
 
-void DLX::testCover() {
-	testnode = head->getRight()->getRight();
-	cover(testnode);
+int DLX::totalNode(DLNode *column) {
+	int node_num { 0 };
+	DLNode *node = column->getDown();
+	while (node != column) {
+		++node_num;
+		node = node->getDown();
+	}
+	return node_num;
 }
 
-void DLX::testUncover() {
-	if (testnode) uncover(testnode);
+bool DLX::solve() {
+	if (head->getRight() == head) return true;
+	DLNode *column = chooseNextColumn();
+	cover(column);
+	for (auto row = column->getDown(); row != column; row = row->getDown()) {
+		solution.push_back(row->getRow());
+		for (auto rightNode = row->getRight(); rightNode != row; rightNode = rightNode->getRight())
+			cover(rightNode);
+		if (solve()) return true;
+		solution.pop_back();
+		for (auto rightNode = row->getRight(); rightNode != row; rightNode = rightNode->getRight())
+			uncover(rightNode);
+	}
+	uncover(column);
+	return false;
+}
+
+std::vector<int> DLX::getSolution() {
+	return solution;
 }
