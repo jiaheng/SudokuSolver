@@ -30,7 +30,6 @@
  */
 
 #include <thread>
-#include <iostream>
 #include <vector>
 
 #include "SudokuSolver.hpp"
