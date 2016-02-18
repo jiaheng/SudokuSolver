@@ -46,7 +46,7 @@ std::vector<std::vector <int>> problemMatrix() {
 	return matrix;
 }
 
-void constructorTest() {
+void dLXConstructorTest() {
 	std::vector<std::vector<int>> matrix { };
 	std::vector<int> row { 0, 1, 0 };
 	matrix.push_back(row);
@@ -78,7 +78,7 @@ void solveTest() {
 
 cute::suite make_suite_DLX_test() {
 	cute::suite s;
-	s.push_back(CUTE(constructorTest));
+	s.push_back(CUTE(dLXConstructorTest));
 	s.push_back(CUTE(solveTest));
 	return s;
 }
