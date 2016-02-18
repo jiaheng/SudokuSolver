@@ -55,6 +55,7 @@ private:
 	void fillHexadokuCell(std::string &input);
 	std::string sudokuToString();
 	std::string hexadokuToString();
+	std::string otherToString();
 	void rtrim(std::string &s, char c);
 };
 

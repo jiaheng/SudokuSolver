@@ -51,6 +51,7 @@ Sudoku::Sudoku(std::string input) {
 	sqr_size = static_cast<int>(sqrt(size));
 	initCells();
 	switch(size) {
+	case 4:
 	case 9:
 		fillSudokuCell(input);
 		break;
@@ -189,6 +190,17 @@ std::string Sudoku::hexadokuToString() {
 	return string;
 }
 
+std::string Sudoku::otherToString() {
+	std::string str { };
+	for (int row = 0; row < size; ++row) {
+		for (int col = 0; col < size; ++col) {
+			str += std::to_string(cells[row][col]) + " ";
+		}
+		str += "\n";
+	}
+	return str;
+}
+
 std::string Sudoku::toString() {
 	switch(size) {
 	case 9:
@@ -196,7 +208,7 @@ std::string Sudoku::toString() {
 	case 16:
 		return hexadokuToString();
 	default:
-		return NULL;
+		return otherToString();
 	}
 }
 
@@ -276,7 +288,7 @@ bool Sudoku::isCorrect() {
 		if (!correctInRow(i) || !correctInCol(i)) return false;
 	}
 	for (int i = 0; i < size; i+=sqr_size) {
-		for (int j = 0; j < 9; j+=sqr_size) {
+		for (int j = 0; j < size; j+=sqr_size) {
 			if (!correctInSqr(i,j)) return false;
 		}
 	}
