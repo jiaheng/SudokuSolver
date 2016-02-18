@@ -30,11 +30,10 @@
  */
 
 #include <thread>
-#include <iostream>
 #include <vector>
 #include <cassert>
 #include <cmath>
-
+#include <iostream>
 #include "SudokuSolver.hpp"
 #include "Sudoku.hpp"
 #include "DLX.hpp"

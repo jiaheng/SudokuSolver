@@ -299,6 +299,34 @@ Sudoku completeSudoku() {
 	return sudoku;
 }
 
+Sudoku simpleSudoku() {
+	int **inputs = new int*[4] { };
+	inputs[0] = new int[4]{0, 2, 4, 0};
+	inputs[1] = new int[4]{0, 0, 0, 2};
+	inputs[2] = new int[4]{3, 0, 0, 0};
+	inputs[3] = new int[4]{0, 1, 3, 0};
+
+	Sudoku sudoku(inputs, 4);
+	for (int i = 0; i < 4; ++i)
+		delete[] inputs[i];
+	delete[] inputs;
+	return sudoku;
+}
+
+Sudoku simpleCompleteSudoku() {
+	int **inputs = new int*[4] { };
+	inputs[0] = new int[4]{1, 2, 4, 3};
+	inputs[1] = new int[4]{4, 3, 1, 2};
+	inputs[2] = new int[4]{3, 4, 2, 1};
+	inputs[3] = new int[4]{2, 1, 3, 4};
+
+	Sudoku sudoku(inputs, 4);
+	for (int i = 0; i < 4; ++i)
+		delete[] inputs[i];
+	delete[] inputs;
+	return sudoku;
+}
+
 Sudoku sampleHexadoku() {
 	int **inputs = new int*[16] { };
 	inputs[0] = new int[16]{4, 3, 7, 11, 14, 0, 13, 2, 16, 10, 0, 8, 0, 9, 0, 15};
@@ -325,6 +353,33 @@ Sudoku sampleHexadoku() {
 	return sudoku;
 }
 
+void simpleSudokuTest() {
+	Sudoku sudoku = simpleSudoku();
+	sudoku.toString();
+	ASSERT_EQUAL(2, sudoku.getCell(0,1));
+	ASSERT_EQUALM("Sudoku is expected to be incomplete", false, sudoku.isComplete());
+	ASSERT_EQUALM("Sudoku is expected to be incorrect", false, sudoku.isCorrect());
+	ASSERT_EQUALM("expect isSafe(0, 0, 1) return true", true, sudoku.isSafe(0, 0, 1));
+	ASSERT_EQUALM("expect isSafe(0, 0, 2) return false", false, sudoku.isSafe(0, 0, 2));
+	ASSERT_EQUALM("expect isSafe(0, 0, 3) return false", false, sudoku.isSafe(0, 0, 3));
+	ASSERT_EQUALM("expect isSafe(0, 0, 4) return false", false, sudoku.isSafe(0, 0, 4));
+	ASSERT_EQUALM("expect isSafe(0, 3, 3) return true", true, sudoku.isSafe(0, 3, 3));
+	ASSERT_EQUALM("expect isSafe(3, 3, 1) return false", false, sudoku.isSafe(3, 3, 1));
+	ASSERT_EQUALM("expect isSafe(3, 3, 2) return false", false, sudoku.isSafe(3, 3, 2));
+	ASSERT_EQUALM("expect isSafe(3, 3, 3) return false", false, sudoku.isSafe(3, 3, 3));
+	ASSERT_EQUALM("expect isSafe(3, 3, 4) return true", true, sudoku.isSafe(3, 3, 4));
+	ASSERT_EQUALM("expect isSafe(3, 0, 1) return false", false, sudoku.isSafe(3, 0, 1));
+	ASSERT_EQUALM("expect isSafe(3, 0, 2) return true", true, sudoku.isSafe(3, 0, 2));
+	ASSERT_EQUALM("expect isSafe(3, 0, 3) return false", false, sudoku.isSafe(3, 0, 1));
+	ASSERT_EQUALM("expect isSafe(3, 0, 4) return true", true, sudoku.isSafe(3, 0, 4));
+}
+
+void simpleSudokuTest2() {
+	Sudoku sudoku = simpleCompleteSudoku();
+	ASSERT(sudoku.isComplete());
+	ASSERT(sudoku.isCorrect());
+}
+
 cute::suite make_suite_Sudoku_test(){
 	cute::suite s;
 	s.push_back(CUTE(sudokuConstructorTest));
@@ -348,6 +403,8 @@ cute::suite make_suite_Sudoku_test(){
 	s.push_back(CUTE(isSafeTest2));
 	s.push_back(CUTE(isSafeTest));
 	s.push_back(CUTE(isEmptyTest));
+	s.push_back(CUTE(simpleSudokuTest));
+	s.push_back(CUTE(simpleSudokuTest2));
 	return s;
 }
 
