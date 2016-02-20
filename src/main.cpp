@@ -79,10 +79,10 @@ int main(int argc, char* argv[]) {
 		SudokuSolver solver(sudoku, multi_thread);
 		clock_t start = clock();
 		Sudoku solution = solver.getSolution();
+		clock_t end = clock();
 		std::cout << "Done!!!" << std::endl;
 		if (verbose)
 			std::cout << "Solution: for puzzle #" << index << std::endl << solution.toString() << std::endl;
-		clock_t end = clock();
 		time += static_cast<unsigned int>(end - start);
 		if (write) {
 			std::ofstream ofile (output);
