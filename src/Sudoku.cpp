@@ -165,7 +165,9 @@ std::string Sudoku::sudokuToString() {
 		for (int col = 0; col < size; col++) {
 			if (col%3 == 0)
 				string += "| ";
-			string += std::to_string(cells[row][col]) + " ";
+			int num { cells[row][col] };
+			if (num != 0) string += std::to_string(num) + " ";
+			else string += "X ";
 		}
 		string += "|\n";
 	}
@@ -181,8 +183,10 @@ std::string Sudoku::hexadokuToString() {
 		for (int col = 0; col < size; col++) {
 			if (col%4 == 0)
 				string += "| ";
-			if (cells[row][col] < 10) string += " ";
-			string += std::to_string(cells[row][col]) + " ";
+			int num { cells[row][col] };
+			if (num < 10) string += " ";
+			if (num != 0) string += std::to_string(num) + " ";
+			else string += "X ";
 		}
 		string += "|\n";
 	}
@@ -194,7 +198,9 @@ std::string Sudoku::otherToString() {
 	std::string str { };
 	for (int row = 0; row < size; ++row) {
 		for (int col = 0; col < size; ++col) {
-			str += std::to_string(cells[row][col]) + " ";
+			int num { cells[row][col] };
+			if (num != 0) str += std::to_string(num) + " ";
+			else str += "X ";
 		}
 		str += "\n";
 	}
