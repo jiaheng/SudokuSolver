@@ -57,6 +57,10 @@ SudokuSolver::SudokuSolver(int **const arr, int m_size) {
 }
 
 Sudoku SudokuSolver::getSolution() {
+	solve();
+	return m_puzzle;
+	// TODO: remove. no longer use multi thread **ALSO REMOVE -pthread PARAMETER!!!
+	/*
 	if (multithread) {
 		std::thread t1(&SudokuSolver::newThreadSolve, this, 0, 0, m_puzzle);
 		t1.join();
@@ -64,8 +68,10 @@ Sudoku SudokuSolver::getSolution() {
 		solve(0, 0, m_puzzle);
 	}
 	return m_puzzle;
+	*/
 }
 
+//TODO: deprecated method
 void SudokuSolver::solve(int row, int col, Sudoku &puzzle) {
 	// base case
 	if (row >= m_size) {

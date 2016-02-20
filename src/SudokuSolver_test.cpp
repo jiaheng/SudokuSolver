@@ -104,6 +104,7 @@ void sudokuBatchSolveTest() {
 	std::cout << "it took " << time << "ticks, or "
 			<< ((float) time) / CLOCKS_PER_SEC
 			<< "seconds to solve all 1465 9x9 sudoku." << std::endl;
+	ASSERT(true);
 }
 
 void hexadokuBatchSolveTest() {
@@ -134,6 +135,7 @@ void hexadokuBatchSolveTest() {
 	std::cout << "it took " << time << "ticks, or "
 			<< ((float) time) / CLOCKS_PER_SEC
 			<< "seconds to solve all 44 16x16 sudoku." << std::endl;
+	ASSERT(true);
 }
 
 void simpleSudokuSolverTest() {
@@ -196,6 +198,8 @@ cute::suite make_suite_SudokuSolver_test() {
 	s.push_back(CUTE(dlxTest));
 	s.push_back(CUTE(dlxLargeTest));
 	s.push_back(CUTE(dlxLargerTest));
+	//s.push_back(CUTE(hexadokuBatchSolveTest));
+	//s.push_back(CUTE(sudokuBatchSolveTest));
 	return s;
 }
 
