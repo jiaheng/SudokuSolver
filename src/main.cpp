@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
 		std::cout << "Solving 9x9 puzzle #" << ++index << "..." << std::endl;
 		if (verbose)
 			std::cout << sudoku.toString() << std::endl;
-		SudokuSolver solver(sudoku, multi_thread);
+		SudokuSolver solver(sudoku);
 		clock_t start = clock();
 		Sudoku solution = solver.getSolution();
 		clock_t end = clock();

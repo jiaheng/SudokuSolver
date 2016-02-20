@@ -67,9 +67,18 @@ void SudokuSolver::solve() {
 	std::vector<std::vector <int>> matrix = toExactCover();
 	DLX dlx { matrix };
 	//TODO: remove println
-	/*/
-	std::cout << "matrix size row: " << matrix.size() << ". col: " << matrix[0].size() << std::endl << "martrix: " << std::endl;
 	//
+	std::cout << "for puzzle: " << std::endl << m_puzzle.toString() << std::endl;
+	std::cout << "matrix size row: " << matrix.size() << ". col: " << matrix[0].size() << std::endl << "martrix: " << std::endl;
+	std::cout << "54 : " << getNumFromEC(matrix[54]) << std::endl;
+	for (auto c : matrix[54])
+			std::cout << c << " ";
+	std::cout << std::endl;
+	std::cout << "63 : " << getNumFromEC(matrix[63]) << std::endl;
+	for (auto c : matrix[63])
+		std::cout << c << " ";
+	std::cout << std::endl;
+	/*/
 	for (auto row : matrix) {
 		for (auto num : row) {
 			std::cout << num << " ";
@@ -91,10 +100,27 @@ std::vector<std::vector<int> > SudokuSolver::toExactCover() {
 				for (int p_num = 1; p_num <= m_size; ++p_num) {
 					std::vector<int> row = toExactCoverRow(i, j, p_num);
 					matrix.push_back(row);
+					//TODO: remove test code below
+					if (matrix.size() == 55 || matrix.size() == 64) {
+						std::cout << "(" << p_num << ", " << i << ", " << j << ")" << std::endl;
+						for (auto c : row)
+							std::cout << c << " ";
+						std::cout << std::endl;
+					}
 				}
 			} else {
 				std::vector<int> row = toExactCoverRow(i, j, num);
-				matrix.push_back(row);
+				//TODO: use push_bash instead this tedious
+				auto it = matrix.begin();
+				matrix.insert(it, row);
+				//matrix.push_back(row);
+				//TODO: remove test code below
+				if (matrix.size() == 55 || matrix.size() == 64) {
+					std::cout << "(" << num << ", " << i << ", " << j << ")" << std::endl;
+					for (auto c : row)
+						std::cout << c << " ";
+					std::cout << std::endl;
+				}
 			}
 		}
 	}
@@ -137,4 +163,19 @@ void SudokuSolver::rowToSudoku(std::vector<int> sol) {
 	int cond_row = std::distance(sol.begin(), it);
 	int num { cond_row % m_size + 1 };
 	m_puzzle.setCell(row, col, num);
+}
+
+std::string SudokuSolver::getNumFromEC(std::vector<int> sol) {
+	int sqr_size = pow(m_size,2);
+	// find row
+	auto it = std::find(sol.begin(), sol.begin() + (sqr_size-1), 1);
+	assert(it != sol.end());
+	int pos = std::distance(sol.begin(), it);
+	int col { pos % m_size };
+	int row { (pos - col) / m_size };
+	it = std::find(sol.begin() + sqr_size, sol.begin() + (2*sqr_size-1), 1);
+	assert(it != sol.end());
+	int cond_row = std::distance(sol.begin(), it);
+	int num { cond_row % m_size + 1 };
+	return "(" + std::to_string(num) + ", " + std::to_string(row) + ", " + std::to_string(col) + ")";
 }
