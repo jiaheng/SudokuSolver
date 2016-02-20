@@ -186,6 +186,38 @@ void dlxLargerTest() {
 	ASSERT_EQUAL(true, solution.isCorrect());
 }
 
+void hardPuzzleTest() {
+	// for some reason the program gives error when solving these puzzle
+	std::ifstream infile("problempuzzle");
+	ASSERT_EQUALM("FILE NOT EXIST", true, infile.good());
+	std::string line { };
+	std::vector<Sudoku> puzzles { };
+	while (std::getline(infile, line)) {
+		// read file line by line
+		std::istringstream iss(line);
+		puzzles.push_back(Sudoku(line));
+	}
+	int index { 1 };
+	unsigned int time { 0 };
+	for (auto &hexadoku : puzzles) {
+		std::cout << "Solving 16x16 puzzle #" << index << "..." << std::endl;
+		SudokuSolver solver(hexadoku);
+		clock_t start = clock();
+		Sudoku solution = solver.getSolution();
+		clock_t end = clock();
+		time += static_cast<unsigned int>(end - start);
+		std::string msg { "Solution for puzzle #" };
+		msg += index;
+		msg += " is not correct.";
+		ASSERT_EQUALM(msg, true, solution.isCorrect());
+		index++;
+	}
+	std::cout << "it took " << time << "ticks, or "
+			<< ((float) time) / CLOCKS_PER_SEC
+			<< "seconds to solve all 44 16x16 sudoku." << std::endl;
+	ASSERT(true);
+}
+
 cute::suite make_suite_SudokuSolver_test() {
 	cute::suite s;
 	s.push_back(CUTE(hexadokuPerformanceTest));
@@ -198,8 +230,9 @@ cute::suite make_suite_SudokuSolver_test() {
 	s.push_back(CUTE(dlxTest));
 	s.push_back(CUTE(dlxLargeTest));
 	s.push_back(CUTE(dlxLargerTest));
-	//s.push_back(CUTE(hexadokuBatchSolveTest));
-	//s.push_back(CUTE(sudokuBatchSolveTest));
+	s.push_back(CUTE(sudokuBatchSolveTest));
+	s.push_back(CUTE(hexadokuBatchSolveTest));
+	s.push_back(CUTE(hardPuzzleTest));
 	return s;
 }
 
