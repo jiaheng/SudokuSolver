@@ -29,8 +29,6 @@
  *      Author: jiaheng
  */
 
-#include <iostream>
-
 #include "DLX.hpp"
 
 DLX::DLX(std::vector<std::vector <int>> matrix) {
