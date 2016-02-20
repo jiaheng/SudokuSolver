@@ -34,7 +34,7 @@
 #include <cassert>
 #include <cmath>
 #include <algorithm>
-
+#include <iostream>
 #include "SudokuSolver.hpp"
 #include "Sudoku.hpp"
 #include "DLX.hpp"
@@ -126,7 +126,17 @@ void SudokuSolver::solve(int row, int col, Sudoku &puzzle) {
 void SudokuSolver::solve() {
 	std::vector<std::vector <int>> matrix = toExactCover();
 	DLX dlx { matrix };
-
+	//TODO: remove println
+	/*/
+	std::cout << "matrix size row: " << matrix.size() << ". col: " << matrix[0].size() << std::endl << "martrix: " << std::endl;
+	//
+	for (auto row : matrix) {
+		for (auto num : row) {
+			std::cout << num << " ";
+		}
+		std::cout << std::endl;
+	}
+	/*/
 	assert(dlx.solve());
 	std::vector<int> solution = dlx.getSolution();
 	fillSudoku(matrix, solution);

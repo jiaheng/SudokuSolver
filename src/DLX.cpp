@@ -28,7 +28,7 @@
  *  Created on: 12 Feb 2016
  *      Author: jiaheng
  */
-
+#include <iostream>
 #include "DLX.hpp"
 
 DLX::DLX(std::vector<std::vector <int>> matrix) {
@@ -184,6 +184,13 @@ bool DLX::solve() {
 			uncover(rightNode);
 	}
 	uncover(column);
+	//TODO: remove println
+	//std::cout << "size:" << solution.size() << ". " << std::endl;;
+	/*
+	for (auto num :solution) {
+		std::cout << num << " ";
+	}
+	std::cout << std::endl;*/
 	return false;
 }
 
