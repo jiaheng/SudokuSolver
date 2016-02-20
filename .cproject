@@ -115,7 +115,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/SudokuSolver_test.cpp|src/Sudoku_test.cpp|src/Test.cpp|cute" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/DLX_test.cpp|src/DLNode_test.cpp|src/SudokuSolver_test.cpp|src/Sudoku_test.cpp|src/Test.cpp|cute" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
