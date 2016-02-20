@@ -32,14 +32,10 @@ public:
 	bool isCorrect();
 	bool cellIsEmpty(int row, int col);
 
-	int getSize() { return size; }
-
-	void setCell(int row, int col, int val) { cells[row][col] = val; }
-
-	int getCell(int row, int col){ return cells[row][col]; }
-
+	int getSize();
+	void setCell(int row, int col, int val);
+	int getCell(int row, int col);
 	Sudoku& operator=(const Sudoku &rhs);
-
 	bool operator==(Sudoku &rhs);
 
 private:

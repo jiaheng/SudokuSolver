@@ -29,7 +29,6 @@
  *      Author: jiaheng
  */
 
-#include <thread>
 #include <vector>
 #include <cassert>
 #include <cmath>
@@ -39,16 +38,9 @@
 #include "Sudoku.hpp"
 #include "DLX.hpp"
 
-SudokuSolver::SudokuSolver(Sudoku puzzle) : SudokuSolver::SudokuSolver(puzzle, true) { }
-
-SudokuSolver::SudokuSolver(Sudoku puzzle, bool multi_thread) {
+SudokuSolver::SudokuSolver(Sudoku puzzle) {
 	m_puzzle = Sudoku(puzzle);
 	m_size = m_puzzle.getSize();
-	multithread = multi_thread;
-	if (multithread) {
-		concurentThreadsSupported = std::thread::hardware_concurrency();
-		if (concurentThreadsSupported == 0) multithread = false;
-	}
 }
 
 SudokuSolver::SudokuSolver(int **const arr, int m_size) {
@@ -69,58 +61,6 @@ Sudoku SudokuSolver::getSolution() {
 	}
 	return m_puzzle;
 	*/
-}
-
-//TODO: deprecated method
-void SudokuSolver::solve(int row, int col, Sudoku &puzzle) {
-	// base case
-	if (row >= m_size) {
-		// check if solved
-		if (puzzle.isCorrect()) {
-			isSolve = true;
-			m_puzzle = Sudoku(puzzle);
-		}
-		return;
-	}
-
-	// exit when solved
-	if (isSolve) return;
-
-	int nextRow { row }, nextCol { col };
-	if (col >= m_size-1) {
-		nextRow++;
-		nextCol = 0;
-	} else
-		nextCol++;
-
-	if (puzzle.cellIsEmpty(row, col)) {
-		std::vector<std::thread> threads { };
-		for (int i = 1; i <= m_size; i++) {
-			if (puzzle.isSafe(row, col, i)) {
-				puzzle.setCell(row,col, i);
-				if (multithread && (numThread < concurentThreadsSupported)) {
-					// create new thread to solve
-					threads.push_back(std::thread(&SudokuSolver::newThreadSolve, this, nextRow, nextCol, puzzle));
-				} else {
-					solve(nextRow, nextCol, puzzle);
-					if (isSolve) {
-						// wait all thread to finish
-						for(auto& thread : threads){
-							thread.join();
-						}
-						return;
-					}
-				}
-				puzzle.setCell(row, col, 0);
-			}
-		}
-		// wait all thread to finish
-		for(auto& thread : threads){
-			thread.join();
-		}
-	} else {
-		solve(nextRow, nextCol, puzzle);
-	}
 }
 
 void SudokuSolver::solve() {
@@ -197,15 +137,4 @@ void SudokuSolver::rowToSudoku(std::vector<int> sol) {
 	int cond_row = std::distance(sol.begin(), it);
 	int num { cond_row % m_size + 1 };
 	m_puzzle.setCell(row, col, num);
-}
-
-void SudokuSolver::newThreadSolve(int row, int col, Sudoku puzzle) {
-	numThread++;
-	solve(row, col, puzzle);
-	numThread--;
-}
-
-Sudoku SudokuSolver::dlxGetSolution() {
-	solve();
-	return m_puzzle;
 }

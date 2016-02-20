@@ -142,44 +142,8 @@ void simpleSudokuSolverTest() {
 	Sudoku sudoku = simpleSudoku();
 	std::cout << "Before:\n";
 	std::cout << sudoku.toString();
-	SudokuSolver solver(sudoku, false);
+	SudokuSolver solver(sudoku);
 	Sudoku solution = solver.getSolution();
-	std::cout << "\nAfter:\n";
-	std::cout << solution.toString() << std::endl;
-	std::cout << "Original:\n" << sudoku.toString() << std::endl;
-	ASSERT_EQUAL(true, solution.isCorrect());
-}
-
-void dlxTest() {
-	Sudoku sudoku = simpleSudoku();
-	std::cout << "Before:\n";
-	std::cout << sudoku.toString();
-	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.dlxGetSolution();
-	std::cout << "\nAfter:\n";
-	std::cout << solution.toString() << std::endl;
-	std::cout << "Original:\n" << sudoku.toString() << std::endl;
-	ASSERT_EQUAL(true, solution.isCorrect());
-}
-
-void dlxLargeTest() {
-	Sudoku sudoku = sampleSudoku();
-	std::cout << "Before:\n";
-	std::cout << sudoku.toString();
-	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.dlxGetSolution();
-	std::cout << "\nAfter:\n";
-	std::cout << solution.toString() << std::endl;
-	std::cout << "Original:\n" << sudoku.toString() << std::endl;
-	ASSERT_EQUAL(true, solution.isCorrect());
-}
-
-void dlxLargerTest() {
-	Sudoku sudoku = sampleHexadoku();
-	std::cout << "Before:\n";
-	std::cout << sudoku.toString();
-	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.dlxGetSolution();
 	std::cout << "\nAfter:\n";
 	std::cout << solution.toString() << std::endl;
 	std::cout << "Original:\n" << sudoku.toString() << std::endl;
@@ -227,9 +191,6 @@ cute::suite make_suite_SudokuSolver_test() {
 	s.push_back(CUTE(performanceTest2));
 	s.push_back(CUTE(hexadokuSolverTest));
 	s.push_back(CUTE(simpleSudokuSolverTest));
-	s.push_back(CUTE(dlxTest));
-	s.push_back(CUTE(dlxLargeTest));
-	s.push_back(CUTE(dlxLargerTest));
 	s.push_back(CUTE(sudokuBatchSolveTest));
 	s.push_back(CUTE(hexadokuBatchSolveTest));
 	s.push_back(CUTE(hardPuzzleTest));

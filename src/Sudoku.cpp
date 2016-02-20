@@ -31,7 +31,7 @@
 
 #include "Sudoku.hpp"
 
-#include <math.h>
+#include <cmath>
 #include <array>
 #include <string>
 
@@ -320,3 +320,7 @@ bool Sudoku::correctInCol(int col) {
 		}
 	return true;
 }
+
+int Sudoku::getSize() { return size; }
+void Sudoku::setCell(int row, int col, int val) { cells[row][col] = val; }
+int Sudoku::getCell(int row, int col){ return cells[row][col]; }
