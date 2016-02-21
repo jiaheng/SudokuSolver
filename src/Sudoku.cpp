@@ -129,7 +129,7 @@ void Sudoku::fillSudokuCell(std::string &input) {
 	int i { 0 }, j{ 0 };
 	for(char& c : input) {
 	    if (c == '.') cells[i][j] = 0;
-	    else if (c > '1' && c <= '9') cells[i][j] = c - '0';
+	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
 	    // next cell
 	    j++;
 	    if (j >= size) {
@@ -144,9 +144,9 @@ void Sudoku::fillHexadokuCell(std::string &input) {
 	int i { 0 }, j{ 0 };
 	for(char& c : input) {
 	    if (c == '.') cells[i][j] = 0;
-	    else if (c > '1' && c <= '9') cells[i][j] = c - '0';
-	    else if (c >= 'A' && c <= 'F') cells[i][j] = c - 'A' + 10;
-	    else if (c >= 'a' && c <= 'f') cells[i][j] = c - 'a' + 10;
+	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
+	    else if (c >= 'A' && c <= 'G') cells[i][j] = c - 'A' + 10;
+	    else if (c >= 'a' && c <= 'g') cells[i][j] = c - 'a' + 10;
 	    // next cell
 	    j++;
 	    if (j >= size) {
