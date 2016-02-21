@@ -187,11 +187,12 @@ bool DLX::solve() {
 	uncover(column);
 	//TODO: remove println
 	//std::cout << "size:" << solution.size() << ". " << std::endl;;
-	/*
+	/*/
 	for (auto num :solution) {
 		std::cout << num << " ";
 	}
-	std::cout << std::endl;*/
+	std::cout << std::endl;
+	/*/
 	return false;
 }
 

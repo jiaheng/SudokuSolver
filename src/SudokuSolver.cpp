@@ -67,7 +67,7 @@ void SudokuSolver::solve() {
 	std::vector<std::vector <int>> matrix = toExactCover();
 	DLX dlx { matrix };
 	//TODO: remove println
-	//
+	/*/
 	std::cout << "for puzzle: " << std::endl << m_puzzle.toString() << std::endl;
 	std::cout << "matrix size row: " << matrix.size() << ". col: " << matrix[0].size() << std::endl << "martrix: " << std::endl;
 	std::cout << "54 : " << getNumFromEC(matrix[54]) << std::endl;
@@ -78,7 +78,7 @@ void SudokuSolver::solve() {
 	for (auto c : matrix[63])
 		std::cout << c << " ";
 	std::cout << std::endl;
-	/*/
+	//
 	for (auto row : matrix) {
 		for (auto num : row) {
 			std::cout << num << " ";
@@ -101,12 +101,14 @@ std::vector<std::vector<int> > SudokuSolver::toExactCover() {
 					std::vector<int> row = toExactCoverRow(i, j, p_num);
 					matrix.push_back(row);
 					//TODO: remove test code below
+					/*/
 					if (matrix.size() == 55 || matrix.size() == 64) {
 						std::cout << "(" << p_num << ", " << i << ", " << j << ")" << std::endl;
 						for (auto c : row)
 							std::cout << c << " ";
 						std::cout << std::endl;
 					}
+					/*/
 				}
 			} else {
 				std::vector<int> row = toExactCoverRow(i, j, num);
@@ -115,12 +117,14 @@ std::vector<std::vector<int> > SudokuSolver::toExactCover() {
 				matrix.insert(it, row);
 				//matrix.push_back(row);
 				//TODO: remove test code below
+				/*/
 				if (matrix.size() == 55 || matrix.size() == 64) {
 					std::cout << "(" << num << ", " << i << ", " << j << ")" << std::endl;
 					for (auto c : row)
 						std::cout << c << " ";
 					std::cout << std::endl;
 				}
+				/*/
 			}
 		}
 	}
