@@ -49,6 +49,7 @@ private:
 	void initCells();
 	void fillSudokuCell(std::string &input);
 	void fillHexadokuCell(std::string &input);
+	void fillAlphadokuCell(std::string &input);
 	std::string sudokuToString();
 	std::string hexadokuToString();
 	std::string otherToString();

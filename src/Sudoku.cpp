@@ -58,6 +58,9 @@ Sudoku::Sudoku(std::string input) {
 	case 16:
 		fillHexadokuCell(input);
 		break;
+	case 25:
+		fillAlphadokuCell(input);
+		break;
 	default:
 		// Something wrong
 		break;
@@ -129,7 +132,8 @@ void Sudoku::fillSudokuCell(std::string &input) {
 	int i { 0 }, j{ 0 };
 	for(char& c : input) {
 	    if (c == '.') cells[i][j] = 0;
-	    else if (c > '1' && c <= '9') cells[i][j] = c - '0';
+	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
+	    else cells[i][j] = 0; //TODO: something wrong!!!
 	    // next cell
 	    j++;
 	    if (j >= size) {
@@ -144,9 +148,28 @@ void Sudoku::fillHexadokuCell(std::string &input) {
 	int i { 0 }, j{ 0 };
 	for(char& c : input) {
 	    if (c == '.') cells[i][j] = 0;
-	    else if (c > '1' && c <= '9') cells[i][j] = c - '0';
-	    else if (c >= 'A' && c <= 'F') cells[i][j] = c - 'A' + 10;
-	    else if (c >= 'a' && c <= 'f') cells[i][j] = c - 'a' + 10;
+	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
+	    else if (c >= 'A' && c <= 'G') cells[i][j] = c - 'A' + 10;
+	    else if (c >= 'a' && c <= 'g') cells[i][j] = c - 'a' + 10;
+	    else cells[i][j] = 0; //TODO: something wrong!!!
+	    // next cell
+	    j++;
+	    if (j >= size) {
+	    	i++;
+	    	j = 0;
+	    	if (i >= size) break;
+	    }
+	}
+}
+
+void Sudoku::fillAlphadokuCell(std::string &input) {
+	int i { 0 }, j{ 0 };
+	for(char& c : input) {
+	    if (c == '.') cells[i][j] = 0;
+	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
+	    else if (c >= 'A' && c <= 'Q') cells[i][j] = c - 'A' + 10;
+	    else if (c >= 'a' && c <= 'q') cells[i][j] = c - 'a' + 10;
+	    else cells[i][j] = 0; //TODO: something wrong!!!
 	    // next cell
 	    j++;
 	    if (j >= size) {
@@ -222,8 +245,13 @@ std::string Sudoku::toSimpleString() {
 	std::string string { "" };
 	for (int row = 0; row < size; row++) {
 		for (int col = 0; col < size; col++) {
-			if (cells[row][col] == 0) string += ".";
-			else string += std::to_string(cells[row][col]);
+			int num { cells[row][col] };
+			if (num == 0) string += ".";
+			else if (num > 9) {
+				char c = 'A' + num - 10;
+				string += c;
+			}
+			else string += std::to_string(num);
 		}
 	}
 	return string;
