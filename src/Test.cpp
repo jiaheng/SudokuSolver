@@ -38,8 +38,8 @@ void runAllTests(int argc, char const *argv[]){
 	//TODO add your test suite here
 	//cute::makeRunner(lis,argc,argv)(s, "AllTests");
 	cute::makeRunner(lis,argc,argv)(make_suite_Sudoku_test(), "Sudoku Test");
-	cute::makeRunner(lis,argc,argv)(make_suite_SudokuSolver_test(), "Sudoku Solver Test");
 	cute::makeRunner(lis,argc,argv)(make_suite_DLX_test(), "DLX Test");
+	cute::makeRunner(lis,argc,argv)(make_suite_SudokuSolver_test(), "Sudoku Solver Test");
 }
 
 int main(int argc, char const *argv[]){
