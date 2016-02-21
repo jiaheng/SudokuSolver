@@ -29,8 +29,8 @@
  *      Author: jiaheng
  */
 
-#include <vector>
 #include <cassert>
+#include <vector>
 #include <cmath>
 #include <algorithm>
 #include <iostream>
@@ -86,7 +86,13 @@ void SudokuSolver::solve() {
 		std::cout << std::endl;
 	}
 	/*/
-	assert(dlx.solve());
+	if (!dlx.solve()) {
+		//TODO: remove println
+		std::cout << matrix[0].size() << std::endl;
+		std::cout << "NO SOLUTION FOUND!!!" << std::endl;
+		std::cout << "279 is only sol? " << getNumFromEC(matrix[279]) << std::endl;
+		std::cout << "291 is next 1 of 2 sol? " << getNumFromEC(matrix[291]) << std::endl;
+	}
 	std::vector<int> solution = dlx.getSolution();
 	fillSudoku(matrix, solution);
 }
@@ -145,6 +151,14 @@ std::vector<int> SudokuSolver::toExactCoverRow(int row, int col, int num) {
 	ec_row[cond_row] = 1;
 	ec_row[cond_col] = 1;
 	ec_row[cond_region] = 1;
+	//TODO: remove println
+	/*/
+	std::cout << "(" << num << ", " << row << ", " << col << ") become" << std::endl;
+	for (auto num : ec_row) {
+		std::cout << num << " ";
+	}
+	std::cout << std::endl;
+	/*/
 	return ec_row;
 }
 
