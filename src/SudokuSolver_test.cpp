@@ -96,7 +96,7 @@ void sudokuBatchSolveTest() {
 		clock_t end = clock();
 		time += static_cast<unsigned int>(end - start);
 		std::string msg { "Solution for puzzle #" };
-		msg += index;
+		msg += std::to_string(index);
 		msg += " is not correct.";
 		ASSERT_EQUALM(msg, true, solution.isCorrect());
 		index++;
@@ -121,13 +121,14 @@ void hexadokuBatchSolveTest() {
 	unsigned int time { 0 };
 	for (auto &hexadoku : puzzles) {
 		std::cout << "Solving 16x16 puzzle #" << index << "..." << std::endl;
+		std::cout << hexadoku.toSimpleString() << std::endl;
 		SudokuSolver solver(hexadoku);
 		clock_t start = clock();
 		Sudoku solution = solver.getSolution();
 		clock_t end = clock();
 		time += static_cast<unsigned int>(end - start);
 		std::string msg { "Solution for puzzle #" };
-		msg += index;
+		msg += std::to_string(index);
 		msg += " is not correct.";
 		ASSERT_EQUALM(msg, true, solution.isCorrect());
 		index++;
@@ -163,15 +164,15 @@ void hardPuzzleTest() {
 	}
 	int index { 1 };
 	unsigned int time { 0 };
-	for (auto &hexadoku : puzzles) {
-		std::cout << "Solving 16x16 puzzle #" << index << "..." << std::endl;
-		SudokuSolver solver(hexadoku);
+	for (auto &sudoku : puzzles) {
+		std::cout << "Solving " + std::to_string(sudoku.getSize()) + "x" + std::to_string(sudoku.getSize()) + " puzzle #" << index << "..." << std::endl;
+		SudokuSolver solver(sudoku);
 		clock_t start = clock();
 		Sudoku solution = solver.getSolution();
 		clock_t end = clock();
 		time += static_cast<unsigned int>(end - start);
 		std::string msg { "Solution for puzzle #" };
-		msg += index;
+		msg += std::to_string(index);
 		msg += " is not correct.";
 		ASSERT_EQUALM(msg, true, solution.isCorrect());
 		index++;
@@ -180,6 +181,20 @@ void hardPuzzleTest() {
 			<< ((float) time) / CLOCKS_PER_SEC
 			<< "seconds to solve all 44 16x16 sudoku." << std::endl;
 	ASSERT(true);
+}
+
+void singlePuzzleTest() {
+	// for some puzzle that gives error
+	std::string input { ".8..1......5....3.......4.....6.5.7.89....2.....3.....2.....1.9..67........4....." };
+	Sudoku sudoku {input};
+	std::cout << "Before:\n";
+	std::cout << sudoku.toString();
+	SudokuSolver solver(sudoku);
+	Sudoku solution = solver.getSolution();
+	std::cout << "\nAfter:\n";
+	std::cout << solution.toString() << std::endl;
+	std::cout << "Original:\n" << sudoku.toString() << std::endl;
+	ASSERT_EQUAL(true, solution.isCorrect());
 }
 
 cute::suite make_suite_SudokuSolver_test() {
@@ -191,6 +206,7 @@ cute::suite make_suite_SudokuSolver_test() {
 	s.push_back(CUTE(performanceTest2));
 	s.push_back(CUTE(hexadokuSolverTest));
 	s.push_back(CUTE(simpleSudokuSolverTest));
+	s.push_back(CUTE(singlePuzzleTest));
 	s.push_back(CUTE(sudokuBatchSolveTest));
 	s.push_back(CUTE(hexadokuBatchSolveTest));
 	s.push_back(CUTE(hardPuzzleTest));
