@@ -34,7 +34,6 @@
 int main(int argc, char* argv[]) {
 	bool verbose { false };
 	bool write { false };
-	bool multi_thread { true };
 	std::string input { };
 	std::string output { };
 
@@ -43,7 +42,6 @@ int main(int argc, char* argv[]) {
 	input = args[1];
 	for (size_t i = 2; i < args.size(); ++i) {
 		if (args[i] == "-v") verbose = true;
-		if (args[i] == "-no_mt") multi_thread = false;
 		else if (args[i] == "-o") {
 			write = true;
 			// if there is no other argument after -o
