@@ -10,12 +10,15 @@ void hexadokuPerformanceTest() {
 	Sudoku sudoku = sampleHexadoku();
 	SudokuSolver solver(sudoku);
 	int start = clock();
-	Sudoku solution = solver.getSolution();
+	auto result = solver.search();
 	int end = clock();
 	std::cout << "it took " << end - start << "ticks, or "
 			<< ((float) end - start) / CLOCKS_PER_SEC << "seconds."
 			<< std::endl;
-	ASSERT_EQUAL(true, solution.isCorrect());
+	ASSERT(result.number_of_solution > 0);
+	for (auto solution : result.solutions) {
+		ASSERT(solution.isCorrect());
+	}
 }
 
 void solverTest() {
@@ -23,23 +26,28 @@ void solverTest() {
 	std::cout << "Before:\n";
 	std::cout << sudoku.toString();
 	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.getSolution();
+	auto result = solver.search();
 	std::cout << "\nAfter:\n";
-	std::cout << solution.toString() << std::endl;
-	std::cout << "Original:\n" << sudoku.toString() << std::endl;
-	ASSERT_EQUAL(true, solution.isCorrect());
+	ASSERT(result.number_of_solution > 0);
+	for (auto solution : result.solutions) {
+		ASSERT(solution.isCorrect());
+		std::cout << solution.toString() << std::endl;
+	}
 }
 
 void performanceTest() {
 	Sudoku sudoku = sampleSudoku();
 	SudokuSolver solver(sudoku);
 	int start = clock();
-	Sudoku solution = solver.getSolution();
+	auto result = solver.search();
 	int end = clock();
 	std::cout << "it took " << end - start << "ticks, or "
 			<< ((float) end - start) / CLOCKS_PER_SEC << "seconds."
 			<< std::endl;
-	ASSERT_EQUAL(true, solution.isCorrect());
+	ASSERT(result.number_of_solution > 0);
+	for (auto solution : result.solutions) {
+		ASSERT(solution.isCorrect());
+	}
 }
 
 void solverTest2() {
@@ -47,22 +55,28 @@ void solverTest2() {
 	std::cout << "Before:\n";
 	std::cout << sudoku.toString();
 	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.getSolution();
+	auto result = solver.search();
 	std::cout << "\nAfter:\n";
-	std::cout << solution.toString();
-	ASSERT_EQUAL(true, solution.isCorrect());
+	ASSERT(result.number_of_solution > 0);
+	for (auto solution : result.solutions) {
+		ASSERT(solution.isCorrect());
+		std::cout << solution.toString() << std::endl;
+	}
 }
 
 void performanceTest2() {
 	Sudoku sudoku = sampleSudoku2();
 	SudokuSolver solver(sudoku);
 	int start = clock();
-	Sudoku solution = solver.getSolution();
+	auto result = solver.search();
 	int end = clock();
 	std::cout << "it took " << end - start << "ticks, or "
 			<< ((float) end - start) / CLOCKS_PER_SEC << "seconds."
 			<< std::endl;
-	ASSERT_EQUAL(true, solution.isCorrect());
+	ASSERT(result.number_of_solution > 0);
+	for (auto solution : result.solutions) {
+		ASSERT(solution.isCorrect());
+	}
 }
 
 void hexadokuSolverTest() {
@@ -70,10 +84,13 @@ void hexadokuSolverTest() {
 	std::cout << "Before:\n";
 	std::cout << sudoku.toString();
 	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.getSolution();
+	auto result = solver.search();
 	std::cout << "\nAfter:\n";
-	std::cout << solution.toString();
-	ASSERT_EQUAL(true, solution.isCorrect());
+	ASSERT(result.number_of_solution > 0);
+	for (auto solution : result.solutions) {
+		ASSERT(solution.isCorrect());
+		std::cout << solution.toString() << std::endl;
+	}
 }
 
 void sudokuBatchSolveTest() {
@@ -92,14 +109,17 @@ void sudokuBatchSolveTest() {
 		std::cout << "Solving 9x9 puzzle #" << index << "..." << std::endl;
 		SudokuSolver solver(sudoku);
 		clock_t start = clock();
-		Sudoku solution = solver.getSolution();
+		auto result= solver.search();
 		clock_t end = clock();
 		time += static_cast<unsigned int>(end - start);
 		std::string msg { "Solution for puzzle #" };
 		msg += std::to_string(index);
 		msg += " is not correct.";
-		ASSERT_EQUALM(msg, true, solution.isCorrect());
-		verifyResult(sudoku, solution);
+		ASSERT(result.number_of_solution > 0);
+		for (auto solution : result.solutions) {
+			ASSERTM(msg, solution.isCorrect());
+			verifyResult(sudoku, solution);
+		}
 		index++;
 	}
 	std::cout << "it took " << time << "ticks, or "
@@ -125,14 +145,17 @@ void hexadokuBatchSolveTest() {
 		std::cout << hexadoku.toSimpleString() << std::endl;
 		SudokuSolver solver(hexadoku);
 		clock_t start = clock();
-		Sudoku solution = solver.getSolution();
+		auto result = solver.search();
 		clock_t end = clock();
 		time += static_cast<unsigned int>(end - start);
 		std::string msg { "Solution for puzzle #" };
 		msg += std::to_string(index);
 		msg += " is not correct.";
-		ASSERT_EQUALM(msg, true, solution.isCorrect());
-		verifyResult(hexadoku, solution);
+		ASSERT(result.number_of_solution > 0);
+		for (auto solution : result.solutions) {
+			ASSERTM(msg, solution.isCorrect());
+			verifyResult(hexadoku, solution);
+		}
 		index++;
 	}
 	std::cout << "it took " << time << "ticks, or "
@@ -146,12 +169,14 @@ void simpleSudokuSolverTest() {
 	std::cout << "Before:\n";
 	std::cout << sudoku.toString();
 	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.getSolution();
+	auto result = solver.search();
 	std::cout << "\nAfter:\n";
-	std::cout << solution.toString() << std::endl;
-	std::cout << "Original:\n" << sudoku.toString() << std::endl;
-	ASSERT_EQUAL(true, solution.isCorrect());
-	verifyResult(sudoku, solution);
+	ASSERT(result.number_of_solution > 0);
+	for (auto solution : result.solutions) {
+		ASSERT(solution.isCorrect());
+		verifyResult(sudoku, solution);
+		std::cout << solution.toString() << std::endl;
+	}
 }
 
 void hardPuzzleTest() {
@@ -171,14 +196,17 @@ void hardPuzzleTest() {
 		std::cout << "Solving " + std::to_string(sudoku.getSize()) + "x" + std::to_string(sudoku.getSize()) + " puzzle #" << index << "..." << std::endl;
 		SudokuSolver solver(sudoku);
 		clock_t start = clock();
-		Sudoku solution = solver.getSolution();
+		auto result = solver.search();
 		clock_t end = clock();
 		time += static_cast<unsigned int>(end - start);
 		std::string msg { "Solution for puzzle #" };
 		msg += std::to_string(index);
 		msg += " is not correct.";
-		ASSERT_EQUALM(msg, true, solution.isCorrect());
-		verifyResult(sudoku, solution);
+		ASSERT(result.number_of_solution > 0);
+		for (auto solution : result.solutions) {
+			ASSERT(solution.isCorrect());
+			verifyResult(sudoku, solution);
+		}
 		index++;
 	}
 	std::cout << "it took " << time << "ticks, or "
@@ -194,12 +222,14 @@ void singlePuzzleTest() {
 	std::cout << "Before:\n";
 	std::cout << sudoku.toString();
 	SudokuSolver solver(sudoku);
-	Sudoku solution = solver.getSolution();
+	auto result = solver.search();
 	std::cout << "\nAfter:\n";
-	std::cout << solution.toString() << std::endl;
-	std::cout << "Original:\n" << sudoku.toString() << std::endl;
-	ASSERT_EQUAL(true, solution.isCorrect());
-	verifyResult(sudoku, solution);
+	ASSERT(result.number_of_solution > 0);
+	for (auto solution : result.solutions) {
+		ASSERT(solution.isCorrect());
+		verifyResult(sudoku, solution);
+		std::cout << solution.toString() << std::endl;
+	}
 }
 
 void verifyResult(Sudoku problem, Sudoku result) {
