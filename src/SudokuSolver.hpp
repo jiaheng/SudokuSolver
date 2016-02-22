@@ -23,8 +23,6 @@ private:
 	Sudoku m_puzzle;
 	int m_size { };
 
-	SudokuSolver() {} // private default constructor
-
 public:
 	SudokuSolver(Sudoku puzzle);
 	SudokuSolver(int **const arr, int size);

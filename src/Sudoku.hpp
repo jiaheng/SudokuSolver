@@ -18,7 +18,6 @@ private:
 	int sqr_size { };
 
 public:
-	Sudoku() {}
 	Sudoku(int **const arr, int size);
 	Sudoku(std::string input);
 	Sudoku(const Sudoku &other);

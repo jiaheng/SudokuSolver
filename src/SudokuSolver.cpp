@@ -38,14 +38,12 @@
 #include "Sudoku.hpp"
 #include "DLX.hpp"
 
-SudokuSolver::SudokuSolver(Sudoku puzzle) {
-	m_puzzle = Sudoku(puzzle);
+SudokuSolver::SudokuSolver(Sudoku puzzle) : m_puzzle(puzzle){
 	m_size = m_puzzle.getSize();
 }
 
-SudokuSolver::SudokuSolver(int ** const arr, int m_size) {
-	m_puzzle = Sudoku(arr, m_size);
-	m_size = m_puzzle.getSize();
+SudokuSolver::SudokuSolver(int ** const arr, int size) : m_puzzle(arr, size) {
+	m_size = size;
 }
 
 SudokuSolver::SSResult SudokuSolver::search() {
@@ -84,6 +82,7 @@ SudokuSolver::SSResult SudokuSolver::search() {
 		std::cout << "291 is next 1 of 2 sol? " << getNumFromEC(matrix[291])
 				<< std::endl;
 	}
+	std::cout << "return search" << std::endl;
 	return result;
 }
 
@@ -154,9 +153,12 @@ std::vector<int> SudokuSolver::toExactCoverRow(int row, int col, int num) {
 
 Sudoku SudokuSolver::toSudoku(std::vector<std::vector<int> > matrix,
 		std::vector<int> solution) {
-	Sudoku sudoku { };
+	std::cout << "creating so sudoku" << std::endl;
+	Sudoku sudoku { m_puzzle };
+	std::cout << "empty sudoku created" << std::endl;
 	for (auto row : solution)
 		rowToSudoku(matrix[row], &sudoku);
+	std::cout << "return reslt sudoku" << std::endl;
 	return sudoku;
 }
 
