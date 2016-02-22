@@ -72,6 +72,7 @@ SudokuSolver::SSResult SudokuSolver::search() {
 	 /*/
 	if (dlx.solve()) {
 		std::vector<int> solution = dlx.getSolution();
+		++result.number_of_solution;
 		result.solutions.push_back(toSudoku(matrix, solution));
 	} else {
 		//TODO: remove println
