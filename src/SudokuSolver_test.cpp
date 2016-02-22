@@ -88,9 +88,9 @@ void sudokuBatchSolveTest() {
 	}
 	int index { 1 };
 	unsigned int time { 0 };
-	for (auto &hexadoku : puzzles) {
+	for (auto &sudoku : puzzles) {
 		std::cout << "Solving 9x9 puzzle #" << index << "..." << std::endl;
-		SudokuSolver solver(hexadoku);
+		SudokuSolver solver(sudoku);
 		clock_t start = clock();
 		Sudoku solution = solver.getSolution();
 		clock_t end = clock();
@@ -99,6 +99,7 @@ void sudokuBatchSolveTest() {
 		msg += std::to_string(index);
 		msg += " is not correct.";
 		ASSERT_EQUALM(msg, true, solution.isCorrect());
+		verifyResult(sudoku, solution);
 		index++;
 	}
 	std::cout << "it took " << time << "ticks, or "
@@ -131,6 +132,7 @@ void hexadokuBatchSolveTest() {
 		msg += std::to_string(index);
 		msg += " is not correct.";
 		ASSERT_EQUALM(msg, true, solution.isCorrect());
+		verifyResult(hexadoku, solution);
 		index++;
 	}
 	std::cout << "it took " << time << "ticks, or "
@@ -149,6 +151,7 @@ void simpleSudokuSolverTest() {
 	std::cout << solution.toString() << std::endl;
 	std::cout << "Original:\n" << sudoku.toString() << std::endl;
 	ASSERT_EQUAL(true, solution.isCorrect());
+	verifyResult(sudoku, solution);
 }
 
 void hardPuzzleTest() {
@@ -175,6 +178,7 @@ void hardPuzzleTest() {
 		msg += std::to_string(index);
 		msg += " is not correct.";
 		ASSERT_EQUALM(msg, true, solution.isCorrect());
+		verifyResult(sudoku, solution);
 		index++;
 	}
 	std::cout << "it took " << time << "ticks, or "
@@ -195,6 +199,20 @@ void singlePuzzleTest() {
 	std::cout << solution.toString() << std::endl;
 	std::cout << "Original:\n" << sudoku.toString() << std::endl;
 	ASSERT_EQUAL(true, solution.isCorrect());
+	verifyResult(sudoku, solution);
+}
+
+void verifyResult(Sudoku problem, Sudoku result) {
+	ASSERTM("Puzzle is not solved", result.isCorrect());
+	ASSERTM("Size of the puzzle not equal!", problem.getSize() == result.getSize());
+	for (int i = 0; i < problem.getSize(); ++i) {
+		for (int j = 0; j < problem.getSize(); ++j) {
+			if (problem.getCell(i, j) != 0) {
+				std::string msg = "the number are not the same at (" + std::to_string(i) + ", " + std::to_string(j) + ").";
+				ASSERTM(msg, problem.getCell(i, j) == result.getCell(i, j));
+			}
+		}
+	}
 }
 
 cute::suite make_suite_SudokuSolver_test() {
@@ -206,7 +224,7 @@ cute::suite make_suite_SudokuSolver_test() {
 	s.push_back(CUTE(performanceTest2));
 	s.push_back(CUTE(hexadokuSolverTest));
 	s.push_back(CUTE(simpleSudokuSolverTest));
-	s.push_back(CUTE(singlePuzzleTest));
+	//s.push_back(CUTE(singlePuzzleTest));
 	s.push_back(CUTE(sudokuBatchSolveTest));
 	s.push_back(CUTE(hexadokuBatchSolveTest));
 	s.push_back(CUTE(hardPuzzleTest));
