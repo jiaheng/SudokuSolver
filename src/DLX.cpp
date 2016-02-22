@@ -29,18 +29,19 @@
  *      Author: jiaheng
  */
 
-#include <iostream>
 #include "DLX.hpp"
 
 DLX::DLX(std::vector<std::vector <int>> matrix) {
 	const int col_size = matrix[0].size();
 	head = new DLNode{ };
+	nodes.push_back(head);
 	std::vector<DLNode*> temp_col_ptr { };
 	std::vector<DLNode*> head_col_ptr { };
 	DLNode *node_ptr = head;
 	// create column node
 	for (int i = 0; i < col_size; ++i) {
 		auto *node = new DLNode{ 0, i };
+		nodes.push_back(node);
 		node_ptr->setRight(node);
 		node->setLeft(node_ptr);
 		node->setColumnNode(node);
@@ -59,6 +60,7 @@ DLX::DLX(std::vector<std::vector <int>> matrix) {
 		for (int j = 0; j < col_size; ++j) {
 			if (matrix[i][j] == 1) {
 				auto *node = new DLNode { i, j };
+				nodes.push_back(node);
 				node->setColumnNode(head_col_ptr[j]);
 				temp_col_ptr[j]->setDown(node);
 				node->setUp(temp_col_ptr[j]);
@@ -81,17 +83,9 @@ DLX::DLX(std::vector<std::vector <int>> matrix) {
 }
 
 DLX::~DLX() {
-	while (head->getRight() != head) {
-		DLNode *col_node = head->getRight();
-		while (col_node->getDown() != col_node) {
-			DLNode *node = col_node->getDown();
-			node->vRemove();
-			delete node;
-		}
-		col_node->hRemove();
-		delete col_node;
+	for (auto node : nodes) {
+		delete node;
 	}
-	delete head;
 }
 
 std::string DLX::toString() {

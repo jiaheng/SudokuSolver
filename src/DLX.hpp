@@ -23,9 +23,8 @@ public:
 
 private:
 	std::vector<int> solution { };
-	DLNode *head {nullptr};
-
-	DLX() {}
+	DLNode *head;
+	std::vector<DLNode*> nodes { };
 
 	void cover(DLNode *node);
 	void uncover(DLNode *node);
