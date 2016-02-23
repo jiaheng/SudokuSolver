@@ -30,6 +30,7 @@
  */
 
 #include "DLNode.hpp"
+#include <cassert>
 
 DLNode::DLNode() {
 	left = right = up = down = column_node = nullptr;
@@ -94,11 +95,15 @@ void DLNode::setUp(DLNode*& up) {
 }
 
 void DLNode::hRemove() {
+	assert(this->left->right == this);
+	assert(this->right->left == this);
 	this->left->right = this->right;
 	this->right->left = this->left;
 }
 
 void DLNode::vRemove() {
+	assert(this->down->up == this);
+	assert(this->up->down == this);
 	this->down->up = this->up;
 	this->up->down = this->down;
 }
@@ -106,9 +111,13 @@ void DLNode::vRemove() {
 void DLNode::hRestore() {
 	this->right->left = this;
 	this->left->right = this;
+	assert(this->right->left == this);
+	assert(this->left->right == this);
 }
 
 void DLNode::vRestore() {
 	this->up->down = this;
 	this->down->up = this;
+	assert(this->down->up == this);
+	assert(this->up->down == this);
 }

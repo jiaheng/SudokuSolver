@@ -145,7 +145,8 @@ DLNode *DLX::chooseNextColumn() {
 			*next_col = column;
 	while (column != head) {
 		int node_num = totalNode(column);
-		if (node_num <= 1) return column;
+		if (node_num == 0) return head;
+		else if (node_num == 1) return column;
 		else if (min_num == 0 || node_num < min_num) {
 			min_num = node_num;
 			next_col = column;
@@ -166,18 +167,30 @@ int DLX::totalNode(DLNode *column) {
 }
 
 bool DLX::solve() {
+	//TODO:remove below
+	int test_count {0};
+	//
 	if (head->getRight() == head) return true;
 	DLNode *column = chooseNextColumn();
+	if (column == head) return false; //there is a column with no node
 	cover(column);
+	//std::cout << "cover col " << column->getCol() << std::flush;
 	for (auto row = column->getDown(); row != column; row = row->getDown()) {
 		solution.push_back(row->getRow());
 		for (auto rightNode = row->getRight(); rightNode != row; rightNode = rightNode->getRight())
+		{
+			//std::cout << std::setw(15) << "cover row " << rightNode->getRow() << std::flush;
 			cover(rightNode);
+		}
 		if (solve()) return true;
 		solution.pop_back();
-		for (auto rightNode = row->getRight(); rightNode != row; rightNode = rightNode->getRight())
-			uncover(rightNode);
+		for (auto leftNode = row->getLeft(); leftNode != row; leftNode = leftNode->getLeft())
+		{
+			//std::cout << std::setw(15) << "uncover row " << leftNode->getRow() << std::flush;
+			uncover(leftNode);
+		}
 	}
+	//std::cout << std::setw(15) << "uncover col " << column->getCol() << std::endl;
 	uncover(column);
 	//TODO: remove println
 	//std::cout << "size:" << solution.size() << ". " << std::endl;;
