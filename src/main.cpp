@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-	// reading 9x9 sudoku
+	// reading sudoku
 	std::string line { };
 	std::vector<Sudoku> puzzles { };
 	while (std::getline(infile, line)) {
