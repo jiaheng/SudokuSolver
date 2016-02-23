@@ -30,14 +30,12 @@
  */
 
 #include "Sudoku.hpp"
-
 #include <cmath>
 #include <array>
 #include <string>
 
 Sudoku::Sudoku(int **const arr, int p_size) {
 	size = p_size;
-	sqr_size = static_cast<int>(sqrt(size));
 	initCells();
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++)
@@ -47,8 +45,7 @@ Sudoku::Sudoku(int **const arr, int p_size) {
 
 Sudoku::Sudoku(std::string input) {
 	rtrim(input, ' ');
-	size = static_cast<int>(sqrt(input.length()));
-	sqr_size = static_cast<int>(sqrt(size));
+	size = static_cast<int>(std::sqrt(input.length()));
 	initCells();
 	switch(size) {
 	case 4:
@@ -69,7 +66,6 @@ Sudoku::Sudoku(std::string input) {
 
 Sudoku::Sudoku(const Sudoku &other) {
 	size = other.size;
-	sqr_size = other.sqr_size;
 	initCells();
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++)
@@ -91,7 +87,6 @@ Sudoku& Sudoku::operator=(const Sudoku &rhs) {
 		}
 		delete[] cells;
 		size = rhs.size;
-		sqr_size = rhs.sqr_size;
 		initCells();
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++)
@@ -281,8 +276,9 @@ bool Sudoku::safeInCol(int col, int num) {
 }
 
 bool Sudoku::safeInSqr(int startRow, int startCol, int num) {
-	int endRow { startRow + sqr_size },
-		endCol { startCol + sqr_size };
+	int sqrt_size {static_cast<int>(std::sqrt(size))};
+	int	endRow { startRow + sqrt_size },
+		endCol { startCol + sqrt_size };
 	for (int i = startRow; i < endRow; i++)
 		for (int j = startCol; j < endCol; j++)
 			if (cells[i][j] == num) return false;
@@ -291,9 +287,10 @@ bool Sudoku::safeInSqr(int startRow, int startCol, int num) {
 
 bool Sudoku::isSafe(int row, int col, int num) {
 	if (!cellIsEmpty(row, col)) return false;
+	int sqrt_size {static_cast<int>(std::sqrt(size))};
 	return (safeInRow(row, num) &&
 			safeInCol(col, num) &&
-			safeInSqr(row - row%sqr_size, col - col%sqr_size, num));
+			safeInSqr(row - row%sqrt_size, col - col%sqrt_size, num));
 }
 
 bool Sudoku::cellIsEmpty(int row, int col) {
@@ -301,8 +298,9 @@ bool Sudoku::cellIsEmpty(int row, int col) {
 }
 
 bool Sudoku::correctInSqr(int startRow, int startCol) {
-	int endRow { startRow + sqr_size },
-		endCol { startCol + sqr_size };
+	int sqrt_size {static_cast<int>(std::sqrt(size))};
+	int endRow { startRow + sqrt_size },
+		endCol { startCol + sqrt_size };
 	for (int val = 1; val <= size; val++) {
 		bool num_exist { false };
 		for (int i = startRow; i < endRow; i++)
@@ -321,8 +319,9 @@ bool Sudoku::isCorrect() {
 	for (int i = 0; i < size; i++) {
 		if (!correctInRow(i) || !correctInCol(i)) return false;
 	}
-	for (int i = 0; i < size; i+=sqr_size) {
-		for (int j = 0; j < size; j+=sqr_size) {
+	int sqrt_size {static_cast<int>(std::sqrt(size))};
+	for (int i = 0; i < size; i+=sqrt_size) {
+		for (int j = 0; j < size; j+=sqrt_size) {
 			if (!correctInSqr(i,j)) return false;
 		}
 	}

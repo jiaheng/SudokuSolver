@@ -14,8 +14,7 @@
 class Sudoku {
 private:
 	int** cells { NULL };
-	int size { };
-	int sqr_size { };
+	int size;
 
 public:
 	Sudoku(int **const arr, int size);
