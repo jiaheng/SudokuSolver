@@ -17,7 +17,6 @@ public:
 	DLX(std::vector<std::vector <int>> matrix);
 	~DLX();
 
-	std::string toString();
 	bool solve();
 	std::vector<int> getSolution();
 

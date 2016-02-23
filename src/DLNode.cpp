@@ -33,37 +33,28 @@
 #include <cassert>
 
 DLNode::DLNode() {
-	col = 0;
 	left = right = up = down = column_node = nullptr;
 }
 
 DLNode::DLNode(int j) {
-	left = right = up = down = column_node = nullptr;
+	left = right = up = down = nullptr;
 	number_of_nodes = 0;
-	col = j;
+	column_node = this;
 }
 
-DLNode::DLNode(int i, int j) {
-	left = right = up = down = column_node = nullptr;
+DLNode::DLNode(int i, int j, DLNode *columnNode) {
+	left = right = up = down = nullptr;
 	row = i;
-	col = j;
+	column_node = columnNode;
+	column_node->number_of_nodes++;
 }
 
 DLNode::~DLNode() {
 	// TODO Auto-generated destructor stub
 }
 
-int DLNode::getCol()  {
-	return col;
-}
-
 DLNode*& DLNode::getColumnNode() {
 	return column_node;
-}
-
-void DLNode::setColumnNode(DLNode*& columnNode) {
-	column_node = columnNode;
-	column_node->number_of_nodes++;
 }
 
  DLNode*& DLNode::getDown()  {

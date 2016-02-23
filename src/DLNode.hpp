@@ -12,12 +12,10 @@ class DLNode {
 public:
 	DLNode(); // for head
 	DLNode(int col); // for column nodes
-	DLNode(int row, int col); // for nodes
+	DLNode(int row, int col, DLNode *column); // for nodes
 	~DLNode();
 
-	int getCol();
 	DLNode*& getColumnNode();
-	void setColumnNode(DLNode*& columnNode);
 	DLNode*& getDown();
 	void setDown(DLNode*& down);
 	DLNode*& getLeft();
@@ -36,7 +34,6 @@ public:
 
 private:
 	DLNode *left, *right, *up, *down, *column_node;
-	int col;
 	union {
 		int row;
 		int number_of_nodes;
