@@ -33,7 +33,6 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
-#include <iostream>
 #include "SudokuSolver.hpp"
 #include "Sudoku.hpp"
 #include "DLX.hpp"
@@ -50,40 +49,11 @@ SudokuSolver::SSResult SudokuSolver::search() {
 	SSResult result { };
 	std::vector<std::vector<int>> matrix = toExactCover();
 	DLX dlx { matrix };
-	//TODO: remove println
-	/*/
-	 std::cout << "for puzzle: " << std::endl << m_puzzle.toString() << std::endl;
-	 std::cout << "matrix size row: " << matrix.size() << ". col: " << matrix[0].size() << std::endl << "martrix: " << std::endl;
-	 std::cout << "54 : " << getNumFromEC(matrix[54]) << std::endl;
-	 for (auto c : matrix[54])
-	 std::cout << c << " ";
-	 std::cout << std::endl;
-	 std::cout << "63 : " << getNumFromEC(matrix[63]) << std::endl;
-	 for (auto c : matrix[63])
-	 std::cout << c << " ";
-	 std::cout << std::endl;
-	 //
-	 for (auto row : matrix) {
-	 for (auto num : row) {
-	 std::cout << num << " ";
-	 }
-	 std::cout << std::endl;
-	 }
-	 /*/
 	if (dlx.solve()) {
 		std::vector<int> solution = dlx.getSolution();
 		++result.number_of_solution;
 		result.solutions.push_back(toSudoku(matrix, solution));
-	} else {
-		//TODO: remove println
-		std::cout << matrix[0].size() << std::endl;
-		std::cout << "NO SOLUTION FOUND!!!" << std::endl;
-		std::cout << "279 is only sol? " << getNumFromEC(matrix[279])
-				<< std::endl;
-		std::cout << "291 is next 1 of 2 sol? " << getNumFromEC(matrix[291])
-				<< std::endl;
 	}
-	std::cout << "return search" << std::endl;
 	return result;
 }
 
@@ -96,31 +66,10 @@ std::vector<std::vector<int> > SudokuSolver::toExactCover() {
 				for (int p_num = 1; p_num <= m_size; ++p_num) {
 					std::vector<int> row = toExactCoverRow(i, j, p_num);
 					matrix.push_back(row);
-					//TODO: remove test code below
-					/*/
-					 if (matrix.size() == 55 || matrix.size() == 64) {
-					 std::cout << "(" << p_num << ", " << i << ", " << j << ")" << std::endl;
-					 for (auto c : row)
-					 std::cout << c << " ";
-					 std::cout << std::endl;
-					 }
-					 /*/
 				}
 			} else {
 				std::vector<int> row = toExactCoverRow(i, j, num);
-				//TODO: use push_bash instead this tedious
-				auto it = matrix.begin();
-				matrix.insert(it, row);
-				//matrix.push_back(row);
-				//TODO: remove test code below
-				/*/
-				 if (matrix.size() == 55 || matrix.size() == 64) {
-				 std::cout << "(" << num << ", " << i << ", " << j << ")" << std::endl;
-				 for (auto c : row)
-				 std::cout << c << " ";
-				 std::cout << std::endl;
-				 }
-				 /*/
+				matrix.push_back(row);
 			}
 		}
 	}
@@ -141,25 +90,14 @@ std::vector<int> SudokuSolver::toExactCoverRow(int row, int col, int num) {
 	ec_row[cond_row] = 1;
 	ec_row[cond_col] = 1;
 	ec_row[cond_region] = 1;
-	//TODO: remove println
-	/*/
-	 std::cout << "(" << num << ", " << row << ", " << col << ") become" << std::endl;
-	 for (auto num : ec_row) {
-	 std::cout << num << " ";
-	 }
-	 std::cout << std::endl;
-	 /*/
 	return ec_row;
 }
 
 Sudoku SudokuSolver::toSudoku(std::vector<std::vector<int> > matrix,
 		std::vector<int> solution) {
-	std::cout << "creating so sudoku" << std::endl;
 	Sudoku sudoku { m_puzzle };
-	std::cout << "empty sudoku created" << std::endl;
 	for (auto row : solution)
 		rowToSudoku(matrix[row], &sudoku);
-	std::cout << "return reslt sudoku" << std::endl;
 	return sudoku;
 }
 

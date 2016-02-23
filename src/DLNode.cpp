@@ -33,7 +33,14 @@
 #include <cassert>
 
 DLNode::DLNode() {
+	col = 0;
 	left = right = up = down = column_node = nullptr;
+}
+
+DLNode::DLNode(int j) {
+	left = right = up = down = column_node = nullptr;
+	number_of_nodes = 0;
+	col = j;
 }
 
 DLNode::DLNode(int i, int j) {
@@ -56,6 +63,7 @@ DLNode*& DLNode::getColumnNode() {
 
 void DLNode::setColumnNode(DLNode*& columnNode) {
 	column_node = columnNode;
+	column_node->number_of_nodes++;
 }
 
  DLNode*& DLNode::getDown()  {
@@ -106,6 +114,7 @@ void DLNode::vRemove() {
 	assert(this->up->down == this);
 	this->down->up = this->up;
 	this->up->down = this->down;
+	this->column_node->number_of_nodes--;
 }
 
 void DLNode::hRestore() {
@@ -118,6 +127,11 @@ void DLNode::hRestore() {
 void DLNode::vRestore() {
 	this->up->down = this;
 	this->down->up = this;
+	this->column_node->number_of_nodes++;
 	assert(this->down->up == this);
 	assert(this->up->down == this);
+}
+
+int DLNode::getNumberOfNode() {
+	return number_of_nodes;
 }

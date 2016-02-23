@@ -10,22 +10,24 @@
 
 class DLNode {
 public:
-	DLNode();
-	DLNode(int row, int col);
+	DLNode(); // for head
+	DLNode(int col); // for column nodes
+	DLNode(int row, int col); // for nodes
 	~DLNode();
 
-	int getCol() ;
+	int getCol();
 	DLNode*& getColumnNode();
 	void setColumnNode(DLNode*& columnNode);
-	 DLNode*& getDown() ;
-	void setDown( DLNode*& down);
-	 DLNode*& getLeft() ;
-	void setLeft( DLNode*& left);
-	 DLNode*& getRight() ;
-	void setRight( DLNode*& right);
-	int getRow() ;
-	 DLNode*& getUp() ;
+	DLNode*& getDown();
+	void setDown(DLNode*& down);
+	DLNode*& getLeft();
+	void setLeft(DLNode*& left);
+	DLNode*& getRight();
+	void setRight(DLNode*& right);
+	int getRow();
+	DLNode*& getUp();
 	void setUp(DLNode*& up);
+	int getNumberOfNode();
 
 	void hRemove(); // remove horizontally
 	void vRemove(); // remove vertically
@@ -34,7 +36,11 @@ public:
 
 private:
 	DLNode *left, *right, *up, *down, *column_node;
-	int row{}, col{};
+	int col;
+	union {
+		int row;
+		int number_of_nodes;
+	};
 };
 
 #endif /* SRC_DLNODE_HPP_ */

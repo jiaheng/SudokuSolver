@@ -40,7 +40,7 @@ DLX::DLX(std::vector<std::vector <int>> matrix) {
 	DLNode *node_ptr = head;
 	// create column node
 	for (int i = 0; i < col_size; ++i) {
-		auto *node = new DLNode{ 0, i };
+		auto *node = new DLNode{ i };
 		nodes.push_back(node);
 		node_ptr->setRight(node);
 		node->setLeft(node_ptr);
@@ -144,7 +144,7 @@ DLNode *DLX::chooseNextColumn() {
 	DLNode *column = head->getRight(),
 			*next_col = column;
 	while (column != head) {
-		int node_num = totalNode(column);
+		int node_num = column->getNumberOfNode();
 		if (node_num == 0) return head;
 		else if (node_num == 1) return column;
 		else if (min_num == 0 || node_num < min_num) {
@@ -156,50 +156,21 @@ DLNode *DLX::chooseNextColumn() {
 	return next_col;
 }
 
-int DLX::totalNode(DLNode *column) {
-	int node_num { 0 };
-	DLNode *node = column->getDown();
-	while (node != column) {
-		++node_num;
-		node = node->getDown();
-	}
-	return node_num;
-}
-
 bool DLX::solve() {
-	//TODO:remove below
-	int test_count {0};
-	//
 	if (head->getRight() == head) return true;
 	DLNode *column = chooseNextColumn();
 	if (column == head) return false; //there is a column with no node
 	cover(column);
-	//std::cout << "cover col " << column->getCol() << std::flush;
 	for (auto row = column->getDown(); row != column; row = row->getDown()) {
 		solution.push_back(row->getRow());
 		for (auto rightNode = row->getRight(); rightNode != row; rightNode = rightNode->getRight())
-		{
-			//std::cout << std::setw(15) << "cover row " << rightNode->getRow() << std::flush;
 			cover(rightNode);
-		}
 		if (solve()) return true;
 		solution.pop_back();
 		for (auto leftNode = row->getLeft(); leftNode != row; leftNode = leftNode->getLeft())
-		{
-			//std::cout << std::setw(15) << "uncover row " << leftNode->getRow() << std::flush;
 			uncover(leftNode);
-		}
 	}
-	//std::cout << std::setw(15) << "uncover col " << column->getCol() << std::endl;
 	uncover(column);
-	//TODO: remove println
-	//std::cout << "size:" << solution.size() << ". " << std::endl;;
-	/*/
-	for (auto num :solution) {
-		std::cout << num << " ";
-	}
-	std::cout << std::endl;
-	/*/
 	return false;
 }
 
