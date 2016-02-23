@@ -14,11 +14,9 @@
 class Sudoku {
 private:
 	int** cells { NULL };
-	int size { };
-	int sqr_size { };
+	int size;
 
 public:
-	Sudoku() {}
 	Sudoku(int **const arr, int size);
 	Sudoku(std::string input);
 	Sudoku(const Sudoku &other);
@@ -32,14 +30,10 @@ public:
 	bool isCorrect();
 	bool cellIsEmpty(int row, int col);
 
-	int getSize() { return size; }
-
-	void setCell(int row, int col, int val) { cells[row][col] = val; }
-
-	int getCell(int row, int col){ return cells[row][col]; }
-
+	int getSize();
+	void setCell(int row, int col, int val);
+	int getCell(int row, int col);
 	Sudoku& operator=(const Sudoku &rhs);
-
 	bool operator==(Sudoku &rhs);
 
 private:
@@ -53,6 +47,7 @@ private:
 	void initCells();
 	void fillSudokuCell(std::string &input);
 	void fillHexadokuCell(std::string &input);
+	void fillAlphadokuCell(std::string &input);
 	std::string sudokuToString();
 	std::string hexadokuToString();
 	std::string otherToString();

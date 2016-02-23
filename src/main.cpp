@@ -34,7 +34,6 @@
 int main(int argc, char* argv[]) {
 	bool verbose { false };
 	bool write { false };
-	bool multi_thread { true };
 	std::string input { };
 	std::string output { };
 
@@ -43,7 +42,6 @@ int main(int argc, char* argv[]) {
 	input = args[1];
 	for (size_t i = 2; i < args.size(); ++i) {
 		if (args[i] == "-v") verbose = true;
-		if (args[i] == "-no_mt") multi_thread = false;
 		else if (args[i] == "-o") {
 			write = true;
 			// if there is no other argument after -o
@@ -62,7 +60,7 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-	// reading 9x9 sudoku
+	// reading sudoku
 	std::string line { };
 	std::vector<Sudoku> puzzles { };
 	while (std::getline(infile, line)) {
@@ -73,21 +71,28 @@ int main(int argc, char* argv[]) {
 	int index {0};
 	unsigned int time {0};
 	for (auto &sudoku: puzzles) {
-		std::cout << "Solving 9x9 puzzle #" << ++index << "..." << std::endl;
+		std::cout << "Solving " << sudoku.getSize() << "x" << sudoku.getSize() << " puzzle #" << ++index << "...     " << std::flush;
 		if (verbose)
-			std::cout << sudoku.toString() << std::endl;
-		SudokuSolver solver(sudoku, multi_thread);
+			std::cout << std::endl << sudoku.toString() << std::endl;
+		SudokuSolver solver(sudoku);
 		clock_t start = clock();
-		Sudoku solution = solver.getSolution();
-		std::cout << "Done!!!" << std::endl;
-		if (verbose)
-			std::cout << "Solution: for puzzle #" << index << std::endl << solution.toString() << std::endl;
+		SudokuSolver::SSResult result = solver.search();
 		clock_t end = clock();
+		if (result.number_of_solution > 0) {
+			std::cout << "Done!!!" << std::endl;
+			Sudoku answer = result.solutions.front();
+			if (verbose)
+				std::cout << "Solution: for puzzle #" << index << std::endl << answer.toString() << std::endl;
+		}
+		else
+			std::cout << "No solution found!" << std::endl;
+
 		time += static_cast<unsigned int>(end - start);
 		if (write) {
 			std::ofstream ofile (output);
 			if (ofile.is_open()) {
-				ofile << solution.toSimpleString();
+				std::string content = (result.number_of_solution > 0? result.solutions.front().toSimpleString() : "no solution.");
+				ofile << content;
 				ofile.close();
 			}
 			else {

@@ -8,31 +8,32 @@
 #ifndef SRC_SUDOKUSOLVER_HPP_
 #define SRC_SUDOKUSOLVER_HPP_
 
-#include <atomic>
 #include "Sudoku.hpp"
 
 class SudokuSolver
 {
+public:
+	struct SSResult {
+		// sudoku solver result
+		unsigned number_of_solution = 0;
+		std::vector<Sudoku> solutions;
+	};
+
 private:
 	Sudoku m_puzzle;
 	int m_size { };
-	std::atomic<bool> isSolve { false };
-	std::atomic<unsigned> numThread { 0 };
-	bool multithread { true };
-	unsigned concurentThreadsSupported { 0 };
-
-	SudokuSolver() {} // private default constructor
 
 public:
 	SudokuSolver(Sudoku puzzle);
-	SudokuSolver(Sudoku puzzle, bool multi_thread);
 	SudokuSolver(int **const arr, int size);
-
-	Sudoku getSolution();
+	SSResult search();
 
 private:
-	void solve(int row, int col, Sudoku &puzzle);
-	void newThreadSolve(int row, int col, Sudoku puzzle);
+	std::vector<std::vector <int>> toExactCover();
+	std::vector<int> toExactCoverRow(int row, int col, int num);
+	void rowToSudoku(std::vector<int> row, Sudoku *sudoku);
+	std::string getNumFromEC(std::vector<int> row);
+	Sudoku toSudoku(std::vector<std::vector <int>> matrix, std::vector<int> solution);
 };
 
 #endif /* SRC_SUDOKUSOLVER_HPP_ */

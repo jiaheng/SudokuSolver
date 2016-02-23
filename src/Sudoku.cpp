@@ -30,14 +30,12 @@
  */
 
 #include "Sudoku.hpp"
-
-#include <math.h>
+#include <cmath>
 #include <array>
 #include <string>
 
 Sudoku::Sudoku(int **const arr, int p_size) {
 	size = p_size;
-	sqr_size = static_cast<int>(sqrt(size));
 	initCells();
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++)
@@ -47,8 +45,7 @@ Sudoku::Sudoku(int **const arr, int p_size) {
 
 Sudoku::Sudoku(std::string input) {
 	rtrim(input, ' ');
-	size = static_cast<int>(sqrt(input.length()));
-	sqr_size = static_cast<int>(sqrt(size));
+	size = static_cast<int>(std::sqrt(input.length()));
 	initCells();
 	switch(size) {
 	case 4:
@@ -58,6 +55,9 @@ Sudoku::Sudoku(std::string input) {
 	case 16:
 		fillHexadokuCell(input);
 		break;
+	case 25:
+		fillAlphadokuCell(input);
+		break;
 	default:
 		// Something wrong
 		break;
@@ -66,7 +66,6 @@ Sudoku::Sudoku(std::string input) {
 
 Sudoku::Sudoku(const Sudoku &other) {
 	size = other.size;
-	sqr_size = other.sqr_size;
 	initCells();
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++)
@@ -88,7 +87,6 @@ Sudoku& Sudoku::operator=(const Sudoku &rhs) {
 		}
 		delete[] cells;
 		size = rhs.size;
-		sqr_size = rhs.sqr_size;
 		initCells();
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++)
@@ -130,6 +128,7 @@ void Sudoku::fillSudokuCell(std::string &input) {
 	for(char& c : input) {
 	    if (c == '.') cells[i][j] = 0;
 	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
+	    else cells[i][j] = 0; //TODO: something wrong!!!
 	    // next cell
 	    j++;
 	    if (j >= size) {
@@ -147,6 +146,25 @@ void Sudoku::fillHexadokuCell(std::string &input) {
 	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
 	    else if (c >= 'A' && c <= 'G') cells[i][j] = c - 'A' + 10;
 	    else if (c >= 'a' && c <= 'g') cells[i][j] = c - 'a' + 10;
+	    else cells[i][j] = 0; //TODO: something wrong!!!
+	    // next cell
+	    j++;
+	    if (j >= size) {
+	    	i++;
+	    	j = 0;
+	    	if (i >= size) break;
+	    }
+	}
+}
+
+void Sudoku::fillAlphadokuCell(std::string &input) {
+	int i { 0 }, j{ 0 };
+	for(char& c : input) {
+	    if (c == '.') cells[i][j] = 0;
+	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
+	    else if (c >= 'A' && c <= 'Q') cells[i][j] = c - 'A' + 10;
+	    else if (c >= 'a' && c <= 'q') cells[i][j] = c - 'a' + 10;
+	    else cells[i][j] = 0; //TODO: something wrong!!!
 	    // next cell
 	    j++;
 	    if (j >= size) {
@@ -165,7 +183,9 @@ std::string Sudoku::sudokuToString() {
 		for (int col = 0; col < size; col++) {
 			if (col%3 == 0)
 				string += "| ";
-			string += std::to_string(cells[row][col]) + " ";
+			int num { cells[row][col] };
+			if (num != 0) string += std::to_string(num) + " ";
+			else string += "X ";
 		}
 		string += "|\n";
 	}
@@ -181,8 +201,10 @@ std::string Sudoku::hexadokuToString() {
 		for (int col = 0; col < size; col++) {
 			if (col%4 == 0)
 				string += "| ";
-			if (cells[row][col] < 10) string += " ";
-			string += std::to_string(cells[row][col]) + " ";
+			int num { cells[row][col] };
+			if (num < 10) string += " ";
+			if (num != 0) string += std::to_string(num) + " ";
+			else string += "X ";
 		}
 		string += "|\n";
 	}
@@ -194,7 +216,9 @@ std::string Sudoku::otherToString() {
 	std::string str { };
 	for (int row = 0; row < size; ++row) {
 		for (int col = 0; col < size; ++col) {
-			str += std::to_string(cells[row][col]) + " ";
+			int num { cells[row][col] };
+			if (num != 0) str += std::to_string(num) + " ";
+			else str += "X ";
 		}
 		str += "\n";
 	}
@@ -216,8 +240,13 @@ std::string Sudoku::toSimpleString() {
 	std::string string { "" };
 	for (int row = 0; row < size; row++) {
 		for (int col = 0; col < size; col++) {
-			if (cells[row][col] == 0) string += ".";
-			else string += std::to_string(cells[row][col]);
+			int num { cells[row][col] };
+			if (num == 0) string += ".";
+			else if (num > 9) {
+				char c = 'A' + num - 10;
+				string += c;
+			}
+			else string += std::to_string(num);
 		}
 	}
 	return string;
@@ -247,8 +276,9 @@ bool Sudoku::safeInCol(int col, int num) {
 }
 
 bool Sudoku::safeInSqr(int startRow, int startCol, int num) {
-	int endRow { startRow + sqr_size },
-		endCol { startCol + sqr_size };
+	int sqrt_size {static_cast<int>(std::sqrt(size))};
+	int	endRow { startRow + sqrt_size },
+		endCol { startCol + sqrt_size };
 	for (int i = startRow; i < endRow; i++)
 		for (int j = startCol; j < endCol; j++)
 			if (cells[i][j] == num) return false;
@@ -257,9 +287,10 @@ bool Sudoku::safeInSqr(int startRow, int startCol, int num) {
 
 bool Sudoku::isSafe(int row, int col, int num) {
 	if (!cellIsEmpty(row, col)) return false;
+	int sqrt_size {static_cast<int>(std::sqrt(size))};
 	return (safeInRow(row, num) &&
 			safeInCol(col, num) &&
-			safeInSqr(row - row%sqr_size, col - col%sqr_size, num));
+			safeInSqr(row - row%sqrt_size, col - col%sqrt_size, num));
 }
 
 bool Sudoku::cellIsEmpty(int row, int col) {
@@ -267,8 +298,9 @@ bool Sudoku::cellIsEmpty(int row, int col) {
 }
 
 bool Sudoku::correctInSqr(int startRow, int startCol) {
-	int endRow { startRow + sqr_size },
-		endCol { startCol + sqr_size };
+	int sqrt_size {static_cast<int>(std::sqrt(size))};
+	int endRow { startRow + sqrt_size },
+		endCol { startCol + sqrt_size };
 	for (int val = 1; val <= size; val++) {
 		bool num_exist { false };
 		for (int i = startRow; i < endRow; i++)
@@ -287,8 +319,9 @@ bool Sudoku::isCorrect() {
 	for (int i = 0; i < size; i++) {
 		if (!correctInRow(i) || !correctInCol(i)) return false;
 	}
-	for (int i = 0; i < size; i+=sqr_size) {
-		for (int j = 0; j < size; j+=sqr_size) {
+	int sqrt_size {static_cast<int>(std::sqrt(size))};
+	for (int i = 0; i < size; i+=sqrt_size) {
+		for (int j = 0; j < size; j+=sqrt_size) {
 			if (!correctInSqr(i,j)) return false;
 		}
 	}
@@ -314,3 +347,7 @@ bool Sudoku::correctInCol(int col) {
 		}
 	return true;
 }
+
+int Sudoku::getSize() { return size; }
+void Sudoku::setCell(int row, int col, int val) { cells[row][col] = val; }
+int Sudoku::getCell(int row, int col){ return cells[row][col]; }
