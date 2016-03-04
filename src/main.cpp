@@ -52,15 +52,14 @@ int main(int argc, char* argv[]) {
 			output = args[++i];
 		}
 	}
-	verbose = verbose || !write;
+	verbose = verbose || !write;	// verbose is on by default if no output file
 
+	// reading sudoku from file
 	std::ifstream infile(input);
 	if (!infile.good()) {
 		std::cout << "File does not exists! Exiting program" << std::endl;
 		return 0;
 	}
-
-	// reading sudoku
 	std::string line { };
 	std::vector<Sudoku> puzzles { };
 	while (std::getline(infile, line)) {
@@ -68,8 +67,21 @@ int main(int argc, char* argv[]) {
 		std::istringstream iss(line);
 		puzzles.push_back(Sudoku(line));
 	}
+	infile.close();
+
 	int index {0};
 	unsigned int time {0};
+	std::ofstream ofile { };
+	// create output file if -o
+	if (write) {
+		ofile.open(output, std::ofstream::out);
+		if (!ofile.is_open()) {
+			std::cout << "Unable to create file '" << output << "'" << std::endl;
+			write = false;
+			verbose = true;
+		}
+	}
+	// start solving puzzle
 	for (auto &sudoku: puzzles) {
 		std::cout << "Solving " << sudoku.getSize() << "x" << sudoku.getSize() << " puzzle #" << ++index << "...     " << std::flush;
 		if (verbose)
@@ -89,20 +101,13 @@ int main(int argc, char* argv[]) {
 
 		time += static_cast<unsigned int>(end - start);
 		if (write) {
-			std::ofstream ofile (output);
-			if (ofile.is_open()) {
-				std::string content = (result.number_of_solution > 0? result.solutions.front().toSimpleString() : "no solution.");
-				ofile << content;
-				ofile.close();
-			}
-			else {
-				std::cout << "Unable to open file";
-				write = false;
-			}
+			std::string content = (result.number_of_solution > 0? result.solutions.front().toSimpleString() : "no solution.");
+			ofile << content << "\r\n";
 		}
 	}
+	if (ofile.is_open()) ofile.close();
 	std::cout << "it took " << time << "ticks, or "
 				<< ((float)time)/CLOCKS_PER_SEC
-				<< "seconds to solve all " << index << " 9x9 sudoku." << std::endl;
+				<< "seconds to solve all " << index << " sudoku." << std::endl;
 	return 0;
 }
