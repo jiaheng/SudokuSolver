@@ -1,5 +1,5 @@
 /*
- * SudokuSolver.h
+ * SudokuSolver.hpp
  *
  *  Created on: 6 Dec 2015
  *      Author: jiaheng
