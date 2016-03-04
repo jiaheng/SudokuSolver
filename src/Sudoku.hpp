@@ -1,5 +1,5 @@
 /*
- * Sudoku.h
+ * Sudoku.hpp
  *
  *  Created on: 6 Dec 2015
  *      Author: jiaheng
