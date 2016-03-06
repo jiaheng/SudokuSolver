@@ -8,7 +8,6 @@
 #ifndef SRC_SUDOKU_HPP_
 #define SRC_SUDOKU_HPP_
 
-#include <array>
 #include <string>
 
 class Sudoku {
@@ -35,6 +34,7 @@ public:
 	int getCell(int row, int col);
 	Sudoku& operator=(const Sudoku &rhs);
 	bool operator==(Sudoku &rhs);
+	friend std::ostream& operator<<(std::ostream &os, Sudoku &sudoku);
 
 private:
 	bool safeInRow(int row, int num);
@@ -45,9 +45,11 @@ private:
 	bool correctInSqr(int startRow, int StartCol);
 
 	void initCells();
-	void fillSudokuCell(std::string &input);
-	void fillHexadokuCell(std::string &input);
-	void fillAlphadokuCell(std::string &input);
+	void fillSimpleSudoku(std::string &input);
+	void fillSudoku(std::string &input);
+	void fillHexadoku(std::string &input);
+	void fillAlphadoku(std::string &input);
+	std::string simpleSudokuToString();
 	std::string sudokuToString();
 	std::string hexadokuToString();
 	std::string otherToString();

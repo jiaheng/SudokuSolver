@@ -31,7 +31,6 @@
 
 #include "Sudoku.hpp"
 #include <cmath>
-#include <array>
 #include <string>
 
 Sudoku::Sudoku(int **const arr, int p_size) {
@@ -49,17 +48,19 @@ Sudoku::Sudoku(std::string input) {
 	initCells();
 	switch(size) {
 	case 4:
+		fillSimpleSudoku(input);
+		break;
 	case 9:
-		fillSudokuCell(input);
+		fillSudoku(input);
 		break;
 	case 16:
-		fillHexadokuCell(input);
+		fillHexadoku(input);
 		break;
 	case 25:
-		fillAlphadokuCell(input);
+		fillAlphadoku(input);
 		break;
 	default:
-		// Something wrong
+		// TODO: exception handling unregconised input
 		break;
 	}
 }
@@ -123,12 +124,28 @@ void Sudoku::rtrim(std::string &s, char c) {
 	s.erase(p, s.end());
 }
 
-void Sudoku::fillSudokuCell(std::string &input) {
+void Sudoku::fillSimpleSudoku(std::string &input) {
+	int i { 0 }, j{ 0 };
+	for(char& c : input) {
+		if (c == '.') cells[i][j] = 0;
+		else if (c >= '1' && c <= '4') cells[i][j] = c - '0';
+		else cells[i][j] = 0; //TODO: exception when invalid character!!!
+		// next cell
+		j++;
+		if (j >= size) {
+			i++;
+			j = 0;
+			if (i >= size) break;
+		}
+	}
+}
+
+void Sudoku::fillSudoku(std::string &input) {
 	int i { 0 }, j{ 0 };
 	for(char& c : input) {
 	    if (c == '.') cells[i][j] = 0;
 	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
-	    else cells[i][j] = 0; //TODO: something wrong!!!
+	    else cells[i][j] = 0; //TODO: exception when invalid character!!!
 	    // next cell
 	    j++;
 	    if (j >= size) {
@@ -139,14 +156,14 @@ void Sudoku::fillSudokuCell(std::string &input) {
 	}
 }
 
-void Sudoku::fillHexadokuCell(std::string &input) {
+void Sudoku::fillHexadoku(std::string &input) {
 	int i { 0 }, j{ 0 };
 	for(char& c : input) {
 	    if (c == '.') cells[i][j] = 0;
 	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
 	    else if (c >= 'A' && c <= 'G') cells[i][j] = c - 'A' + 10;
 	    else if (c >= 'a' && c <= 'g') cells[i][j] = c - 'a' + 10;
-	    else cells[i][j] = 0; //TODO: something wrong!!!
+	    else cells[i][j] = 0; //TODO: exception when invalid character!!!
 	    // next cell
 	    j++;
 	    if (j >= size) {
@@ -157,14 +174,14 @@ void Sudoku::fillHexadokuCell(std::string &input) {
 	}
 }
 
-void Sudoku::fillAlphadokuCell(std::string &input) {
+void Sudoku::fillAlphadoku(std::string &input) {
 	int i { 0 }, j{ 0 };
 	for(char& c : input) {
 	    if (c == '.') cells[i][j] = 0;
 	    else if (c >= '1' && c <= '9') cells[i][j] = c - '0';
 	    else if (c >= 'A' && c <= 'Q') cells[i][j] = c - 'A' + 10;
 	    else if (c >= 'a' && c <= 'q') cells[i][j] = c - 'a' + 10;
-	    else cells[i][j] = 0; //TODO: something wrong!!!
+	    else cells[i][j] = 0; //TODO: exception when invalid character!!!
 	    // next cell
 	    j++;
 	    if (j >= size) {
@@ -175,13 +192,33 @@ void Sudoku::fillAlphadokuCell(std::string &input) {
 	}
 }
 
+std::string Sudoku::simpleSudokuToString() {
+	int sqrt_size { 2 };
+	std::string string {"+-----------+\n"};
+	for (int row = 0; row < size; row++) {
+		if (row != 0 && row%sqrt_size == 0)
+			string += "|-----+-----|\n";
+		for (int col = 0; col < size; col++) {
+			if (col%sqrt_size == 0)
+				string += "| ";
+			int num { cells[row][col] };
+			if (num != 0) string += std::to_string(num) + " ";
+			else string += "X ";
+		}
+		string += "|\n";
+	}
+	string += "+-----------+\n";
+	return string;
+}
+
 std::string Sudoku::sudokuToString() {
+	int sqrt_size { 3 };
 	std::string string {"+-----------------------+\n"};
 	for (int row = 0; row < size; row++) {
-		if (row != 0 && row%3 == 0)
+		if (row != 0 && row%sqrt_size == 0)
 			string += "|-------+-------+-------|\n";
 		for (int col = 0; col < size; col++) {
-			if (col%3 == 0)
+			if (col%sqrt_size == 0)
 				string += "| ";
 			int num { cells[row][col] };
 			if (num != 0) string += std::to_string(num) + " ";
@@ -194,12 +231,13 @@ std::string Sudoku::sudokuToString() {
 }
 
 std::string Sudoku::hexadokuToString() {
+	int sqrt_size { 4 };
 	std::string string {"+-------------------------------------------------------+\n"};
 	for (int row = 0; row < size; row++) {
-		if (row != 0 && row%4 == 0)
+		if (row != 0 && row%sqrt_size == 0)
 			string += "|-------------+-------------+-------------+-------------|\n";
 		for (int col = 0; col < size; col++) {
-			if (col%4 == 0)
+			if (col%sqrt_size == 0)
 				string += "| ";
 			int num { cells[row][col] };
 			if (num < 10) string += " ";
@@ -227,6 +265,8 @@ std::string Sudoku::otherToString() {
 
 std::string Sudoku::toString() {
 	switch(size) {
+	case 4:
+		return simpleSudokuToString();
 	case 9:
 		return sudokuToString();
 	case 16:
@@ -346,6 +386,12 @@ bool Sudoku::correctInCol(int col) {
 			if (check_val == val) break;
 		}
 	return true;
+}
+
+std::ostream& operator<<(std::ostream &os, Sudoku &sdk)
+{
+	os << sdk.toString();
+    return os;
 }
 
 int Sudoku::getSize() { return size; }

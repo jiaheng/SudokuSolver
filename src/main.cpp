@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
 	for (auto &sudoku: puzzles) {
 		std::cout << "Solving " << sudoku.getSize() << "x" << sudoku.getSize() << " puzzle #" << ++index << "...     " << std::flush;
 		if (verbose)
-			std::cout << std::endl << sudoku.toString() << std::endl;
+			std::cout << std::endl << sudoku << std::endl;
 		SudokuSolver solver(sudoku);
 		clock_t start = clock();
 		SudokuSolver::SSResult result = solver.search();
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
 			std::cout << "Done!!!" << std::endl;
 			Sudoku answer = result.solutions.front();
 			if (verbose)
-				std::cout << "Solution: for puzzle #" << index << std::endl << answer.toString() << std::endl;
+				std::cout << "Solution: for puzzle #" << index << std::endl << answer << std::endl;
 		}
 		else
 			std::cout << "No solution found!" << std::endl;
