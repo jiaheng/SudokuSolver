@@ -72,6 +72,16 @@ int main(int argc, char* argv[]) {
 	}
 	int index {0};
 	unsigned int time {0};
+	std::ofstream ofile { };
+	// create output file if -o
+	if (write) {
+		ofile.open(output, std::ofstream::out);
+		if (!ofile.is_open()) {
+			std::cout << "Unable to create file '" << output << "'" << std::endl;
+			write = false;
+			verbose = true;
+		}
+	}
 	for (auto &sudoku: puzzles) {
 		std::cout << "Solving 9x9 puzzle #" << ++index << "..." << std::endl;
 		if (verbose)
@@ -85,19 +95,15 @@ int main(int argc, char* argv[]) {
 		clock_t end = clock();
 		time += static_cast<unsigned int>(end - start);
 		if (write) {
-			std::ofstream ofile (output);
-			if (ofile.is_open()) {
-				ofile << solution.toSimpleString();
-				ofile.close();
-			}
-			else {
-				std::cout << "Unable to open file";
-				write = false;
-			}
+			std::string content = solution.toSimpleString();
+			ofile << content << "\r\n";
 		}
+	}
+	if (write && ofile.is_open()) {
+		ofile.close();
 	}
 	std::cout << "it took " << time << "ticks, or "
 				<< ((float)time)/CLOCKS_PER_SEC
-				<< "seconds to solve all " << index << " 9x9 sudoku." << std::endl;
+				<< "seconds to solve all " << index << " sudoku." << std::endl;
 	return 0;
 }
