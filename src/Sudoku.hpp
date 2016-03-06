@@ -8,7 +8,6 @@
 #ifndef SRC_SUDOKU_HPP_
 #define SRC_SUDOKU_HPP_
 
-#include <array>
 #include <string>
 
 class Sudoku {
@@ -35,6 +34,7 @@ public:
 	int getCell(int row, int col);
 	Sudoku& operator=(const Sudoku &rhs);
 	bool operator==(Sudoku &rhs);
+	friend std::ostream& operator<<(std::ostream &os, Sudoku &sudoku);
 
 private:
 	bool safeInRow(int row, int num);
