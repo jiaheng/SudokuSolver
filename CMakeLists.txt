@@ -6,7 +6,7 @@ subdirs(src)
 # Version number
 set (SudokuSolver_VERSION_MAJOR 2)
 set (SudokuSolver_VERSION_MINOR 0)
-set (SudokuSolver_CMAKE_PATCH_VERSION 0)
+set (SudokuSolver_VERSION_PATCH 0)
 
 # Enable c++11 standard
 set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
