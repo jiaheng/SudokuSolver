@@ -1,5 +1,5 @@
 #include "cute_suite.h"
-#include "Sudoku.hpp"
+#include "../src/SudokuSolver.hpp"
 
 void verifyResult(Sudoku problem, Sudoku result);
 

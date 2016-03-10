@@ -1,5 +1,5 @@
 #include "cute_suite.h"
-#include "Sudoku.hpp"
+#include "../src/Sudoku.hpp"
 
 Sudoku sampleSudoku();
 Sudoku sampleSudoku2();
