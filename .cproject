@@ -61,8 +61,25 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.341994779.305202396" name="/" resourcePath="build">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.debug.1825450823" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.debug" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.gnu.archiver.base.466585326" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.283700033"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.366062337" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.372826713">
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.179839430" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1245078635" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1215905826">
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1137351221" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1198933533" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1175612106"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.254791037" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.169660110"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.debug.153232828" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug.594561545">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.720040363" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="main.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="test"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -122,8 +139,24 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.exe.release.1949392544.659319784" name="/" resourcePath="build">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.release.68613834" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.release" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.gnu.archiver.base.691597769" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.302483147"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1810827725" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1168533446">
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.612683279" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.release.302748291" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.release.59560847">
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.466303157" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.release.730524922" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.release.759690189"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.303534060" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.511188931"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.release.987989620" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.release.1871718323">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1727348785" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/*_test.cpp|src/Test.cpp|cute|test" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
