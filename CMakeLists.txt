@@ -10,7 +10,7 @@ set (SudokuSolver_CMAKE_PATCH_VERSION 0)
 
 # Enable c++11 standard
 set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
-set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -O3")
 
 # Set output folder
 set (CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
