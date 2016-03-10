@@ -26,9 +26,9 @@
 #include <fstream>
 
 #include "cute.h"
+#include "../src/SudokuSolver.hpp"
 #include "SudokuSolver_test.h"
 #include "Sudoku_test.h"
-#include "SudokuSolver.hpp"
 
 void hexadokuPerformanceTest() {
 	Sudoku sudoku = sampleHexadoku();

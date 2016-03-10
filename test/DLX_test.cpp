@@ -22,11 +22,11 @@
  * THE SOFTWARE.
  */
 
-#include "DLX_test.hpp"
-#include "DLX.hpp"
-#include "DLNode.hpp"
-#include <vector>
 #include "cute.h"
+#include "../src/DLX.hpp"
+#include "../src/DLNode.hpp"
+#include "DLX_test.hpp"
+#include <vector>
 #include <iostream>
 #include <algorithm>
 
