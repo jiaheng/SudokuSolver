@@ -9,4 +9,4 @@ target_link_libraries(DLXTests Dlx)
 
 # This is so you can do 'make test' to see all your tests run, instead of
 # manually running the executable runUnitTests to see those specific tests.
-add_test(DLXTests ${CMAKE_TEST_BIN_DIR}/DLXTests)
+add_test(DLXTests DLXTests)
