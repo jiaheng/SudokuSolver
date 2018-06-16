@@ -71,7 +71,7 @@
 FIND_PROGRAM( GCOV_PATH gcov )
 FIND_PROGRAM( LCOV_PATH lcov )
 FIND_PROGRAM( GENHTML_PATH genhtml )
-FIND_PROGRAM( GCOVR_PATH gcovr PATHS ${CMAKE_SOURCE_DIR}/tests)
+FIND_PROGRAM( GCOVR_PATH gcovr PATHS ${CMAKE_SOURCE_DIR}/test)
 
 IF(NOT GCOV_PATH)
 	MESSAGE(FATAL_ERROR "gcov not found! Aborting...")
@@ -147,7 +147,6 @@ FUNCTION(SETUP_TARGET_FOR_COVERAGE _targetname _testrunner _outputname)
 		COMMAND lcov --version
 		COMMAND gcov --version
 		COMMAND g++ --version
-		
 		# Capturing lcov counters and generating report
 		COMMAND ${LCOV_PATH} --directory . --base-directory . --capture --output-file coverage.info
         COMMAND ${LCOV_PATH} --remove coverage.info '/usr*' '*/test/*' '*/ext/*' -o coverage.info

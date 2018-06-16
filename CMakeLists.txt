@@ -12,13 +12,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -O3")
 
-# Set output folder
-set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-
 add_subdirectory(dlx)
-add_subdirectory(SudokuSolver)
+add_subdirectory(sudokuSolver)
 add_subdirectory(main)
 
 # Options. Turn on with 'cmake -Dmyvarname=ON'.
@@ -44,7 +39,7 @@ if (BUILD_TESTS)
   set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
   if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     include(CodeCoverage)
-    setup_target_for_coverage(${PROJECT_NAME}_coverage runUnitTests coverage)
+    setup_target_for_coverage(${PROJECT_NAME}_coverage DLXTests coverage)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fprofile-arcs -ftest-coverage")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fprofile-arcs -ftest-coverage")
