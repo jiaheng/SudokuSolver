@@ -165,7 +165,8 @@ namespace {
 	}
 
 	TEST(SudokuSolverTest, sudokuBatchSolveTest) {
-		std::ifstream infile("sample/puzzle9_small");
+		std::ifstream infile;
+		infile.open("sample/puzzle9_small", std::ifstream::in);
 		EXPECT_TRUE(infile.good()) << "FILE NOT EXIST";
 		std::string line { };
 		std::vector<Sudoku> puzzles { };
@@ -174,6 +175,7 @@ namespace {
 			std::istringstream iss(line);
 			puzzles.push_back(Sudoku(line));
 		}
+		infile.close();
 		int index { 1 };
 		unsigned int time { 0 };
 		for (auto &sudoku : puzzles) {
@@ -192,7 +194,8 @@ namespace {
 	}
 
 	TEST(SudokuSolverTest, HexadokuBatchSolveTest) {
-		std::ifstream infile("sample/puzzle16_small");
+		std::ifstream infile;
+		infile.open("sample/puzzle16_small", std::ifstream::in);
 		EXPECT_TRUE(infile.good()) << "FILE NOT EXIST";
 		std::string line { };
 		std::vector<Sudoku> puzzles { };
@@ -201,6 +204,7 @@ namespace {
 			std::istringstream iss(line);
 			puzzles.push_back(Sudoku(line));
 		}
+		infile.close();
 		int index { 1 };
 		unsigned int time { 0 };
 		for (auto &hexadoku : puzzles) {
