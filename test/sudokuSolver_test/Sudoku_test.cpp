@@ -314,11 +314,6 @@ namespace {
 		EXPECT_FALSE(copy.isComplete()) << msg;
 	}
 
-	TEST(SudokuTest, ToStringTest) {
-		Sudoku sudoku = sampleSudoku();
-		// std::cout << sudoku.toString();
-	}
-
 	TEST(SudokuTest, HexadokuTest) {
 		Sudoku hexadoku = sampleHexadoku();
 		EXPECT_TRUE(hexadoku.isIncomplete());
@@ -402,11 +397,11 @@ namespace {
 	}
 
 	TEST(SudokuTest, ToSimpleStringTest) {
-		std::ifstream infile("sample/puzzle9");
+		std::ifstream infile;
+		infile.open("sample/puzzle9", std::ifstream::in);
 		EXPECT_TRUE(infile.good()) << "FILE NOT EXIST";
 		std::string line { };
 		int index { 1 };
-		std::cout << "Testing 9x9 sudoku toSimpleString()" << std::endl;
 		while (std::getline(infile, line)) {
 			// read file line by line
 			std::istringstream iss(line);
@@ -419,11 +414,10 @@ namespace {
 			++index;
 		}
 		infile.close();
-		infile = std::ifstream("sample/puzzle16");
+		infile.open("sample/puzzle16", std::ifstream::in);;
 		EXPECT_TRUE(infile.good()) << "FILE NOT EXIST";
 		line = "";
 		index = 1;
-		std::cout << "Testing 16x16 sudoku toSimpleString()" << std::endl;
 		while (std::getline(infile, line)) {
 			// read file line by line
 			std::istringstream iss(line);
@@ -435,5 +429,6 @@ namespace {
 			EXPECT_EQ(0, line.compare(result)) << msg;
 			++index;
 		}
+		infile.close();
 	}
 }
