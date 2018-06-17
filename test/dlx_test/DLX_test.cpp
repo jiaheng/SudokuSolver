@@ -131,7 +131,7 @@ namespace {
 		DLX dlx {matrix};
 		dlx.solve();
 		auto result = dlx.getSolution();
-		EXPECT_GT(result.size(), 0) << "No solution found!!!";
+		ASSERT_GT(result.size(), 0) << "No solution found!!!";
 		std::vector<int> matrix_check { };
 		matrix_check.resize(matrix[0].size());
 		for (auto index : result) {
@@ -182,9 +182,4 @@ namespace {
 		auto result = dlx.getSolution();
 		EXPECT_EQ(0, result.size()) << "Expected no solution (size ==0)!!!";
 	}
-}
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }
