@@ -81,19 +81,7 @@ matrix:
       env:
         - NAME="MacOS Optimised"
 
-before_install:
-    - |
-      if [ ${RUN_TESTS} == "true" ]; then
-        export ENV_CMAKE_OPTIONS=${ENV_CMAKE_OPTIONS}" -DBUILD_TESTS=ON"
-      fi
-    - |
-      if [ ${COVERAGE} == "true" ] && [ ${CXX} != clang++* ]; then
-        export ENV_CMAKE_OPTIONS=${ENV_CMAKE_OPTIONS}" -DCMAKE_BUILD_TYPE=Coverage"
-      fi
-    # Combine global build options with OS/compiler-dependent options
-    - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
-    - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
-
+install:
     # For Linux, download and install recent cmake
     - |
       if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
@@ -110,9 +98,29 @@ before_install:
         brew list lcov || brew install lcov
       fi
 
-install:
-    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
+    # Install code coverage dependencies
     - if [ ${COVERAGE} == "true" ]; then sudo pip install codecov; fi
+
+before_script:
+    # Config CMake to run tests
+    - |
+      if [ ${RUN_TESTS} == "true" ]; then
+        export ENV_CMAKE_OPTIONS=${ENV_CMAKE_OPTIONS}" -DBUILD_TESTS=ON"
+      fi
+
+    # Configure CMake to test code coverage
+    - |
+      if [ ${COVERAGE} == "true" ] && [ ${CXX} != clang++* ]; then
+        export ENV_CMAKE_OPTIONS=${ENV_CMAKE_OPTIONS}" -DCMAKE_BUILD_TYPE=Coverage"
+      fi
+
+    # Combine global build options with OS/compiler-dependent options
+    - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
+    - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+
+    # In Linux with clang compiler, use version 3.7
+    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
+
     - echo ${PATH}
     - echo ${CXX}
     - ${CXX} --version
@@ -132,7 +140,6 @@ script:
        elif [ ${RUN_TESTS} == "true" ]; then
          make test
        fi
-
 
 after_success:
     - if [ ${COVERAGE} == "true" ]; then codecov -t b1948277-a6d0-44f4-8621-9d2c7108fe09 -X gcov; fi
