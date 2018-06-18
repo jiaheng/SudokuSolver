@@ -7,10 +7,15 @@ set(SudokuSolver_VERSION_MAJOR 2)
 set(SudokuSolver_VERSION_MINOR 0)
 set(SudokuSolver_VERSION_PATCH 0)
 
+# Set default build type
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
 # Enable c++11 standard
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -O3")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG} -std=c++11 -Wall")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE} -std=c++11 -Wall")
 
 # Copy files from source directory to destination directory, substituting any
 # variables.  Create destination directory if it does not exist.

@@ -177,7 +177,6 @@ namespace {
 		}
 		infile.close();
 		int index { 1 };
-		unsigned int time { 0 };
 		for (auto &sudoku : puzzles) {
 			SudokuSolver solver(sudoku);
 			auto result= solver.search();
@@ -206,7 +205,6 @@ namespace {
 		}
 		infile.close();
 		int index { 1 };
-		unsigned int time { 0 };
 		for (auto &hexadoku : puzzles) {
 			SudokuSolver solver(hexadoku);
 			auto result = solver.search();

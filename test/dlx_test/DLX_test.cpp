@@ -31,20 +31,6 @@
 #include "DLNode.hpp"
 
 namespace {
-	std::vector<std::vector <int>> sampleMatrix() {
-		std::vector<std::vector <int>> matrix { };
-		std::vector<int> row { };
-		row = {0, 1, 0, 1, 1, 0};
-		matrix.push_back(row);
-		row = {1, 1, 0, 0, 1, 0};
-		matrix.push_back(row);
-		row = {1, 0, 0, 0, 0, 1};
-		matrix.push_back(row);
-		row = {0, 0, 1, 1, 0, 1};
-		matrix.push_back(row);
-		return matrix;
-	}
-
 	std::vector<std::vector <int>> problemMatrix() {
 		/*
 		 * 0 0 1 0 1 1 0

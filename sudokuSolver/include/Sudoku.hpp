@@ -8,6 +8,7 @@
 #ifndef SRC_SUDOKU_HPP_
 #define SRC_SUDOKU_HPP_
 
+#include <iostream>
 #include <string>
 
 class Sudoku {

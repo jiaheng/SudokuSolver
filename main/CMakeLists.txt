@@ -1,8 +1,6 @@
 # Add all src files
 file(GLOB SOURCE_FILES
-  "*.h"
   "*.c"
-  "*.hpp"
   "*.cpp")
 
 add_executable(SudokuSolverApp
