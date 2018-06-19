@@ -18,6 +18,10 @@ platform:
   - Win32
   - x64
 
+configuration:
+  - Release
+  - Debug
+
 build:
   verbosity: minimal
 
