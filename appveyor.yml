@@ -65,6 +65,7 @@ test_script:
     {
         return
     }
+    & tree /F
 
     & ctest -C $env:CONFIGURATION --output-on-failure
     if ($LastExitCode -ne 0) {
