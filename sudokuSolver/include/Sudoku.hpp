@@ -46,14 +46,11 @@ private:
 	bool correctInSqr(int startRow, int StartCol);
 
 	void initCells();
-	void fillSimpleSudoku(std::string &input);
+	int parseChar(char c);
 	void fillSudoku(std::string &input);
-	void fillHexadoku(std::string &input);
-	void fillAlphadoku(std::string &input);
-	std::string simpleSudokuToString();
 	std::string sudokuToString();
-	std::string hexadokuToString();
 	std::string otherToString();
+
 	void rtrim(std::string &s, char c);
 };
 
