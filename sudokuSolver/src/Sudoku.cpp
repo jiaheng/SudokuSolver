@@ -47,15 +47,15 @@ Sudoku::Sudoku(std::string input) {
 	size = static_cast<int>(std::sqrt(input.length()));
 	initCells();
 	switch(size) {
-	case 4:
-	case 9:
-	case 16:
-	case 25:
-		fillSudoku(input);
-		break;
-	default:
-		// TODO: exception handling unregconised input
-		break;
+		case 4:
+		case 9:
+		case 16:
+		case 25:
+			fillSudoku(input);
+			break;
+		default:
+			// TODO: exception handling unregconised input
+			break;
 	}
 }
 
@@ -148,7 +148,6 @@ std::string Sudoku::sudokuToString() {
 	int square_size = sqrt_size * (size > 9? 3 : 2) + 1;
 	std::string big_box_string = std::string((square_size * sqrt_size + sqrt_size - 1), '-');
 	std::string small_box_string = std::string(square_size, '-');
-	//std::string(5, '.')
 	std::string string = "+" + big_box_string + "+\n";
 	for (int row = 0; row < size; row++) {
 		if (row != 0 && row%sqrt_size == 0) {
@@ -164,7 +163,7 @@ std::string Sudoku::sudokuToString() {
 			if (col%sqrt_size == 0)
 				string += "| ";
 			int num { cells[row][col] };
-			if (num < 10) string += " ";
+			if (size > 9 && num < 10) string += " "; // add space for single digit
 			if (num != 0) string += std::to_string(num) + " ";
 			else string += "X ";
 		}
@@ -189,13 +188,13 @@ std::string Sudoku::otherToString() {
 
 std::string Sudoku::toString() {
 	switch(size) {
-	case 4:
-	case 9:
-	case 16:
-	case 25:
-		return sudokuToString();
-	default:
-		return otherToString();
+		case 4:
+		case 9:
+		case 16:
+		case 25:
+			return sudokuToString();
+		default:
+			return otherToString();
 	}
 }
 
