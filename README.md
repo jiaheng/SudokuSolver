@@ -1,6 +1,7 @@
 # Sudoku Solver #
 
 [![Build Status](https://travis-ci.org/jiaheng/SudokuSolver.svg?branch=master)](https://travis-ci.org/jiaheng/SudokuSolver)
+[![Build status](https://ci.appveyor.com/api/projects/status/fqhlhw89d6a4uqq6?svg=true)](https://ci.appveyor.com/project/jiaheng/sudokusolver)
 [![codecov](https://codecov.io/gh/jiaheng/SudokuSolver/branch/master/graph/badge.svg)](https://codecov.io/gh/jiaheng/SudokuSolver)
 
 **SudokuSolver** is a program to solve sudoku puzzle. It can solve various type of sudoku:

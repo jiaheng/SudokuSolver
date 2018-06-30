@@ -1,0 +1,65 @@
+version: '{build}'
+
+pull_requests:
+  do_not_increment_build_number: true
+
+clone_depth: 1
+
+environment:
+  matrix:
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+
+platform:
+  - Win32
+  - x64
+
+configuration:
+  - Release
+  - Debug
+
+build:
+  verbosity: minimal
+
+artifacts:
+  - path: '_build/Testing/Temporary/*'
+    name: test_results
+
+before_build:
+- ps: |
+    Write-Output "Configuration: $env:CONFIGURATION"
+    Write-Output "Platform: $env:PLATFORM"
+    Write-Output "$env:APPVEYOR_BUILD_WORKER_IMAGE"
+
+    $generator = switch ($env:APPVEYOR_BUILD_WORKER_IMAGE)
+    {
+        "Visual Studio 2017" {"Visual Studio 15 2017"}
+        "Visual Studio 2015" {"Visual Studio 14 2015"}
+        "Visual Studio 2013" {"Visual Studio 12 2013"}
+    }
+    if ($env:PLATFORM -eq "x64")
+    {
+        $generator = "$generator Win64"
+    }
+
+build_script:
+- ps: |
+    md _build -Force | Out-Null
+    cd _build
+
+    & cmake -G "$generator" -DCMAKE_CONFIGURATION_TYPES="Debug;Release" -DBUILD_TESTS=ON ..
+    if ($LastExitCode -ne 0) {
+        throw "Exec: $ErrorMessage"
+    }
+    & cmake --build . --config $env:CONFIGURATION
+    if ($LastExitCode -ne 0) {
+        throw "Exec: $ErrorMessage"
+    }
+
+test_script:
+- ps: |
+    & ctest -C $env:CONFIGURATION --output-on-failure
+    if ($LastExitCode -ne 0) {
+        throw "Exec: $ErrorMessage"
+    }
