@@ -10,30 +10,30 @@
 
 #include "Sudoku.hpp"
 
-class SudokuSolver
-{
+class SudokuSolver {
 public:
-	struct SSResult {
-		// sudoku solver result
-		unsigned number_of_solution = 0;
-		std::vector<Sudoku> solutions;
-	};
+  struct SSResult {
+    // sudoku solver result
+    unsigned number_of_solution = 0;
+    std::vector<Sudoku> solutions;
+  };
 
 private:
-	Sudoku m_puzzle;
-	int m_size { };
+  Sudoku m_puzzle;
+  int m_size{};
 
 public:
-	SudokuSolver(Sudoku puzzle);
-	SudokuSolver(int **const arr, int size);
-	SSResult search();
+  SudokuSolver(Sudoku puzzle);
+  SudokuSolver(int **const arr, int size);
+  SSResult search();
 
 private:
-	std::vector<std::vector <int>> toExactCover();
-	std::vector<int> toExactCoverRow(int row, int col, int num);
-	void rowToSudoku(std::vector<int> row, Sudoku *sudoku);
-	std::string getNumFromEC(std::vector<int> row);
-	Sudoku toSudoku(std::vector<std::vector <int>> matrix, std::vector<int> solution);
+  std::vector<std::vector<int>> toExactCover();
+  std::vector<int> toExactCoverRow(int row, int col, int num);
+  void rowToSudoku(std::vector<int> row, Sudoku *sudoku);
+  std::string getNumFromEC(std::vector<int> row);
+  Sudoku toSudoku(std::vector<std::vector<int>> matrix,
+                  std::vector<int> solution);
 };
 
 #endif /* SRC_SUDOKUSOLVER_HPP_ */
