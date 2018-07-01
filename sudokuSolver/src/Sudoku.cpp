@@ -126,9 +126,9 @@ int Sudoku::parseChar(char c) {
     return 0;
   else if (c >= '0' && c <= '9')
     return c - '0';
-  else if (c >= 'A' && c <= 'G')
+  else if (c >= 'A' && c <= 'P')
     return c - 'A' + 10;
-  else if (c >= 'a' && c <= 'g')
+  else if (c >= 'a' && c <= 'P')
     return c - 'a' + 10;
   else
     return 0; // TODO: exception when invalid character!!!
