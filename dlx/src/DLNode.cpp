@@ -32,97 +32,73 @@
 #include "DLNode.hpp"
 #include <cassert>
 
-DLNode::DLNode() {
-	left = right = up = down = column_node = nullptr;
-}
+DLNode::DLNode() { left = right = up = down = column_node = nullptr; }
 
 DLNode::DLNode(int j) {
-	left = right = up = down = nullptr;
-	number_of_nodes = 0;
-	column_node = this;
+  left = right = up = down = nullptr;
+  number_of_nodes = 0;
+  column_node = this;
 }
 
 DLNode::DLNode(int i, int j, DLNode *columnNode) {
-	left = right = up = down = nullptr;
-	row = i;
-	column_node = columnNode;
-	column_node->number_of_nodes++;
+  left = right = up = down = nullptr;
+  row = i;
+  column_node = columnNode;
+  column_node->number_of_nodes++;
 }
 
 DLNode::~DLNode() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-DLNode*& DLNode::getColumnNode() {
-	return column_node;
-}
+DLNode *&DLNode::getColumnNode() { return column_node; }
 
- DLNode*& DLNode::getDown()  {
-	return down;
-}
+DLNode *&DLNode::getDown() { return down; }
 
-void DLNode::setDown( DLNode*& down) {
-	this->down = down;
-}
+void DLNode::setDown(DLNode *&down) { this->down = down; }
 
- DLNode*& DLNode::getLeft()  {
-	return left;
-}
+DLNode *&DLNode::getLeft() { return left; }
 
-void DLNode::setLeft( DLNode*& left) {
-	this->left = left;
-}
+void DLNode::setLeft(DLNode *&left) { this->left = left; }
 
- DLNode*& DLNode::getRight()  {
-	return right;
-}
+DLNode *&DLNode::getRight() { return right; }
 
-void DLNode::setRight( DLNode*& right) {
-	this->right = right;
-}
+void DLNode::setRight(DLNode *&right) { this->right = right; }
 
-int DLNode::getRow()  {
-	return row;
-}
+int DLNode::getRow() { return row; }
 
- DLNode*& DLNode::getUp()  {
-	return up;
-}
+DLNode *&DLNode::getUp() { return up; }
 
-void DLNode::setUp(DLNode*& up) {
-	this->up = up;
-}
+void DLNode::setUp(DLNode *&up) { this->up = up; }
 
 void DLNode::hRemove() {
-	assert(this->left->right == this);
-	assert(this->right->left == this);
-	this->left->right = this->right;
-	this->right->left = this->left;
+  assert(this->left->right == this);
+  assert(this->right->left == this);
+  this->left->right = this->right;
+  this->right->left = this->left;
 }
 
 void DLNode::vRemove() {
-	assert(this->down->up == this);
-	assert(this->up->down == this);
-	this->down->up = this->up;
-	this->up->down = this->down;
-	this->column_node->number_of_nodes--;
+  assert(this->down->up == this);
+  assert(this->up->down == this);
+  this->down->up = this->up;
+  this->up->down = this->down;
+  this->column_node->number_of_nodes--;
 }
 
 void DLNode::hRestore() {
-	this->right->left = this;
-	this->left->right = this;
-	assert(this->right->left == this);
-	assert(this->left->right == this);
+  this->right->left = this;
+  this->left->right = this;
+  assert(this->right->left == this);
+  assert(this->left->right == this);
 }
 
 void DLNode::vRestore() {
-	this->up->down = this;
-	this->down->up = this;
-	this->column_node->number_of_nodes++;
-	assert(this->down->up == this);
-	assert(this->up->down == this);
+  this->up->down = this;
+  this->down->up = this;
+  this->column_node->number_of_nodes++;
+  assert(this->down->up == this);
+  assert(this->up->down == this);
 }
 
-int DLNode::getNumberOfNode() {
-	return number_of_nodes;
-}
+int DLNode::getNumberOfNode() { return number_of_nodes; }
