@@ -1,6 +1,7 @@
 /Release/
 /SudokuSolver.xml
 /Debug/
+/.vscode/
 
 # Compiled Object files
 *.slo
