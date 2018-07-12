@@ -37,97 +37,111 @@
 #include <cmath>
 #include <vector>
 
-SudokuSolver::SudokuSolver(Sudoku puzzle) : m_puzzle(puzzle) {
-  m_size = m_puzzle.getSize();
+SudokuSolver::SudokuSolver(Sudoku puzzle) : m_puzzle(puzzle)
+{
+    m_size = m_puzzle.getSize();
 }
 
-SudokuSolver::SudokuSolver(int **const arr, int size) : m_puzzle(arr, size) {
-  m_size = size;
+SudokuSolver::SudokuSolver(int** const arr, int size) : m_puzzle(arr, size)
+{
+    m_size = size;
 }
 
-SudokuSolver::SSResult SudokuSolver::search() {
-  SSResult result{};
-  std::vector<std::vector<int>> matrix = toExactCover();
-  DLX dlx{matrix};
-  if (dlx.solve()) {
-    std::vector<int> solution = dlx.getSolution();
-    ++result.number_of_solution;
-    result.solutions.push_back(toSudoku(matrix, solution));
-  }
-  return result;
-}
-
-std::vector<std::vector<int>> SudokuSolver::toExactCover() {
-  std::vector<std::vector<int>> matrix{};
-  for (int i = 0; i < m_size; ++i) {
-    for (int j = 0; j < m_size; ++j) {
-      int num = m_puzzle.getCell(i, j);
-      if (num == 0) {
-        for (int p_num = 1; p_num <= m_size; ++p_num) {
-          std::vector<int> row = toExactCoverRow(i, j, p_num);
-          matrix.push_back(row);
-        }
-      } else {
-        std::vector<int> row = toExactCoverRow(i, j, num);
-        matrix.push_back(row);
-      }
+SudokuSolver::SSResult SudokuSolver::search()
+{
+    SSResult result{};
+    std::vector<std::vector<int>> matrix = toExactCover();
+    DLX dlx{matrix};
+    if (dlx.solve())
+    {
+        std::vector<int> solution = dlx.getSolution();
+        ++result.number_of_solution;
+        result.solutions.push_back(toSudoku(matrix, solution));
     }
-  }
-  return matrix;
+    return result;
 }
 
-std::vector<int> SudokuSolver::toExactCoverRow(int row, int col, int num) {
-  std::vector<int> ec_row{};
-  int sqrt_size{static_cast<int>(std::sqrt(m_size))};
-  int sqr_size{static_cast<int>(std::pow(m_size, 2))};
-  ec_row.resize(static_cast<int>(sqr_size * 4));
-  int pos{row * m_size + col};
-  int cond_row{row * m_size + (num - 1) + sqr_size};
-  int cond_col{col * m_size + (num - 1) + 2 * sqr_size};
-  int cond_region{(row / sqrt_size * sqrt_size + col / sqrt_size) * m_size +
-                  (num - 1) + 3 * sqr_size};
-  ec_row[pos] = 1;
-  ec_row[cond_row] = 1;
-  ec_row[cond_col] = 1;
-  ec_row[cond_region] = 1;
-  return ec_row;
+std::vector<std::vector<int>> SudokuSolver::toExactCover()
+{
+    std::vector<std::vector<int>> matrix{};
+    for (int i = 0; i < m_size; ++i)
+    {
+        for (int j = 0; j < m_size; ++j)
+        {
+            int num = m_puzzle.getCell(i, j);
+            if (num == 0)
+            {
+                for (int p_num = 1; p_num <= m_size; ++p_num)
+                {
+                    std::vector<int> row = toExactCoverRow(i, j, p_num);
+                    matrix.push_back(row);
+                }
+            }
+            else
+            {
+                std::vector<int> row = toExactCoverRow(i, j, num);
+                matrix.push_back(row);
+            }
+        }
+    }
+    return matrix;
 }
 
-Sudoku SudokuSolver::toSudoku(std::vector<std::vector<int>> matrix,
-                              std::vector<int> solution) {
-  Sudoku sudoku{m_puzzle};
-  for (auto row : solution)
-    rowToSudoku(matrix[row], &sudoku);
-  return sudoku;
+std::vector<int> SudokuSolver::toExactCoverRow(int row, int col, int num)
+{
+    std::vector<int> ec_row{};
+    int sqrt_size{static_cast<int>(std::sqrt(m_size))};
+    int sqr_size{static_cast<int>(std::pow(m_size, 2))};
+    ec_row.resize(static_cast<int>(sqr_size * 4));
+    int pos{row * m_size + col};
+    int cond_row{row * m_size + (num - 1) + sqr_size};
+    int cond_col{col * m_size + (num - 1) + 2 * sqr_size};
+    int cond_region{(row / sqrt_size * sqrt_size + col / sqrt_size) * m_size +
+                    (num - 1) + 3 * sqr_size};
+    ec_row[pos] = 1;
+    ec_row[cond_row] = 1;
+    ec_row[cond_col] = 1;
+    ec_row[cond_region] = 1;
+    return ec_row;
 }
 
-void SudokuSolver::rowToSudoku(std::vector<int> sol, Sudoku *sudoku) {
-  int sqr_size = pow(m_size, 2);
-  // find row
-  auto it = std::find(sol.begin(), sol.begin() + (sqr_size - 1), 1);
-  assert(it != sol.end());
-  int pos = std::distance(sol.begin(), it);
-  int col{pos % m_size};
-  int row{(pos - col) / m_size};
-  it = std::find(sol.begin() + sqr_size, sol.begin() + (2 * sqr_size - 1), 1);
-  assert(it != sol.end());
-  int cond_row = std::distance(sol.begin(), it);
-  int num{cond_row % m_size + 1};
-  sudoku->setCell(row, col, num);
+Sudoku SudokuSolver::toSudoku(std::vector<std::vector<int>> matrix, std::vector<int> solution)
+{
+    Sudoku sudoku{m_puzzle};
+    for (auto row : solution)
+        rowToSudoku(matrix[row], &sudoku);
+    return sudoku;
 }
 
-std::string SudokuSolver::getNumFromEC(std::vector<int> sol) {
-  int sqr_size = pow(m_size, 2);
-  // find row
-  auto it = std::find(sol.begin(), sol.begin() + (sqr_size - 1), 1);
-  assert(it != sol.end());
-  int pos = std::distance(sol.begin(), it);
-  int col{pos % m_size};
-  int row{(pos - col) / m_size};
-  it = std::find(sol.begin() + sqr_size, sol.begin() + (2 * sqr_size - 1), 1);
-  assert(it != sol.end());
-  int cond_row = std::distance(sol.begin(), it);
-  int num{cond_row % m_size + 1};
-  return "(" + std::to_string(num) + ", " + std::to_string(row) + ", " +
-         std::to_string(col) + ")";
+void SudokuSolver::rowToSudoku(std::vector<int> sol, Sudoku* sudoku)
+{
+    int sqr_size = pow(m_size, 2);
+    // find row
+    auto it = std::find(sol.begin(), sol.begin() + (sqr_size - 1), 1);
+    assert(it != sol.end());
+    int pos = std::distance(sol.begin(), it);
+    int col{pos % m_size};
+    int row{(pos - col) / m_size};
+    it = std::find(sol.begin() + sqr_size, sol.begin() + (2 * sqr_size - 1), 1);
+    assert(it != sol.end());
+    int cond_row = std::distance(sol.begin(), it);
+    int num{cond_row % m_size + 1};
+    sudoku->setCell(row, col, num);
+}
+
+std::string SudokuSolver::getNumFromEC(std::vector<int> sol)
+{
+    int sqr_size = pow(m_size, 2);
+    // find row
+    auto it = std::find(sol.begin(), sol.begin() + (sqr_size - 1), 1);
+    assert(it != sol.end());
+    int pos = std::distance(sol.begin(), it);
+    int col{pos % m_size};
+    int row{(pos - col) / m_size};
+    it = std::find(sol.begin() + sqr_size, sol.begin() + (2 * sqr_size - 1), 1);
+    assert(it != sol.end());
+    int cond_row = std::distance(sol.begin(), it);
+    int num{cond_row % m_size + 1};
+    return "(" + std::to_string(num) + ", " + std::to_string(row) + ", " +
+           std::to_string(col) + ")";
 }

@@ -12,22 +12,23 @@
 #include <string>
 #include <vector>
 
-class DLX {
+class DLX
+{
 public:
-  DLX(std::vector<std::vector<int>> matrix);
-  ~DLX();
+    DLX(std::vector<std::vector<int>> matrix);
+    ~DLX();
 
-  bool solve();
-  std::vector<int> getSolution();
+    bool solve();
+    std::vector<int> getSolution();
 
 private:
-  std::vector<int> solution{};
-  DLNode *head;
-  std::vector<DLNode *> nodes{};
+    std::vector<int> solution{};
+    DLNode* head;
+    std::vector<DLNode*> nodes{};
 
-  void cover(DLNode *node);
-  void uncover(DLNode *node);
-  DLNode *chooseNextColumn();
+    void cover(DLNode* node);
+    void uncover(DLNode* node);
+    DLNode* chooseNextColumn();
 };
 
 #endif /* SRC_DLX_HPP_ */
