@@ -140,8 +140,8 @@ matrix:
       addons:
        apt:
          packages: &precise_latest_boost_packages
-           - gcc-8.2
-           - g++-8.2
+           - gcc-8
+           - g++-8
            - valgrind
            # Misc
            - libopencv-dev
