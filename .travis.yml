@@ -59,7 +59,7 @@ matrix: travis_retry
       sudo: true
       compiler: gcc
       env:
-        - NAME="Gcc Optimised"
+        - NAME="GCC 4.8 Optimised"
         - LINUX_DIST=trusty
         - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
       addons:
@@ -75,7 +75,78 @@ matrix: travis_retry
            - libopencv-dev
          sources: &precise_latest_boost_sources
            - ubuntu-toolchain-r-test
-           - llvm-toolchain-precise-3.7
+    - os: linux
+      dist: trusty
+      sudo: true
+      compiler: gcc
+      env:
+        - NAME="GCC 5 Optimised"
+        - LINUX_DIST=trusty
+        - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+      addons:
+       apt:
+         packages: &precise_latest_boost_packages
+           - gcc-5.5
+           - g++-5.5
+           - valgrind
+           # Misc
+           - libopencv-dev
+         sources: &precise_latest_boost_sources
+           - ubuntu-toolchain-r-test
+    - os: linux
+      dist: trusty
+      sudo: true
+      compiler: gcc
+      env:
+        - NAME="GCC 6 Optimised"
+        - LINUX_DIST=trusty
+        - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+      addons:
+       apt:
+         packages: &precise_latest_boost_packages
+           - gcc-6.4
+           - g++-6.4
+           - valgrind
+           # Misc
+           - libopencv-dev
+         sources: &precise_latest_boost_sources
+           - ubuntu-toolchain-r-test
+    - os: linux
+      dist: trusty
+      sudo: true
+      compiler: gcc
+      env:
+        - NAME="GCC 7 Optimised"
+        - LINUX_DIST=trusty
+        - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+      addons:
+       apt:
+         packages: &precise_latest_boost_packages
+           - gcc-7.3
+           - g++-7.3
+           - valgrind
+           # Misc
+           - libopencv-dev
+         sources: &precise_latest_boost_sources
+           - ubuntu-toolchain-r-test
+    - os: linux
+      dist: trusty
+      sudo: true
+      compiler: gcc
+      env:
+        - NAME="GCC 8 Optimised"
+        - LINUX_DIST=trusty
+        - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+      addons:
+       apt:
+         packages: &precise_latest_boost_packages
+           - gcc-8.2
+           - g++-8.2
+           - valgrind
+           # Misc
+           - libopencv-dev
+         sources: &precise_latest_boost_sources
+           - ubuntu-toolchain-r-test
     - os: osx
       osx_image: xcode9.4
       env:
