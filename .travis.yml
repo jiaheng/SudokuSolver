@@ -22,7 +22,7 @@ matrix:
         - COVERAGE=true
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - gcc-4.8
            - g++-4.8
            #- gcov-4.9
@@ -31,7 +31,7 @@ matrix:
            - python-yaml
            - lcov
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
     - os: linux
       dist: trusty
@@ -44,14 +44,14 @@ matrix:
         - MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7"
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - clang-3.7
            - valgrind
            # Misc
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
-           - llvm-toolchain-precise-3.7
+           - llvm-toolchain-trusty-3.7
     - os: linux
       dist: trusty
       sudo: true
@@ -63,14 +63,14 @@ matrix:
         - MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0"
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - clang-4.0
            - valgrind
            # Misc
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
-           - llvm-toolchain-precise-4.0
+           - llvm-toolchain-trusty-4.0
     - os: linux
       dist: trusty
       sudo: true
@@ -82,14 +82,14 @@ matrix:
         - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - clang-5.0
            - valgrind
            # Misc
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
-           - llvm-toolchain-precise-5.0
+           - llvm-toolchain-trusty-5.0
     - os: linux
       dist: trusty
       sudo: true
@@ -101,14 +101,14 @@ matrix:
         - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - clang-6.0
            - valgrind
            # Misc
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
-           - llvm-toolchain-precise-6.0
+           - llvm-toolchain-trusty-6.0
     - os: linux
       dist: trusty
       sudo: true
@@ -119,7 +119,7 @@ matrix:
         - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - gcc-4.8
            - g++-4.8
            #- gcov-4.9
@@ -128,7 +128,7 @@ matrix:
            - python-yaml
            - lcov
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
     - os: linux
       dist: trusty
@@ -141,13 +141,13 @@ matrix:
         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - gcc-5
            - g++-5
            - valgrind
            # Misc
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
     - os: linux
       dist: trusty
@@ -160,13 +160,13 @@ matrix:
         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - gcc-6
            - g++-6
            - valgrind
            # Misc
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
     - os: linux
       dist: trusty
@@ -179,13 +179,13 @@ matrix:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - gcc-7
            - g++-7
            - valgrind
            # Misc
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
     - os: linux
       dist: trusty
@@ -198,13 +198,13 @@ matrix:
         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages: &trusty_latest_boost_packages
            - gcc-8
            - g++-8
            - valgrind
            # Misc
            - libopencv-dev
-         sources: &precise_latest_boost_sources
+         sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
     - os: osx
       osx_image: xcode9.4
