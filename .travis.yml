@@ -9,6 +9,7 @@ env:
     - COVERAGE=false
 
 matrix:
+  fast_finish: true
   include:
     - os: linux
       dist: trusty
@@ -83,6 +84,7 @@ matrix:
         - NAME="GCC 5 Optimised"
         - LINUX_DIST=trusty
         - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+        - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
       addons:
        apt:
          packages: &precise_latest_boost_packages
@@ -101,6 +103,7 @@ matrix:
         - NAME="GCC 6 Optimised"
         - LINUX_DIST=trusty
         - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
       addons:
        apt:
          packages: &precise_latest_boost_packages
@@ -119,6 +122,7 @@ matrix:
         - NAME="GCC 7 Optimised"
         - LINUX_DIST=trusty
         - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
       addons:
        apt:
          packages: &precise_latest_boost_packages
@@ -137,6 +141,7 @@ matrix:
         - NAME="GCC 8 Optimised"
         - LINUX_DIST=trusty
         - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
       addons:
        apt:
          packages: &precise_latest_boost_packages
@@ -151,6 +156,9 @@ matrix:
       osx_image: xcode9.4
       env:
         - NAME="MacOS Optimised"
+
+before_install:
+    - eval "${MATRIX_EVAL}"
 
 install:
     # For Linux, download and install recent cmake
