@@ -86,8 +86,8 @@ matrix:
       addons:
        apt:
          packages: &precise_latest_boost_packages
-           - gcc-5.5
-           - g++-5.5
+           - gcc-5
+           - g++-5
            - valgrind
            # Misc
            - libopencv-dev
@@ -104,8 +104,8 @@ matrix:
       addons:
        apt:
          packages: &precise_latest_boost_packages
-           - gcc-6.4
-           - g++-6.4
+           - gcc-6
+           - g++-6
            - valgrind
            # Misc
            - libopencv-dev
@@ -122,8 +122,8 @@ matrix:
       addons:
        apt:
          packages: &precise_latest_boost_packages
-           - gcc-7.3
-           - g++-7.3
+           - gcc-7
+           - g++-7
            - valgrind
            # Misc
            - libopencv-dev
