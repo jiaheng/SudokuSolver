@@ -8,7 +8,7 @@ env:
     - RUN_TESTS=true
     - COVERAGE=false
 
-matrix:
+matrix: travis_retry
   include:
     - os: linux
       dist: trusty
