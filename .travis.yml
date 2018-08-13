@@ -44,14 +44,33 @@ matrix:
         - MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7"
       addons:
        apt:
-         packages: &trusty_latest_boost_packages
+         packages: &precise_latest_boost_packages
            - clang-3.7
+           - valgrind
+           # Misc
+           - libopencv-dev
+         sources: &precise_latest_boost_sources
+           - ubuntu-toolchain-r-test
+           - llvm-toolchain-precise-3.7
+    - os: linux
+      dist: trusty
+      sudo: true
+      compiler: clang
+      env:
+        - NAME="Clang 3.9 Optimised"
+        - LINUX_DIST=trusty
+        - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+        - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+      addons:
+       apt:
+         packages: &trusty_latest_boost_packages
+           - clang-3.9
            - valgrind
            # Misc
            - libopencv-dev
          sources: &trusty_latest_boost_sources
            - ubuntu-toolchain-r-test
-           - llvm-toolchain-trusty-3.7
+           - llvm-toolchain-trusty-3.9
     - os: linux
       dist: trusty
       sudo: true
