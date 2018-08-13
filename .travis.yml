@@ -33,28 +33,82 @@ matrix:
            - libopencv-dev
          sources: &precise_latest_boost_sources
            - ubuntu-toolchain-r-test
+    - os: linux
+      dist: trusty
+      sudo: true
+      compiler: clang
+      env:
+        - NAME="Clang 3.7 Optimised"
+        - LINUX_DIST=trusty
+        - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+        - MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7"
+      addons:
+       apt:
+         packages: &precise_latest_boost_packages
+           - clang-3.7
+           - valgrind
+           # Misc
+           - libopencv-dev
+         sources: &precise_latest_boost_sources
+           - ubuntu-toolchain-r-test
            - llvm-toolchain-precise-3.7
     - os: linux
       dist: trusty
       sudo: true
       compiler: clang
       env:
-        - NAME="Clang Optimised"
+        - NAME="Clang 4.0 Optimised"
         - LINUX_DIST=trusty
         - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+        - MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0"
       addons:
        apt:
          packages: &precise_latest_boost_packages
-           #- gcov-4.9
-           - clang-3.7
+           - clang-4.0
            - valgrind
            # Misc
-           - python-yaml
-           - lcov
            - libopencv-dev
          sources: &precise_latest_boost_sources
            - ubuntu-toolchain-r-test
-           - llvm-toolchain-precise-3.7
+           - llvm-toolchain-precise-4.0
+    - os: linux
+      dist: trusty
+      sudo: true
+      compiler: clang
+      env:
+        - NAME="Clang 5.0 Optimised"
+        - LINUX_DIST=trusty
+        - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+        - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+      addons:
+       apt:
+         packages: &precise_latest_boost_packages
+           - clang-5.0
+           - valgrind
+           # Misc
+           - libopencv-dev
+         sources: &precise_latest_boost_sources
+           - ubuntu-toolchain-r-test
+           - llvm-toolchain-precise-5.0
+    - os: linux
+      dist: trusty
+      sudo: true
+      compiler: clang
+      env:
+        - NAME="Clang 6.0 Optimised"
+        - LINUX_DIST=trusty
+        - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+      addons:
+       apt:
+         packages: &precise_latest_boost_packages
+           - clang-6.0
+           - valgrind
+           # Misc
+           - libopencv-dev
+         sources: &precise_latest_boost_sources
+           - ubuntu-toolchain-r-test
+           - llvm-toolchain-precise-6.0
     - os: linux
       dist: trusty
       sudo: true
@@ -196,9 +250,6 @@ before_script:
     # Combine global build options with OS/compiler-dependent options
     - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
     - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
-
-    # In Linux with clang compiler, use version 3.7
-    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
 
     - echo ${PATH}
     - echo ${CXX}
